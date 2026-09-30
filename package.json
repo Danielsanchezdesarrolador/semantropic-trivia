@@ -1,13 +1,16 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.2.4 - multiplayer trivia game",
+  "description": "Semantropic Trivia Alpha 0.2.6 - persistent online profiles and owner admin",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
   }
 }

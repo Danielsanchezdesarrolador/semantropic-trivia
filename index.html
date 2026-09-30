@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<title>Semantropic Trivia — Alpha 0.2.4</title>
+<title>Semantropic Trivia — Alpha 0.2.6</title>
 <style>
 :root{
  --bg:#070b14;--bg2:#0d1427;--panel:#131d37;--panel2:#1a294e;--text:#f7f9ff;--muted:#9eabd0;
@@ -412,7 +412,7 @@ input,select,textarea{
 @media(max-width:720px){.reward-home{grid-template-columns:auto 1fr}.reward-home .btn{grid-column:1/-1}.semantropic-game{border-radius:0;margin:-12px;min-height:calc(100dvh - 74px);padding:9px 10px 18px}.semantropic-game .hud{display:none}.semantropic-game #qText{font-size:1.35rem!important;min-height:112px;padding:25px 15px 20px}.play-wallet{position:sticky;top:0;z-index:9;background:rgba(71,17,100,.58);border-radius:16px;margin-bottom:4px}}
 
 
-/* ===== ALPHA 0.2.4 PATCH ===== */
+/* ===== ALPHA 0.2.6 PATCH ===== */
 .reward-wheel-label{position:absolute;left:50%;top:50%;width:104px;text-align:center;font-size:.72rem;font-weight:1000;line-height:1.05;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.72);z-index:2;pointer-events:none}
 .reward-wheel-label .rw-icon{display:block;font-size:1.25rem;margin-bottom:2px}
 .frame-none{}
@@ -429,7 +429,7 @@ input,select,textarea{
 .boss-stage-pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#45205f;color:#ffe583;font-weight:1000;margin-top:8px}
 
 
-/* ===== Alpha 0.2.4: 15-second question timer ===== */
+/* ===== Alpha 0.2.6: 15-second question timer ===== */
 .question-timer-wrap{margin:10px 0 7px}
 .question-timer-top{display:flex;justify-content:space-between;align-items:center;color:#fff;font-weight:1000;font-size:.9rem;margin-bottom:6px}
 .question-timer-track{height:12px;border-radius:999px;background:rgba(42,7,58,.55);overflow:hidden;border:1px solid rgba(255,255,255,.14)}
@@ -441,7 +441,7 @@ input,select,textarea{
 .semantropic-game .question-timer-wrap{padding:0 4px}
 
 
-/* ===== Alpha 0.2.4: sidebar/settings navigation fix ===== */
+/* ===== Alpha 0.2.6: sidebar/settings navigation fix ===== */
 @media (min-width:1041px){
   aside{
     overflow-y:auto;
@@ -453,7 +453,7 @@ input,select,textarea{
 }
 
 
-/* ===== Alpha 0.2.4: Online multiplayer ===== */
+/* ===== Alpha 0.2.6: Online multiplayer ===== */
 .mp-intro{display:grid;grid-template-columns:1fr minmax(220px,320px);gap:20px;align-items:center;background:linear-gradient(135deg,rgba(66,213,255,.1),rgba(128,104,255,.18))}
 .mp-name-row{display:grid;gap:8px}.mp-name-row input,.mp-join input{background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:12px;padding:12px 14px;font-size:16px}
 .mp-join{display:flex;gap:10px;align-items:center}.mp-join input{text-transform:uppercase;letter-spacing:.18em;font-weight:1000;font-size:1.2rem;text-align:center;max-width:220px}
@@ -476,13 +476,30 @@ input,select,textarea{
  .mp-scoreboard{grid-template-columns:repeat(2,1fr)}.mp-result-row{grid-template-columns:35px 1fr 70px}.mp-result-row .mp-rating-col{display:none}
 }
 
+
+/* ===== Alpha 0.2.6: persistent online profiles + owner admin ===== */
+.online-profile-card{display:grid;grid-template-columns:minmax(180px,1fr) 2fr;gap:18px;align-items:center;margin-bottom:14px;background:linear-gradient(135deg,rgba(40,210,170,.12),rgba(118,68,215,.18))}
+.online-profile-stats{display:grid;grid-template-columns:repeat(6,minmax(70px,1fr));gap:8px}.online-profile-stats div{background:#101a31;border:1px solid rgba(255,255,255,.07);padding:10px;border-radius:12px;text-align:center}.online-profile-stats span,.online-profile-stats b{display:block}.online-profile-stats span{font-size:.72rem;color:#9aa8c8;margin-bottom:3px}.online-profile-stats b{font-size:1.05rem}
+.admin-login-card{text-align:center;max-width:680px;margin:0 auto}.admin-login-row{display:flex;gap:10px;max-width:560px;margin:18px auto 0}.admin-login-row input,.admin-action-grid input,.admin-toolbar input{width:100%;background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:12px;padding:11px 13px}.admin-storage{font-size:1.05rem!important}.admin-editor{display:grid;gap:16px}.admin-selected{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.admin-selected h2{margin:3px 0}.admin-action-grid{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:10px}.admin-action-grid label{display:grid;gap:7px;font-size:.82rem;color:#b9c3dc}.admin-buttons,.admin-toolbar{display:flex;gap:9px;flex-wrap:wrap}.admin-toolbar input{max-width:330px}.admin-table tbody tr{cursor:pointer}.admin-table tbody tr:hover{background:rgba(88,188,255,.08)}.admin-table tbody tr.selected{background:rgba(255,209,102,.12);outline:1px solid rgba(255,209,102,.3)}
+@media(max-width:900px){.online-profile-card{grid-template-columns:1fr}.online-profile-stats{grid-template-columns:repeat(3,1fr)}.admin-action-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.online-profile-stats,.admin-action-grid{grid-template-columns:repeat(2,1fr)}.admin-login-row{flex-direction:column}.admin-buttons .btn,.admin-toolbar .btn{width:100%}.admin-toolbar input{max-width:none}}
+
+
+/* ===== Alpha 0.2.6 hotfix: room moderation ===== */
+.mp-player-controls{display:flex;align-items:center;gap:7px}
+.mp-kick-btn{padding:5px 8px!important;font-size:.72rem!important;min-height:auto!important}
+.admin-room-players{display:flex;flex-wrap:wrap;gap:5px}
+.admin-room-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;background:#101a31;border:1px solid rgba(255,255,255,.08);font-size:.76rem}
+.admin-room-chip button{border:0;background:transparent;color:#ff9aae;cursor:pointer;font-weight:1000;padding:0 2px}
+.admin-room-actions{display:flex;gap:6px;flex-wrap:wrap}
+
 </style>
 </head>
 <body>
 <div id="toast" class="toast">Logro desbloqueado</div><div id="flash" class="flash"></div><div id="musicIndicator" class="music-indicator">🎵 Música: ON</div>
 <div class="app"><div class="shell">
 <aside>
-  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.2.4</div>
+  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.2.6</div>
   <div class="profile"><div class="avatar custom-avatar" id="sideAvatar"></div><div style="margin-top:9px"><b id="sideName">Jugador</b><div class="muted">Nivel <span id="sideLevel">1</span></div></div><div class="xp"><div id="sideXp" style="width:0%"></div></div></div>
   <nav>
     <button class="active" onclick="page('home',this)">🏠 Inicio</button>
@@ -567,6 +584,17 @@ input,select,textarea{
  </div>
 
  <div id="mpSetup">
+  <div id="onlineProfileCard" class="card online-profile-card">
+   <div><div class="tag">PERFIL ONLINE</div><h2 id="opName">Jugador</h2><div id="opStorage" class="muted">Sincronizando con el servidor…</div></div>
+   <div class="online-profile-stats">
+    <div><span>Rating</span><b id="opRating">1000</b></div>
+    <div><span>Victorias</span><b id="opWins">0</b></div>
+    <div><span>Derrotas</span><b id="opLosses">0</b></div>
+    <div><span>Partidas</span><b id="opGames">0</b></div>
+    <div><span>🪙</span><b id="opCoins">0</b></div>
+    <div><span>💎</span><b id="opGems">0</b></div>
+   </div>
+  </div>
   <div class="card mp-intro">
    <div>
     <div class="tag">ALPHA ONLINE</div>
@@ -603,7 +631,8 @@ input,select,textarea{
    <div id="mpLobbyPlayers" class="mp-player-list"></div>
    <div class="mp-actions">
     <button id="mpStartBtn" class="btn primary hidden" onclick="mpStart()">COMENZAR PARTIDA</button>
-    <button class="btn danger" onclick="mpLeave()">SALIR DE LA SALA</button>
+    <button id="mpCloseRoomBtn" class="btn danger hidden" onclick="mpCloseRoom()">🗑️ CERRAR SALA</button>
+    <button class="btn secondary" onclick="mpLeave()">SALIR DE LA SALA</button>
    </div>
   </div>
  </div>
@@ -637,9 +666,54 @@ input,select,textarea{
  <div class="section"><h2>🏅 Ranking Semantropic</h2><span class="muted">Se guarda en el servidor de la oficina.</span></div>
  <div class="card mp-ranking-wrap">
   <table class="table">
-   <thead><tr><th>#</th><th>Jugador</th><th>Rating</th><th>Victorias</th><th>Partidas</th><th>Puntos</th></tr></thead>
-   <tbody id="mpRankingBody"><tr><td colspan="6" class="muted">Conecta el servidor para ver el ranking.</td></tr></tbody>
+   <thead><tr><th>#</th><th>Jugador</th><th>Rating</th><th>Victorias</th><th>Derrotas</th><th>Partidas</th><th>Puntos</th></tr></thead>
+   <tbody id="mpRankingBody"><tr><td colspan="7" class="muted">Conecta el servidor para ver el ranking.</td></tr></tbody>
   </table>
+ </div>
+</section>
+
+
+<section id="admin" class="page hidden">
+ <div class="top"><h1>🔐 Panel del Propietario</h1><div id="adminStatus" class="pill">Sesión no iniciada</div></div>
+ <div id="adminLoginCard" class="card admin-login-card">
+  <div class="bigico">🛡️</div><h2>Acceso de administrador</h2>
+  <p class="muted">La clave no está guardada dentro del juego. Render la mantiene como una variable secreta del servidor.</p>
+  <div class="admin-login-row"><input id="adminKeyInput" type="password" autocomplete="current-password" placeholder="Clave de administrador"><button class="btn primary" onclick="adminLogin()">ENTRAR</button></div>
+  <div id="adminLoginMsg" class="muted" style="margin-top:10px"></div>
+ </div>
+ <div id="adminPanel" class="hidden">
+  <div class="grid g4">
+   <div class="card"><div class="muted">Perfiles</div><div class="stat" id="adminPlayersCount">0</div></div>
+   <div class="card"><div class="muted">Partidas</div><div class="stat" id="adminGamesCount">0</div></div>
+   <div class="card"><div class="muted">En salas</div><div class="stat" id="adminRoomsCount">0</div></div>
+   <div class="card"><div class="muted">Base de datos</div><div class="stat admin-storage" id="adminStorageMode">—</div></div>
+  </div>
+  <div class="section"><h2>Gestionar jugador</h2><span class="muted">Selecciona un perfil de la tabla.</span></div>
+  <div class="card admin-editor">
+   <div class="admin-selected"><div><span class="muted">Jugador seleccionado</span><h2 id="adminSelectedName">Ninguno</h2><div class="muted" id="adminSelectedId">—</div></div><button class="btn secondary" onclick="adminRefresh()">↻ ACTUALIZAR</button></div>
+   <div class="admin-action-grid">
+    <label>Monedas (sumar/restar)<input id="adminCoinsDelta" type="number" value="100" step="50"></label>
+    <label>Diamantes (sumar/restar)<input id="adminGemsDelta" type="number" value="1" step="1"></label>
+    <label>Llaves (sumar/restar)<input id="adminKeysDelta" type="number" value="1" step="1"></label>
+    <label>Fijar rating<input id="adminRatingValue" type="number" value="1000" min="100" max="5000"></label>
+   </div>
+   <div class="admin-buttons">
+    <button class="btn primary" onclick="adminGrant()">💰 APLICAR RECURSOS</button>
+    <button class="btn secondary" onclick="adminSetRating()">🏆 FIJAR RATING</button>
+    <button class="btn secondary" onclick="adminResetWheel(false)">🎡 REINICIAR RULETA</button>
+    <button class="btn danger" onclick="adminResetStats()">♻️ REINICIAR STATS</button>
+   </div>
+  </div>
+  <div class="section"><h2>Jugadores online</h2><div class="admin-toolbar"><input id="adminSearch" placeholder="Buscar jugador…" oninput="renderAdminPlayers()"><button class="btn secondary" onclick="adminResetWheel(true)">🎡 REINICIAR TODAS LAS RULETAS</button><button class="btn danger" onclick="adminLogout()">CERRAR SESIÓN</button></div></div>
+  <div class="card mp-ranking-wrap"><table class="table admin-table"><thead><tr><th>Jugador</th><th>Rating</th><th>W/L</th><th>Partidas</th><th>🪙</th><th>💎</th><th>Ruleta</th></tr></thead><tbody id="adminPlayersBody"></tbody></table></div>
+
+  <div class="section"><h2>🌐 Salas activas</h2><span class="muted">Como propietario puedes cerrar cualquier sala o expulsar jugadores.</span></div>
+  <div class="card mp-ranking-wrap">
+   <table class="table admin-table">
+    <thead><tr><th>Sala</th><th>Modo</th><th>Estado</th><th>Host</th><th>Jugadores</th><th>Acciones</th></tr></thead>
+    <tbody id="adminRoomsBody"><tr><td colspan="6" class="muted">No hay salas activas.</td></tr></tbody>
+   </table>
+  </div>
  </div>
 </section>
 
@@ -703,6 +777,7 @@ input,select,textarea{
   <div class="settingrow"><div><b>Exportar progreso</b><div class="muted">Copia tu partida para guardarla o moverla.</div></div><button class="btn secondary" onclick="exportSave()">EXPORTAR</button></div>
   <div class="settingrow"><div><b>Importar progreso</b><div class="muted">Restaura una partida exportada.</div></div><button class="btn secondary" onclick="importSave()">IMPORTAR</button></div>
   <div class="settingrow"><div><b>Reiniciar progreso</b><div class="muted">Borra la partida guardada en este navegador.</div></div><button class="btn danger" onclick="resetSave()">REINICIAR</button></div>
+  <div class="settingrow"><div><b>Panel del propietario</b><div class="muted">Administración online protegida por clave del servidor.</div></div><button class="btn secondary" onclick="page('admin');renderAdminPage()">🔐 ADMIN</button></div>
  </div>
 </section>
 
@@ -1001,13 +1076,13 @@ const ACH=[
 
 function blank(){
  const cs={};Object.keys(CATS).forEach(c=>cs[c]={correct:0,total:0});
- return{version:24,name:"Jugador",level:1,xp:0,coins:200,gems:0,keys:1,games:0,bestScore:0,correct:0,total:0,bestStreak:0,tournamentWins:0,bestSurvival:0,localGames:0,catStats:cs,ach:{},bosses:[],camp:1,avatars:["brain"],avatar:"custom",inv:{shield:0,double:0,life:0},daily:"",eduCorrect:0,eduTotal:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},eduPrefs:{subject:"Lenguaje",level:"10-12"},questionHistory:{},procHistory:{},conceptHistory:{},formatHistory:{},eduDecks:{},generalDecks:{},lastRewardSpin:0,rewardSpins:0,effectsOwned:["none"],selectedEffect:"none",framesOwned:["none"],selectedFrame:"none",bossBest:0,bossClears:0,settings:{music:true,sound:true,animations:true,difficulty:"mixed"}}
+ return{version:26,name:"Jugador",level:1,xp:0,coins:200,gems:0,keys:1,games:0,bestScore:0,correct:0,total:0,bestStreak:0,tournamentWins:0,bestSurvival:0,localGames:0,catStats:cs,ach:{},bosses:[],camp:1,avatars:["brain"],avatar:"custom",inv:{shield:0,double:0,life:0},daily:"",eduCorrect:0,eduTotal:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},eduPrefs:{subject:"Lenguaje",level:"10-12"},questionHistory:{},procHistory:{},conceptHistory:{},formatHistory:{},eduDecks:{},generalDecks:{},lastRewardSpin:0,rewardSpins:0,effectsOwned:["none"],selectedEffect:"none",framesOwned:["none"],selectedFrame:"none",bossBest:0,bossClears:0,settings:{music:true,sound:true,animations:true,difficulty:"mixed"}}
 }
 let storageOK=true;
 function load(){try{const r=window.localStorage.getItem("triviaArenaPocketSave");if(!r)return blank();const o=JSON.parse(r),b=blank();let migratedCustom={...b.customAvatar};if(o.customAvatar&&o.customAvatar.skin)migratedCustom={...migratedCustom,...o.customAvatar};else if(o.customAvatar)migratedCustom.bg=o.customAvatar.bg||"violet";const s={...b,...o,settings:{...b.settings,...(o.settings||{})},inv:{...b.inv,...(o.inv||{})},customAvatar:migratedCustom,eduPrefs:{...b.eduPrefs,...(o.eduPrefs||{})},catStats:{...b.catStats,...(o.catStats||{})},questionHistory:{...(o.questionHistory||{})},procHistory:{...(o.procHistory||{})},conceptHistory:{...(o.conceptHistory||{})},formatHistory:{...(o.formatHistory||{})},eduDecks:{...(o.eduDecks||{})},generalDecks:{...(o.generalDecks||{})},framesOwned:[...(o.framesOwned||["none"])],selectedFrame:o.selectedFrame||"none",bossBest:o.bossBest??Math.min((o.bosses||[]).length,10),bossClears:o.bossClears||0};Object.keys(CATS).forEach(c=>{if(!s.catStats[c])s.catStats[c]={correct:0,total:0}});return s}catch(e){storageOK=false;return blank()}}
 let save=load(),state=null,audio=null,musicTimer=null,musicStep=0,musicStarted=false,questionTimer=null,questionDeadline=0;
 const $=id=>document.getElementById(id);
-function persist(){try{if(storageOK)window.localStorage.setItem("triviaArenaPocketSave",JSON.stringify(save))}catch(e){storageOK=false}refresh()}
+function persist(){try{if(storageOK)window.localStorage.setItem("triviaArenaPocketSave",JSON.stringify(save))}catch(e){storageOK=false}refresh();scheduleOnlineProfileSync()}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 function scrambleQuestion(q){const pairs=q.a.map((text,i)=>({text,correct:i===q.ok}));const mixed=shuffle(pairs);return{...q,a:mixed.map(x=>x.text),ok:mixed.findIndex(x=>x.correct)}}
 function chooseQuestions(pool,count,key){
@@ -1316,7 +1391,74 @@ function buildEducationQueue(count,subject,level,mixed,scope){
 }
 
 
-/* ===== ONLINE MULTIPLAYER ALPHA 0.2.4 =====
+
+/* ===== CLOUD PROFILE + ADMIN / ALPHA 0.2.6 ===== */
+let onlineProfileToken="",onlineProfileRevision=0,onlineProfileReady=false,onlineSyncTimer=null,onlineProfile=null;
+try{onlineProfileToken=localStorage.getItem("semantropicProfileToken")||""}catch(e){}
+function applyOnlineProfile(p,replaceWallet=true){
+ if(!p)return;onlineProfile=p;onlineProfileRevision=Number(p.revision||0);
+ if(replaceWallet){save.coins=Number(p.coins??save.coins);save.gems=Number(p.gems??save.gems);save.keys=Number(p.keys??save.keys);save.lastRewardSpin=Number(p.lastWheelSpin??save.lastRewardSpin);try{if(storageOK)localStorage.setItem("triviaArenaPocketSave",JSON.stringify(save))}catch(e){}}
+ const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set("opName",p.name||save.name);set("opRating",p.rating??1000);set("opWins",p.wins??0);set("opLosses",p.losses??0);set("opGames",p.games??0);set("opCoins",p.coins??0);set("opGems",p.gems??0);set("opStorage",p.storage==="postgres"?"☁️ Perfil persistente en base de datos":"💾 Perfil en almacenamiento local del servidor");refresh()
+}
+async function bootstrapOnlineProfile(){
+ if(location.protocol==="file:")return null;
+ const playerId=mpPlayerId();
+ try{
+  const r=await mpRequest("/api/profile/bootstrap",{playerId,name:save.name||mpName(),token:onlineProfileToken,coins:save.coins,gems:save.gems,keys:save.keys,lastRewardSpin:save.lastRewardSpin||0});
+  if(r.token){onlineProfileToken=r.token;try{localStorage.setItem("semantropicProfileToken",r.token)}catch(e){}}
+  onlineProfileReady=true;applyOnlineProfile(r.profile,true);return r.profile
+ }catch(e){onlineProfileReady=false;return null}
+}
+function scheduleOnlineProfileSync(){
+ if(!onlineProfileReady||location.protocol==="file:")return;
+ clearTimeout(onlineSyncTimer);onlineSyncTimer=setTimeout(syncOnlineProfile,650)
+}
+async function syncOnlineProfile(){
+ if(!onlineProfileReady||!onlineProfileToken)return;
+ try{
+  const r=await mpRequest("/api/profile/sync",{playerId:mpPlayerId(),token:onlineProfileToken,expectedRevision:onlineProfileRevision,name:save.name,coins:save.coins,gems:save.gems,keys:save.keys,lastRewardSpin:save.lastRewardSpin||0});
+  applyOnlineProfile(r.profile,false)
+ }catch(e){
+  if(e.payload?.profile){applyOnlineProfile(e.payload.profile,true);toast("☁️ Tu perfil se actualizó desde el servidor")}
+ }
+}
+async function refreshOnlineProfile(){if(location.protocol!=="file:")return bootstrapOnlineProfile()}
+
+let adminToken="",adminPlayers=[],adminRooms=[],adminSelectedId=null;
+try{adminToken=sessionStorage.getItem("semantropicAdminToken")||""}catch(e){}
+async function adminRequest(path,data=null){
+ const opts={headers:{"Authorization":"Bearer "+adminToken}};if(data!==null){opts.method="POST";opts.headers["Content-Type"]="application/json";opts.body=JSON.stringify(data)}
+ const r=await fetch(path,opts);let out={};try{out=await r.json()}catch(e){}if(!r.ok){const err=new Error(out.error||"Error de administrador");err.payload=out;throw err}return out
+}
+function renderAdminPage(){
+ const logged=!!adminToken;$('adminLoginCard').classList.toggle('hidden',logged);$('adminPanel').classList.toggle('hidden',!logged);$('adminStatus').textContent=logged?'🟢 Sesión de propietario':'🔒 Sesión no iniciada';if(logged)adminRefresh()
+}
+async function adminLogin(){
+ const key=$('adminKeyInput').value;if(!key)return;
+ $('adminLoginMsg').textContent='Verificando…';
+ try{const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key})});const out=await r.json();if(!r.ok)throw new Error(out.error||'Acceso rechazado');adminToken=out.token;sessionStorage.setItem('semantropicAdminToken',adminToken);$('adminKeyInput').value='';$('adminLoginMsg').textContent='';renderAdminPage()}catch(e){$('adminLoginMsg').textContent='❌ '+e.message}
+}
+function adminLogout(){adminToken='';adminSelectedId=null;try{sessionStorage.removeItem('semantropicAdminToken')}catch(e){}renderAdminPage()}
+async function adminRefresh(){
+ try{
+  const [r,rr]=await Promise.all([adminRequest('/api/admin/players'),adminRequest('/api/admin/rooms')]);
+  adminPlayers=r.players||[];adminRooms=rr.rooms||[];
+  $('adminPlayersCount').textContent=r.summary?.players??adminPlayers.length;$('adminGamesCount').textContent=r.summary?.games??0;$('adminRoomsCount').textContent=adminRooms.length;$('adminStorageMode').textContent=r.summary?.storage==='postgres'?'POSTGRES':'LOCAL';
+  renderAdminPlayers();renderAdminRooms();if(adminSelectedId&&!adminPlayers.some(p=>p.id===adminSelectedId))adminSelect(null)
+ }catch(e){if(e.message.toLowerCase().includes('sesión')||e.message.toLowerCase().includes('token'))adminLogout();else toast(e.message)}
+}
+function renderAdminPlayers(){
+ const body=$('adminPlayersBody');if(!body)return;body.innerHTML='';const q=($('adminSearch')?.value||'').trim().toLowerCase();const rows=adminPlayers.filter(p=>!q||p.name.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
+ rows.forEach(p=>{const tr=document.createElement('tr');if(p.id===adminSelectedId)tr.classList.add('selected');const wheel=(Date.now()-Number(p.lastWheelSpin||0)>=REWARD_COOLDOWN_MS)?'Disponible':'Cooldown';tr.innerHTML=`<td><b>${p.name}</b><div class="muted">${p.id.slice(0,10)}…</div></td><td>${p.rating}</td><td>${p.wins}/${p.losses}</td><td>${p.games}</td><td>${p.coins}</td><td>${p.gems}</td><td>${wheel}</td>`;tr.onclick=()=>adminSelect(p.id);body.appendChild(tr)});
+ if(!rows.length)body.innerHTML='<tr><td colspan="7" class="muted">No hay perfiles.</td></tr>'
+}
+function adminSelect(id){adminSelectedId=id;const p=adminPlayers.find(x=>x.id===id);$('adminSelectedName').textContent=p?.name||'Ninguno';$('adminSelectedId').textContent=p?.id||'—';if(p)$('adminRatingValue').value=p.rating;renderAdminPlayers()}
+async function adminGrant(){if(!adminSelectedId)return toast('Selecciona un jugador');try{await adminRequest('/api/admin/player/grant',{playerId:adminSelectedId,coins:Number($('adminCoinsDelta').value||0),gems:Number($('adminGemsDelta').value||0),keys:Number($('adminKeysDelta').value||0)});toast('💰 Recursos actualizados');adminRefresh()}catch(e){toast(e.message)}}
+async function adminSetRating(){if(!adminSelectedId)return toast('Selecciona un jugador');try{await adminRequest('/api/admin/player/rating',{playerId:adminSelectedId,rating:Number($('adminRatingValue').value||1000)});toast('🏆 Rating actualizado');adminRefresh()}catch(e){toast(e.message)}}
+async function adminResetWheel(all=false){if(!all&&!adminSelectedId)return toast('Selecciona un jugador');if(all&&!confirm('¿Reiniciar la ruleta de todos los perfiles?'))return;try{await adminRequest('/api/admin/player/reset-wheel',{playerId:all?null:adminSelectedId,all});toast(all?'🎡 Todas las ruletas reiniciadas':'🎡 Ruleta reiniciada');adminRefresh()}catch(e){toast(e.message)}}
+async function adminResetStats(){if(!adminSelectedId)return toast('Selecciona un jugador');if(!confirm('¿Reiniciar victorias, derrotas, partidas y rating de este jugador?'))return;try{await adminRequest('/api/admin/player/reset-stats',{playerId:adminSelectedId});toast('♻️ Estadísticas reiniciadas');adminRefresh()}catch(e){toast(e.message)}}
+
+/* ===== ONLINE MULTIPLAYER ALPHA 0.2.6 =====
    Uses the bundled Semantropic Node server via HTTP + Server-Sent Events.
    Single-player remains fully functional without the server.
 */
@@ -1336,10 +1478,11 @@ function mpName(){
 async function mpRequest(path,data=null){
  const opts=data?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}:{};
  const r=await fetch(path,opts);let out={};try{out=await r.json()}catch(e){}
- if(!r.ok)throw new Error(out.error||"Error de servidor");return out
+ if(!r.ok){const err=new Error(out.error||"Error de servidor");err.payload=out;throw err}return out
 }
 async function renderMultiplayerPage(){
  const name=$("mpName");if(name&&!name.value)name.value=save.name||"Jugador";
+ await bootstrapOnlineProfile();
  const status=$("mpServerStatus");
  if(location.protocol==="file:"){
   status.textContent="🔴 Online requiere iniciar server.js";status.className="pill bad";
@@ -1357,7 +1500,7 @@ async function renderMultiplayerPage(){
 async function mpCreate(mode){
  if(!mp.connected){await renderMultiplayerPage();if(!mp.connected)return toast("Inicia el servidor online incluido en el ZIP")}
  try{
-  const r=await mpRequest("/api/multi/create",{playerId:mpPlayerId(),name:mpName(),mode});
+  const r=await mpRequest("/api/multi/create",{playerId:mpPlayerId(),name:mpName(),mode,profileToken:onlineProfileToken});
   mp.code=r.code;mp.mode=mode;mp.hostId=mpPlayerId();mpConnect();toast("Sala creada: "+r.code)
  }catch(e){toast(e.message)}
 }
@@ -1366,7 +1509,7 @@ async function mpJoin(){
  const code=($("mpRoomCodeInput")?.value||"").trim().toUpperCase();
  if(code.length<4)return toast("Escribe el código de la sala");
  try{
-  const r=await mpRequest("/api/multi/join",{code,playerId:mpPlayerId(),name:mpName()});
+  const r=await mpRequest("/api/multi/join",{code,playerId:mpPlayerId(),name:mpName(),profileToken:onlineProfileToken});
   mp.code=code;mp.mode=r.mode;mp.hostId=r.hostId;mpConnect()
  }catch(e){toast(e.message)}
 }
@@ -1383,15 +1526,37 @@ function mpHandle(msg){
  if(msg.type==="reveal"){showMpReveal(msg);return}
  if(msg.type==="matchEnd"){showMpResult(msg);return}
  if(msg.type==="error"){toast(msg.message||"Error online");return}
- if(msg.type==="roomClosed"){toast("La sala se cerró");mpResetView();return}
+ if(msg.type==="roomClosed"){toast(msg.message||"La sala se cerró");mpResetView();return}
+ if(msg.type==="kicked"){toast(msg.message||"Fuiste expulsado de la sala");mpResetView();return}
 }
 function showMpLobby(msg){
  $("mpSetup").classList.add("hidden");$("mpLobby").classList.remove("hidden");$("mpMatch").classList.add("hidden");$("mpResult").classList.add("hidden");
  $("mpRoomCode").textContent=msg.code;$("mpRoomMode").textContent=mpModeName(msg.mode);
- const box=$("mpLobbyPlayers");box.innerHTML="";
- (msg.players||[]).forEach(p=>{const d=document.createElement("div");d.className="mp-player "+(p.id===mpPlayerId()?"me ":"")+(p.id===msg.hostId?"host":"");d.innerHTML=`<span>${p.name}</span><span>${p.online?"🟢":"⚪"}</span>`;box.appendChild(d)});
- const start=$("mpStartBtn");start.classList.toggle("hidden",msg.hostId!==mpPlayerId());start.disabled=(msg.players||[]).length<2
+ const isHost=msg.hostId===mpPlayerId(),box=$("mpLobbyPlayers");box.innerHTML="";
+ (msg.players||[]).forEach(p=>{
+  const d=document.createElement("div");d.className="mp-player "+(p.id===mpPlayerId()?"me ":"")+(p.id===msg.hostId?"host":"");
+  const controls=document.createElement("div");controls.className="mp-player-controls";
+  const status=document.createElement("span");status.textContent=p.online?"🟢":"⚪";controls.appendChild(status);
+  if(isHost&&p.id!==msg.hostId){
+   const kick=document.createElement("button");kick.className="btn danger mp-kick-btn";kick.textContent="EXPULSAR";kick.onclick=()=>mpKick(p.id,p.name);controls.appendChild(kick)
+  }
+  const name=document.createElement("span");name.textContent=p.name;d.appendChild(name);d.appendChild(controls);box.appendChild(d)
+ });
+ const start=$("mpStartBtn");start.classList.toggle("hidden",!isHost);start.disabled=(msg.players||[]).length<2;
+ const close=$("mpCloseRoomBtn");if(close)close.classList.toggle("hidden",!isHost)
 }
+
+async function mpKick(targetId,name){
+ if(!mp.code||mp.hostId!==mpPlayerId())return;
+ if(!confirm(`¿Expulsar a ${name||"este jugador"} de la sala?`))return;
+ try{await mpRequest("/api/multi/kick",{code:mp.code,playerId:mpPlayerId(),targetId});toast("Jugador expulsado")}catch(e){toast(e.message)}
+}
+async function mpCloseRoom(){
+ if(!mp.code||mp.hostId!==mpPlayerId())return;
+ if(!confirm("¿Cerrar esta sala para todos los jugadores?"))return;
+ try{await mpRequest("/api/multi/close",{code:mp.code,playerId:mpPlayerId()});toast("Sala cerrada");mpResetView()}catch(e){toast(e.message)}
+}
+
 async function mpStart(){
  try{await mpRequest("/api/multi/start",{code:mp.code,playerId:mpPlayerId()})}catch(e){toast(e.message)}
 }
@@ -1437,12 +1602,12 @@ function showMpResult(msg){
  $("mpResultTitle").textContent=me&&me.place===1?"🏆 ¡Ganaste!":`🏆 ${winner?.name||"Partida"} gana`;
  const box=$("mpResultTable");box.innerHTML="";
  (msg.results||[]).forEach(r=>{const d=document.createElement("div");d.className="mp-result-row";d.innerHTML=`<b>#${r.place}</b><span>${r.name}</span><span>${r.score} pts</span><span class="mp-rating-col">${r.rating??1000}${r.delta?` (${r.delta>0?"+":""}${r.delta})`:""}</span>`;box.appendChild(d)});
- renderMpRanking(msg.ranking||[])
+ renderMpRanking(msg.ranking||[]);refreshOnlineProfile()
 }
 function renderMpRanking(rows){
  const body=$("mpRankingBody");if(!body)return;body.innerHTML="";
- if(!rows.length){body.innerHTML='<tr><td colspan="6" class="muted">Aún no hay jugadores en el ranking.</td></tr>';return}
- rows.slice(0,30).forEach((r,i)=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${r.name}</td><td><b>${r.rating}</b></td><td>${r.wins}</td><td>${r.games}</td><td>${r.totalScore}</td>`;body.appendChild(tr)})
+ if(!rows.length){body.innerHTML='<tr><td colspan="7" class="muted">Aún no hay jugadores en el ranking.</td></tr>';return}
+ rows.slice(0,30).forEach((r,i)=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${i+1}</td><td>${r.name}</td><td><b>${r.rating}</b></td><td>${r.wins}</td><td>${r.losses||0}</td><td>${r.games}</td><td>${r.totalScore}</td>`;body.appendChild(tr)})
 }
 async function mpLeave(){
  if(mp.code){try{await mpRequest("/api/multi/leave",{code:mp.code,playerId:mpPlayerId()})}catch(e){}}
@@ -1453,6 +1618,26 @@ function mpResetView(){
  mp.code=null;mp.lastQuestion=null;mp.selected=null;
  $("mpSetup").classList.remove("hidden");$("mpLobby").classList.add("hidden");$("mpMatch").classList.add("hidden");$("mpResult").classList.add("hidden");
  renderMultiplayerPage()
+}
+
+
+function renderAdminRooms(){
+ const body=$('adminRoomsBody');if(!body)return;body.innerHTML='';
+ if(!adminRooms.length){body.innerHTML='<tr><td colspan="6" class="muted">No hay salas activas.</td></tr>';return}
+ adminRooms.forEach(r=>{
+  const tr=document.createElement('tr');
+  const chips=(r.players||[]).map(p=>`<span class="admin-room-chip">${p.name}${p.id===r.hostId?' 👑':''}${p.id!==r.hostId?` <button title="Expulsar" onclick="event.stopPropagation();adminKickFromRoom('${r.code}','${p.id}',${JSON.stringify(p.name)})">✕</button>`:''}</span>`).join('');
+  tr.innerHTML=`<td><b>${r.code}</b><div class="muted">${Math.max(0,Math.floor((Date.now()-r.createdAt)/60000))} min</div></td><td>${mpModeName(r.mode)}</td><td>${r.status==='playing'?'🟢 Jugando':r.status==='finished'?'🏁 Terminada':'🟡 Lobby'}</td><td>${r.hostName||'—'}</td><td><div class="admin-room-players">${chips}</div></td><td><div class="admin-room-actions"><button class="btn danger mp-kick-btn" onclick="adminCloseRoom('${r.code}')">CERRAR</button></div></td>`;
+  body.appendChild(tr)
+ })
+}
+async function adminCloseRoom(code){
+ if(!confirm(`¿Cerrar la sala ${code} para todos?`))return;
+ try{await adminRequest('/api/admin/room/close',{code});toast(`🗑️ Sala ${code} cerrada`);adminRefresh()}catch(e){toast(e.message)}
+}
+async function adminKickFromRoom(code,targetId,name){
+ if(!confirm(`¿Expulsar a ${name||'este jugador'} de la sala ${code}?`))return;
+ try{await adminRequest('/api/admin/room/kick',{code,targetId});toast('Jugador expulsado');adminRefresh()}catch(e){toast(e.message)}
 }
 
 /* ---------- GENERAL TRIVIA PROCEDURAL FACTORIES ---------- */
@@ -1562,7 +1747,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings")renderSettings();refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings")renderSettings();refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c){
@@ -1725,7 +1910,7 @@ function useSkip(){if(state.pSkip||state.locked)return;stopQuestionTimer();beep(
 function useDouble(){if((state.pDouble&&!state.freeDouble)||state.locked)return;beep("power");if(state.freeDouble)state.freeDouble=false;else state.pDouble=true;state.double=true;$("pDouble").disabled=true;$("feedback").textContent="⚡ Doble puntaje activado"}
 function useShield(){if(state.pShield||state.locked)return;beep("power");state.pShield=true;state.shield=true;$("pShield").disabled=true;$("feedback").textContent="🛡️ Escudo activado"}
 function updateHUD(){const wl=$("walletLives");if(wl&&state)wl.textContent=(state.mode==="boss"||state.mode==="bossrush")?Math.max(0,state.php??3):(state.mode==="education"&&state.eduMode==="practice"?"∞":Math.max(0,state.lives||0));if(!state)return;$("gScore").textContent=state.mode==="local"?state.scores[state.turn]:(state.score||0);$("gLives").textContent=(state.mode==="boss"||state.mode==="bossrush")?"❤️".repeat(Math.max(0,state.php??3)):(state.mode==="education"&&state.eduMode==="practice"?"∞":"❤️".repeat(Math.max(0,state.lives||0)));$("gStreak").textContent="x"+state.streak;$("gRival").textContent=state.mode==="tournament"?state.cpu:state.mode==="local"?state.scores[state.turn===1?2:1]:"—";$("gTurn").textContent=state.mode==="local"?(state.turn===1?state.p1:state.p2):save.name;if(state.mode==="tournament"){$("roundLabel").textContent=`Ronda ${Math.min(state.round,7)}/7`;renderRoundDots()}else $("roundLabel").textContent=`Pregunta ${Math.min((state.idx||0)+1,state.target||8)}/${state.target||8}`}
-unlockAchievementAvatars();unlockFrames();refresh();setInterval(updateRewardTimer,1000);renderMap();renderEducation();renderAvatarBuilder();renderAvatars("avatarGridStudio");renderMedals();renderAchievementAvatars();renderShop();renderAch();renderStats();renderSettings();
+unlockAchievementAvatars();unlockFrames();refresh();setInterval(updateRewardTimer,1000);if(location.protocol!=="file:")setTimeout(bootstrapOnlineProfile,500);renderMap();renderEducation();renderAvatarBuilder();renderAvatars("avatarGridStudio");renderMedals();renderAchievementAvatars();renderShop();renderAch();renderStats();renderSettings();
 if(!storageOK){setTimeout(()=>toast("⚠️ Modo visor: puedes jugar, pero el progreso no se guardará"),500)}
 </script>
 </body>

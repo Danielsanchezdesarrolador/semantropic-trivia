@@ -1,0 +1,43 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.6
+PERSISTENCIA + PANEL DEL PROPIETARIO
+
+ANTES DE SUBIR ESTA VERSION A RENDER
+1. Sube todos los archivos de esta carpeta a tu repositorio GitHub.
+2. Render detectará el commit y volverá a desplegar el Web Service.
+3. Crea una base PostgreSQL en Render (New -> Postgres).
+4. Copia la INTERNAL DATABASE URL de esa base.
+5. En tu Web Service de Semantropic: Environment -> Add Environment Variable:
+      DATABASE_URL = [Internal Database URL]
+6. Agrega otra variable secreta:
+      ADMIN_KEY = [una clave larga que solo tú conozcas]
+   Ejemplo de formato: una frase larga con números y símbolos. NO la subas a GitHub.
+7. Guarda los cambios y deja que Render redeploye.
+8. Abre /api/status. Debe mostrar:
+      "storage": "postgres"
+      "adminConfigured": true
+
+PANEL ADMIN
+- Dentro del juego entra a Ajustes -> Panel del propietario -> ADMIN.
+- Escribe la ADMIN_KEY.
+- La clave se verifica únicamente en el servidor.
+- El navegador recibe una sesión temporal de 8 horas; la clave no queda incrustada en index.html.
+
+ACCIONES DEL ADMIN
+- Sumar o quitar monedas.
+- Sumar o quitar diamantes.
+- Sumar o quitar llaves.
+- Fijar rating.
+- Reiniciar la ruleta de un jugador.
+- Reiniciar las ruletas de todos.
+- Reiniciar rating/victorias/derrotas/partidas de un jugador.
+
+PERFILES ONLINE
+- Cada navegador crea una identidad online aleatoria.
+- El servidor guarda un token cifrado/hash para ese perfil.
+- Rating, victorias, derrotas, partidas, puntos, monedas, diamantes, llaves y ruleta se guardan en PostgreSQL.
+- Si Render reinicia el Web Service, los perfiles continúan porque los datos viven en la base.
+
+IMPORTANTE SOBRE RENDER FREE
+La base PostgreSQL gratuita de Render es útil para probar, pero Render actualmente la limita a 30 días.
+Para conservar el ranking durante meses, habrá que pasar la base a un plan persistente o conectar otro proveedor PostgreSQL permanente.
+El código usa DATABASE_URL, por lo que migrar después no requiere rehacer el juego.

@@ -1,45 +1,12 @@
-SEMANTROPIC TRIVIA — ALPHA 0.2.3
-MULTIJUGADOR ONLINE / OFICINA
+SEMANTROPIC TRIVIA — ALPHA 0.2.6
 
-MODO INDIVIDUAL
-Puedes seguir abriendo index.html directamente con Edge/Chrome como antes.
+ONLINE
+Esta versión está pensada principalmente para Render. El modo multijugador sigue siendo de 2 a 4 jugadores y mantiene Batalla, Clasificatorio y Competencia.
 
-MULTIJUGADOR EN LA OFICINA
-El modo online necesita que UNO de los computadores actúe como servidor.
+PERFILES
+Los perfiles online, ranking, victorias, derrotas, rating y recursos se guardan en PostgreSQL cuando DATABASE_URL está configurada.
 
-1. Instala Node.js LTS en el PC que será anfitrión.
-2. Extrae todo el ZIP en una carpeta.
-3. En el PC anfitrión, ejecuta INICIAR_SERVIDOR.bat.
-4. Windows puede preguntar por el Firewall. Permite acceso en redes privadas.
-5. La ventana mostrará algo como:
-      Red local: http://192.168.1.25:8787
-6. Comparte ESA dirección con los compañeros conectados a la misma red.
-7. Todos abren esa dirección con Edge/Chrome.
-8. En Semantropic Trivia entran a Multijugador:
-   - una persona crea la sala;
-   - comparte el código de 5 caracteres;
-   - entre 1 y 3 personas se unen;
-   - el anfitrión comienza.
+ADMINISTRADOR
+Configura ADMIN_KEY en Render y entra desde Ajustes -> Panel del propietario. Nunca escribas la clave dentro de index.html ni la subas a GitHub.
 
-MODOS
-- Batalla: 3 vidas. Error o tiempo agotado quita una vida.
-- Clasificatorio: 10 preguntas y rating persistente.
-- Competencia: 12 preguntas y gana el mayor puntaje.
-
-RANKING
-El ranking se guarda en:
-    data/rankings.json
-del PC que ejecuta el servidor.
-
-IMPORTANTE
-- Para pruebas internas de oficina, este servidor es suficiente.
-- Para tener multijugador desde casas/redes distintas, hay que publicar el servidor
-  en un hosting Node con HTTPS. El cliente ya queda preparado para eso.
-- No requiere npm ni librerías externas: server.js usa solo funciones incluidas en Node.js.
-
-BANCO PRINCIPAL
-Alpha 0.2.3 contiene:
-- 1.000 preguntas de la expansión principal.
-- 105 preguntas originales adicionales.
-- TOTAL: 1.105 preguntas base del juego principal.
-- Más el generador procedural y el cooldown persistente del modo individual.
+Consulta CONFIGURAR_0_2_6_RENDER.txt para los pasos de despliegue.
