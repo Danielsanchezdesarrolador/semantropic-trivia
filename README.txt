@@ -25,3 +25,10 @@ HOTFIX DE SALAS (Alpha 0.2.6)
 - Salas terminadas se eliminan automáticamente tras 5 minutos.
 - Lobbies sin nadie conectado se eliminan automáticamente tras 10 minutos.
 - Salas no activas expiran como máximo después de 1 hora.
+
+
+HOTFIX DE PERFIL ONLINE (Alpha 0.2.6)
+- Corrige el error "Perfil online no verificado" al migrar desde versiones anteriores.
+- Recupera automáticamente perfiles creados por el bug inicial de 0.2.6.
+- No borra monedas, diamantes, ranking ni estadísticas.
+- Crear/entrar a salas verifica primero que el perfil online esté listo.

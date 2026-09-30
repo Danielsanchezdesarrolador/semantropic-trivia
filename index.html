@@ -1407,7 +1407,12 @@ async function bootstrapOnlineProfile(){
   const r=await mpRequest("/api/profile/bootstrap",{playerId,name:save.name||mpName(),token:onlineProfileToken,coins:save.coins,gems:save.gems,keys:save.keys,lastRewardSpin:save.lastRewardSpin||0});
   if(r.token){onlineProfileToken=r.token;try{localStorage.setItem("semantropicProfileToken",r.token)}catch(e){}}
   onlineProfileReady=true;applyOnlineProfile(r.profile,true);return r.profile
- }catch(e){onlineProfileReady=false;return null}
+ }catch(e){
+  onlineProfileReady=false;
+  const status=$("opStorage");
+  if(status)status.textContent="⚠️ Perfil online pendiente de verificación";
+  return null
+ }
 }
 function scheduleOnlineProfileSync(){
  if(!onlineProfileReady||location.protocol==="file:")return;
@@ -1499,6 +1504,8 @@ async function renderMultiplayerPage(){
 }
 async function mpCreate(mode){
  if(!mp.connected){await renderMultiplayerPage();if(!mp.connected)return toast("Inicia el servidor online incluido en el ZIP")}
+ if(!onlineProfileReady){await bootstrapOnlineProfile()}
+ if(!onlineProfileReady||!onlineProfileToken)return toast("No se pudo verificar tu perfil online. Recarga la página e inténtalo nuevamente.")
  try{
   const r=await mpRequest("/api/multi/create",{playerId:mpPlayerId(),name:mpName(),mode,profileToken:onlineProfileToken});
   mp.code=r.code;mp.mode=mode;mp.hostId=mpPlayerId();mpConnect();toast("Sala creada: "+r.code)
@@ -1506,6 +1513,8 @@ async function mpCreate(mode){
 }
 async function mpJoin(){
  if(!mp.connected){await renderMultiplayerPage();if(!mp.connected)return toast("Servidor online no disponible")}
+ if(!onlineProfileReady){await bootstrapOnlineProfile()}
+ if(!onlineProfileReady||!onlineProfileToken)return toast("No se pudo verificar tu perfil online. Recarga la página e inténtalo nuevamente.")
  const code=($("mpRoomCodeInput")?.value||"").trim().toUpperCase();
  if(code.length<4)return toast("Escribe el código de la sala");
  try{

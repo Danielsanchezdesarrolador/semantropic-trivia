@@ -101,9 +101,40 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY});
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
  if(req.method==="POST"&&p==="/api/profile/bootstrap"){
-  const b=await body(req),id=String(b.playerId||'');if(!id)return json(res,400,{error:'Jugador inválido'});const r=getRank(id,b.name);let token=String(b.token||'');
-  if(r.authHash){if(!verifyProfileToken(r,token))return json(res,401,{error:'Este perfil pertenece a otro navegador.'})}else{token=crypto.randomBytes(24).toString('base64url');r.authHash=hashToken(token);r.coins=clamp(b.coins??r.coins,0,100000000);r.gems=clamp(b.gems??r.gems,0,1000000);r.keys=clamp(b.keys??r.keys,0,1000000);r.lastWheelSpin=Math.max(0,Number(b.lastRewardSpin??r.lastWheelSpin??0));r.revision=(r.revision||0)+1;await persistRank(r)}
-  r.name=cleanName(b.name||r.name);await persistRank(r);return json(res,200,{profile:publicProfile(r),token:r.authHash&&String(b.token||'')?undefined:token})
+  const b=await body(req),id=String(b.playerId||'');
+  if(!id)return json(res,400,{error:'Jugador inválido'});
+  const r=getRank(id,b.name);
+  let token=String(b.token||''),issuedToken=null;
+
+  if(r.authHash){
+   if(!verifyProfileToken(r,token)){
+    // Alpha 0.2.6 migration recovery:
+    // The first persistent-profile build could create a new server token without
+    // returning it when the browser still had a legacy token. Those affected
+    // profiles have never been able to start an online match.
+    const recoverable=(Number(r.games||0)===0&&Number(r.wins||0)===0&&Number(r.losses||0)===0&&Number(r.revision||0)<=1);
+    if(!recoverable)return json(res,401,{error:'Este perfil pertenece a otro navegador.'});
+    issuedToken=crypto.randomBytes(24).toString('base64url');
+    token=issuedToken;
+    r.authHash=hashToken(issuedToken);
+    r.revision=Math.max(1,Number(r.revision||0));
+    await persistRank(r);
+   }
+  }else{
+   issuedToken=crypto.randomBytes(24).toString('base64url');
+   token=issuedToken;
+   r.authHash=hashToken(issuedToken);
+   r.coins=clamp(b.coins??r.coins,0,100000000);
+   r.gems=clamp(b.gems??r.gems,0,1000000);
+   r.keys=clamp(b.keys??r.keys,0,1000000);
+   r.lastWheelSpin=Math.max(0,Number(b.lastRewardSpin??r.lastWheelSpin??0));
+   r.revision=(r.revision||0)+1;
+   await persistRank(r);
+  }
+
+  r.name=cleanName(b.name||r.name);
+  await persistRank(r);
+  return json(res,200,{profile:publicProfile(r),token:issuedToken||undefined})
  }
  if(req.method==="POST"&&p==="/api/profile/sync"){
   const b=await body(req),r=rankings[String(b.playerId||'')];if(!r||!verifyProfileToken(r,b.token))return json(res,401,{error:'Perfil no autorizado'});if(Number(b.expectedRevision)!==Number(r.revision||0))return json(res,409,{error:'El perfil cambió en el servidor',profile:publicProfile(r)});
