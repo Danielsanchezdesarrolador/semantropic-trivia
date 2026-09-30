@@ -701,6 +701,7 @@ input,select,textarea{
     <button class="btn primary" onclick="adminGrant()">💰 APLICAR RECURSOS</button>
     <button class="btn secondary" onclick="adminSetRating()">🏆 FIJAR RATING</button>
     <button class="btn secondary" onclick="adminResetWheel(false)">🎡 REINICIAR RULETA</button>
+    <button class="btn secondary" onclick="adminResetAuth()">🔑 REPARAR ACCESO</button>
     <button class="btn danger" onclick="adminResetStats()">♻️ REINICIAR STATS</button>
    </div>
   </div>
@@ -1406,7 +1407,10 @@ async function bootstrapOnlineProfile(){
  try{
   const r=await mpRequest("/api/profile/bootstrap",{playerId,name:save.name||mpName(),token:onlineProfileToken,coins:save.coins,gems:save.gems,keys:save.keys,lastRewardSpin:save.lastRewardSpin||0});
   if(r.token){onlineProfileToken=r.token;try{localStorage.setItem("semantropicProfileToken",r.token)}catch(e){}}
-  onlineProfileReady=true;applyOnlineProfile(r.profile,true);return r.profile
+  onlineProfileReady=true;applyOnlineProfile(r.profile,true);
+  const status=$("opStorage");
+  if(status&&r.profile?.storage==="postgres")status.textContent="☁️ Perfil online verificado y persistente";
+  return r.profile
  }catch(e){
   onlineProfileReady=false;
   const status=$("opStorage");
@@ -1462,6 +1466,16 @@ async function adminGrant(){if(!adminSelectedId)return toast('Selecciona un juga
 async function adminSetRating(){if(!adminSelectedId)return toast('Selecciona un jugador');try{await adminRequest('/api/admin/player/rating',{playerId:adminSelectedId,rating:Number($('adminRatingValue').value||1000)});toast('🏆 Rating actualizado');adminRefresh()}catch(e){toast(e.message)}}
 async function adminResetWheel(all=false){if(!all&&!adminSelectedId)return toast('Selecciona un jugador');if(all&&!confirm('¿Reiniciar la ruleta de todos los perfiles?'))return;try{await adminRequest('/api/admin/player/reset-wheel',{playerId:all?null:adminSelectedId,all});toast(all?'🎡 Todas las ruletas reiniciadas':'🎡 Ruleta reiniciada');adminRefresh()}catch(e){toast(e.message)}}
 async function adminResetStats(){if(!adminSelectedId)return toast('Selecciona un jugador');if(!confirm('¿Reiniciar victorias, derrotas, partidas y rating de este jugador?'))return;try{await adminRequest('/api/admin/player/reset-stats',{playerId:adminSelectedId});toast('♻️ Estadísticas reiniciadas');adminRefresh()}catch(e){toast(e.message)}}
+async function adminResetAuth(){
+ if(!adminSelectedId)return toast('Selecciona un jugador');
+ const p=adminPlayers.find(x=>x.id===adminSelectedId);
+ if(!confirm(`¿Reparar el acceso online de ${p?.name||'este jugador'}?\n\nNo se borrarán monedas, rating ni estadísticas. El jugador deberá recargar la página.`))return;
+ try{
+  await adminRequest('/api/admin/player/reset-auth',{playerId:adminSelectedId});
+  toast('🔑 Credencial reiniciada. El jugador debe recargar la página.');
+  adminRefresh()
+ }catch(e){toast(e.message)}
+}
 
 /* ===== ONLINE MULTIPLAYER ALPHA 0.2.6 =====
    Uses the bundled Semantropic Node server via HTTP + Server-Sent Events.

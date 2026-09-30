@@ -112,7 +112,12 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
     // The first persistent-profile build could create a new server token without
     // returning it when the browser still had a legacy token. Those affected
     // profiles have never been able to start an online match.
-    const recoverable=(Number(r.games||0)===0&&Number(r.wins||0)===0&&Number(r.losses||0)===0&&Number(r.revision||0)<=1);
+    const recoverable=(
+      Number(r.games||0)===0 &&
+      Number(r.wins||0)===0 &&
+      Number(r.losses||0)===0 &&
+      Number(r.totalScore||0)===0
+    );
     if(!recoverable)return json(res,401,{error:'Este perfil pertenece a otro navegador.'});
     issuedToken=crypto.randomBytes(24).toString('base64url');
     token=issuedToken;
@@ -152,6 +157,14 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="POST"&&p==="/api/admin/player/rating"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.rating=clamp(b.rating,100,5000);r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/reset-wheel"){const b=await body(req);if(b.all){for(const r of Object.values(rankings)){r.lastWheelSpin=0;r.revision++;await persistRank(r)}return json(res,200,{ok:true,count:Object.keys(rankings).length})}const r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.lastWheelSpin=0;r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/reset-stats"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.rating=1000;r.wins=0;r.losses=0;r.games=0;r.totalScore=0;r.recent=[];r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
+ if(req.method==="POST"&&p==="/api/admin/player/reset-auth"){
+  const b=await body(req),r=rankings[String(b.playerId||'')];
+  if(!r)return json(res,404,{error:'Jugador no encontrado'});
+  r.authHash='';
+  r.revision++;
+  await persistRank(r);
+  return json(res,200,{ok:true,profile:publicProfile(r)})
+ }
  if(req.method==="GET"&&p==="/api/multi/stream"){const code=(u.searchParams.get("code")||"").toUpperCase(),id=u.searchParams.get("playerId")||"",room=rooms.get(code);if(!room||!room.players.has(id))return json(res,404,{error:"Sala o jugador no encontrado"});res.writeHead(200,{"Content-Type":"text/event-stream","Cache-Control":"no-cache","Connection":"keep-alive","X-Accel-Buffering":"no"});res.write(": connected\n\n");if(!room.streams.has(id))room.streams.set(id,new Set());room.streams.get(id).add(res);const hb=setInterval(()=>{try{res.write(": ping\n\n")}catch(e){}},20000);req.on("close",()=>{clearInterval(hb);room.streams.get(id)?.delete(res);if(room.status==="lobby")lobby(room)});if(room.status==="lobby")sendSSE(res,{type:"lobby",code:room.code,mode:room.mode,hostId:room.hostId,players:publicPlayers(room)});return}
  if(req.method==="POST"&&p==="/api/multi/create"){const b=await body(req),mode=["battle","ranked","competition"].includes(b.mode)?b.mode:"competition",id=String(b.playerId||'');if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileToken(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});const room=createRoom(id,b.name,mode);await persistRank(r);return json(res,200,{code:room.code,mode,hostId:room.hostId})}
  if(req.method==="POST"&&p==="/api/multi/join"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(!room)return json(res,404,{error:"La sala no existe"});if(room.status!=="lobby")return json(res,409,{error:"La partida ya comenzó"});if(room.players.size>=4&&!room.players.has(b.playerId))return json(res,409,{error:"La sala ya tiene 4 jugadores"});const id=String(b.playerId||"");if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileToken(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});room.players.set(id,{id,name:cleanName(b.name),score:0,lives:3,answered:null,eliminated:false});await persistRank(r);lobby(room);return json(res,200,{ok:true,mode:room.mode,hostId:room.hostId})}

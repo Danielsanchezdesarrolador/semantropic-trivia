@@ -32,3 +32,11 @@ HOTFIX DE PERFIL ONLINE (Alpha 0.2.6)
 - Recupera automáticamente perfiles creados por el bug inicial de 0.2.6.
 - No borra monedas, diamantes, ranking ni estadísticas.
 - Crear/entrar a salas verifica primero que el perfil online esté listo.
+
+
+HOTFIX DE CREDENCIALES ONLINE (Alpha 0.2.6)
+- Corrige perfiles con 0 partidas que quedaron pendientes de verificación por la migración.
+- Ya no depende del número interno de revisión del perfil.
+- El Panel del Propietario incluye "REPARAR ACCESO".
+- Reparar acceso NO borra monedas, diamantes, llaves, rating ni estadísticas.
+- Después de usar REPARAR ACCESO, el jugador solo debe recargar la página.
