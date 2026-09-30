@@ -1,0 +1,40 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.4 CLOUD READY
+RENDER DEPLOYMENT
+
+ARCHIVOS IMPORTANTES
+- index.html
+- server.js
+- general_questions.json
+- package.json
+- render.yaml
+
+FORMA RECOMENDADA
+1. Crea un repositorio en GitHub.
+2. Sube TODO el contenido de esta carpeta a la raíz del repositorio.
+3. En Render, crea un nuevo Web Service.
+4. Conecta el repositorio de GitHub.
+5. Render debería detectar el proyecto Node.
+
+Si configuras manualmente:
+- Runtime: Node
+- Build Command: npm install
+- Start Command: npm start
+- Health Check Path: /api/status
+- Plan: Free para la prueba
+
+El servidor utiliza process.env.PORT automáticamente, así que Render puede asignarle el puerto.
+
+AL TERMINAR EL DEPLOY
+Render entregará una dirección parecida a:
+https://semantropic-trivia-alpha.onrender.com
+
+Comparte esa dirección con tus compañeros.
+Todos podrán abrirla desde navegador, incluso desde celular.
+
+IMPORTANTE SOBRE EL RANKING EN EL PLAN GRATUITO
+En esta versión de prueba el ranking sigue usando data/rankings.json.
+El disco del Web Service gratuito de Render es temporal, así que el ranking puede perderse
+cuando el servicio se reinicia, se vuelve a desplegar o entra en suspensión.
+
+Esto NO afecta la prueba del multijugador ni las salas.
+Para un ranking realmente permanente, el siguiente paso es conectar el juego a una base de datos.

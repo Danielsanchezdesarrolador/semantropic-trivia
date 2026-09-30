@@ -1,0 +1,13 @@
+{
+  "name": "semantropic-trivia",
+  "version": "0.2.4",
+  "private": true,
+  "description": "Semantropic Trivia Alpha 0.2.4 - multiplayer trivia game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
