@@ -1,0 +1,19 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.8
+CONTROLES DE CREADOR / ADMIN
+
+ADMIN ahora puede:
+- bajar 1 nivel
+- subir 1 nivel
+- fijar cualquier nivel entre 1 y 30
+- dar +100 XP
+- desbloquear todos los cosméticos para pruebas
+
+DESBLOQUEAR TODO:
+- avatares
+- outfits evolutivos
+- auras
+- marcos
+- efectos visuales
+
+El modo de desbloqueo de pruebas queda guardado en profile_meta de la cuenta.
+Cambiar el nivel manualmente reinicia la XP dentro del nivel a 0 para que las pruebas sean predecibles.

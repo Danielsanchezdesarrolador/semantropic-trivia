@@ -862,11 +862,17 @@ body.auth-locked .app{display:none!important}
     <label>Diamantes (sumar/restar)<input id="adminGemsDelta" type="number" value="1" step="1"></label>
     <label>Llaves (sumar/restar)<input id="adminKeysDelta" type="number" value="1" step="1"></label>
     <label>Fijar rating<input id="adminRatingValue" type="number" value="1000" min="100" max="5000"></label>
+    <label>Nivel de prueba<input id="adminLevelValue" type="number" value="1" min="1" max="30"></label>
     <label>Contraseña temporal<input id="adminTempPassword" type="text" maxlength="72" placeholder="Opcional: escribe una"></label>
    </div>
    <div class="admin-buttons">
     <button class="btn primary" onclick="adminGrant()">💰 APLICAR RECURSOS</button>
     <button class="btn secondary" onclick="adminSetRating()">🏆 FIJAR RATING</button>
+    <button class="btn secondary" onclick="adminAdjustLevel(-1)">➖ 1 NIVEL</button>
+    <button class="btn secondary" onclick="adminSetLevel()">⭐ FIJAR NIVEL</button>
+    <button class="btn secondary" onclick="adminAdjustLevel(1)">➕ 1 NIVEL</button>
+    <button class="btn secondary" onclick="adminGrantXp()">✨ +100 XP</button>
+    <button class="btn primary" onclick="adminUnlockAllForTesting()">🧪 DESBLOQUEAR TODO</button>
     <button class="btn secondary" onclick="adminResetWheel(false)">🎡 REINICIAR RULETA</button>
     <button class="btn secondary" onclick="adminResetAuth()">🔑 REPARAR ACCESO</button>
     <button class="btn secondary" onclick="adminGenerateTempPassword()">🎲 CONTRASEÑA TEMPORAL</button>
@@ -1374,7 +1380,7 @@ function blank(){
   customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},
   eduPrefs:{subject:"Lenguaje",level:"10-12"},questionHistory:{},procHistory:{},conceptHistory:{},formatHistory:{},eduDecks:{},generalDecks:{},lastRewardSpin:0,rewardSpins:0,
   effectsOwned:["none"],selectedEffect:"none",framesOwned:["none"],selectedFrame:"none",bossBest:0,bossClears:0,
-  wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",
+  wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",creatorUnlockAll:false,
   settings:{music:true,sound:true,animations:true,difficulty:"mixed"}
  }
 }
@@ -1410,8 +1416,16 @@ function load(){try{
   outfitXp:{hoodie:0,...(o.outfitXp||{})},
   aurasOwned:[...new Set(["none",...(o.aurasOwned||["none"])])],
   selectedAura:o.selectedAura||"none",
-  totalXp:Number(o.totalXp||0)
+  totalXp:Number(o.totalXp||0),
+  creatorUnlockAll:!!o.creatorUnlockAll
  };
+ if(s.creatorUnlockAll){
+  s.avatars=[...new Set([...s.avatars,...AVATARS.map(a=>a.id),"custom"])];
+  s.framesOwned=[...new Set([...s.framesOwned,...FRAMES.map(f=>f.id)])];
+  s.effectsOwned=[...new Set([...s.effectsOwned,...VISUAL_FX.map(f=>f.id)])];
+  s.wardrobeOwned=[...new Set([...s.wardrobeOwned,...OUTFITS.map(x=>x.id)])];
+  s.aurasOwned=[...new Set([...s.aurasOwned,...AVATAR_AURAS.map(x=>x.id)])]
+ }
  s.level=Math.max(1,Math.min(MAX_LEVEL,Number(s.level||1)));
  s.xp=Math.max(0,Number(s.xp||0));
  if(!s.wardrobeOwned.includes(s.equippedOutfit))s.equippedOutfit=s.wardrobeOwned[0]||"hoodie";
@@ -1744,7 +1758,15 @@ function outfitXpValue(id){return Number((save.outfitXp||{})[id]||0)}
 function outfitStage(id){return cosmeticStageFromXp(outfitXpValue(id))}
 function currentOutfit(){return OUTFITS.find(x=>x.id===save.equippedOutfit)||OUTFITS[0]}
 function currentAura(){return AVATAR_AURAS.find(x=>x.id===save.selectedAura)||AVATAR_AURAS[0]}
-function profileMetaPayload(){return{level:save.level||1,xp:save.xp||0,totalXp:save.totalXp||0,customAvatar:save.customAvatar||{},wardrobeOwned:save.wardrobeOwned||["hoodie"],equippedOutfit:save.equippedOutfit||"hoodie",outfitXp:save.outfitXp||{hoodie:0},aurasOwned:save.aurasOwned||["none"],selectedAura:save.selectedAura||"none"}}
+function applyCreatorTestUnlocks(){
+ if(!save.creatorUnlockAll)return;
+ save.avatars=[...new Set([...save.avatars,...AVATARS.map(a=>a.id),"custom"])];
+ save.framesOwned=[...new Set([...save.framesOwned,...FRAMES.map(f=>f.id)])];
+ save.effectsOwned=[...new Set([...save.effectsOwned,...VISUAL_FX.map(f=>f.id)])];
+ save.wardrobeOwned=[...new Set([...save.wardrobeOwned,...OUTFITS.map(o=>o.id)])];
+ save.aurasOwned=[...new Set([...save.aurasOwned,...AVATAR_AURAS.map(a=>a.id)])]
+}
+function profileMetaPayload(){return{level:save.level||1,xp:save.xp||0,totalXp:save.totalXp||0,customAvatar:save.customAvatar||{},wardrobeOwned:save.wardrobeOwned||["hoodie"],equippedOutfit:save.equippedOutfit||"hoodie",outfitXp:save.outfitXp||{hoodie:0},aurasOwned:save.aurasOwned||["none"],selectedAura:save.selectedAura||"none",creatorUnlockAll:!!save.creatorUnlockAll}}
 function profileSyncPayload(){return{avatarId:save.avatar||"starter_m",gender:save.profileGender||"neutral",frameId:save.selectedFrame||"none",featuredAchievement:save.featuredAchievement||"",bio:save.profileBio||"",achievements:localAchievementIds(),profileMeta:profileMetaPayload()}}
 function avatarForProfile(p){if(!p)return"👨";const a=AVATARS.find(x=>x.id===p.avatarId);return a?avatarVisual(a):(p.gender==="female"?"👩":p.gender==="animal"?"🐾":"👨")}
 function profileAvatarHTML(p){return avatarForProfile(p)}
@@ -1894,8 +1916,10 @@ function applyOnlineProfile(p,replaceWallet=true){
   if(m.outfitXp)save.outfitXp={...save.outfitXp,...m.outfitXp};
   if(Array.isArray(m.aurasOwned))save.aurasOwned=[...new Set(["none",...m.aurasOwned])];
   if(m.selectedAura!==undefined)save.selectedAura=m.selectedAura||"none";
-  if(m.totalXp!==undefined)save.totalXp=Number(m.totalXp||save.totalXp||0)
+  if(m.totalXp!==undefined)save.totalXp=Number(m.totalXp||save.totalXp||0);
+  if(m.creatorUnlockAll!==undefined)save.creatorUnlockAll=!!m.creatorUnlockAll
  }
+ applyCreatorTestUnlocks();
  (p.achievements||[]).forEach(id=>save.ach[id]=true);
  unlockFrames();unlockAchievementAvatars();
  try{if(storageOK)localStorage.setItem("triviaArenaPocketSave",JSON.stringify(save))}catch(e){}
@@ -2043,7 +2067,10 @@ function adminSelect(id){
  adminSelectedId=id;const p=adminPlayers.find(x=>x.id===id);
  $('adminSelectedName').textContent=p?.name||'Ninguno';
  $('adminSelectedId').textContent=p?(p.id+(p.accountUsername?` · @${p.accountUsername}${p.accountMustChangePassword?" · ⚠️ cambio de contraseña pendiente":""}`:" · sin cuenta")):'—';
- if(p)$('adminRatingValue').value=p.rating;
+ if(p){
+  $('adminRatingValue').value=p.rating;
+  if($('adminLevelValue'))$('adminLevelValue').value=Math.max(1,Math.min(30,Number(p.level||1)));
+ }
  $('adminTempPassword').value="";
  renderAdminPlayers()
 }
@@ -2079,6 +2106,50 @@ async function adminSetRating(){
   applyAdminProfileIfCurrent(targetId,r.profile);
   toast('🏆 Rating actualizado');
   await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminSetLevelValue(level){
+ if(!adminSelectedId)return toast("Selecciona un jugador");
+ const targetId=adminSelectedId;
+ level=Math.max(1,Math.min(30,Math.round(Number(level)||1)));
+ try{
+  const r=await adminRequest("/api/admin/player/level",{playerId:targetId,level});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  if($("adminLevelValue"))$("adminLevelValue").value=r.profile.level||level;
+  toast(`⭐ Nivel fijado en ${r.profile.level}`);
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminSetLevel(){return adminSetLevelValue($("adminLevelValue")?.value||1)}
+async function adminAdjustLevel(delta){
+ if(!adminSelectedId)return toast("Selecciona un jugador");
+ const p=adminPlayers.find(x=>x.id===adminSelectedId);
+ return adminSetLevelValue(Number(p?.level||$("adminLevelValue")?.value||1)+Number(delta||0))
+}
+async function adminGrantXp(){
+ if(!adminSelectedId)return toast("Selecciona un jugador");
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest("/api/admin/player/xp",{playerId:targetId,amount:100});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  if($("adminLevelValue"))$("adminLevelValue").value=r.profile.level||1;
+  toast(`✨ +100 XP · Nivel ${r.profile.level}`);
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminUnlockAllForTesting(){
+ if(!adminSelectedId)return toast("Selecciona un jugador");
+ const p=adminPlayers.find(x=>x.id===adminSelectedId);
+ if(!confirm(`¿Desbloquear TODOS los cosméticos para ${p?.name||"este jugador"}?\n\nSe habilitarán avatares, ropa, auras, marcos y efectos para pruebas.`))return;
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest("/api/admin/player/unlock-all",{playerId:targetId});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  toast("🧪 Todo desbloqueado para pruebas");
+  await adminRefresh();
+  if(targetId===mpPlayerId()){
+   renderAvatarBuilder();renderAvatars("avatarGridStudio");renderFrames();renderFxShop();renderShop()
+  }
  }catch(e){toast(e.message)}
 }
 async function adminResetWheel(all=false){

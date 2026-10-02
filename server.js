@@ -37,7 +37,7 @@ const MAX_LEVEL=30;
 function xpThreshold(level){level=clamp(level,1,MAX_LEVEL);return Math.min(260,80+Math.max(0,level-1)*12)}
 function cleanStringArray(v,allowedDefault=[]){return [...new Set((Array.isArray(v)?v:allowedDefault).map(x=>String(x||"").trim()).filter(Boolean))]}
 function normalizeProfileMeta(meta={}){
- const defaults={level:1,xp:0,totalXp:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none"};
+ const defaults={level:1,xp:0,totalXp:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",creatorUnlockAll:false};
  const out={...defaults,...(meta||{})};
  out.level=clamp(out.level,1,MAX_LEVEL);
  out.xp=Math.max(0,Number(out.xp||0));
@@ -47,6 +47,7 @@ function normalizeProfileMeta(meta={}){
  out.aurasOwned=cleanStringArray(out.aurasOwned,["none"]);if(!out.aurasOwned.includes("none"))out.aurasOwned.unshift("none");
  out.equippedOutfit=String(out.equippedOutfit||"hoodie");if(!out.wardrobeOwned.includes(out.equippedOutfit))out.equippedOutfit=out.wardrobeOwned[0]||"hoodie";
  out.selectedAura=String(out.selectedAura||"none");if(!out.aurasOwned.includes(out.selectedAura))out.selectedAura=out.aurasOwned[0]||"none";
+ out.creatorUnlockAll=!!out.creatorUnlockAll;
  const ox={hoodie:0};for(const [k,v] of Object.entries(out.outfitXp||{}))ox[String(k)]=Math.max(0,Number(v||0));out.outfitXp=ox;
  return out
 }
@@ -474,6 +475,33 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="POST"&&p==="/api/admin/room/kick"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(!room)return json(res,404,{error:"Sala no encontrada"});const target=String(b.targetId||"");if(!room.players.has(target))return json(res,404,{error:"Jugador no encontrado en la sala"});kickRoomPlayer(room,target,"Fuiste expulsado por el administrador");return json(res,200,{ok:true})}
  if(req.method==="POST"&&p==="/api/admin/player/grant"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.coins=Math.max(0,r.coins+clamp(b.coins,-1000000,1000000));r.gems=Math.max(0,r.gems+clamp(b.gems,-100000,100000));r.keys=Math.max(0,r.keys+clamp(b.keys,-100000,100000));r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/rating"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.rating=clamp(b.rating,100,5000);unlockOnlineAchievements(r);r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
+ if(req.method==="POST"&&p==="/api/admin/player/level"){
+  const b=await body(req),r=rankings[String(b.playerId||"")];
+  if(!r)return json(res,404,{error:"Jugador no encontrado"});
+  const level=clamp(b.level,1,MAX_LEVEL);
+  r.profileMeta=normalizeProfileMeta(r.profileMeta||{});
+  r.level=level;r.xp=0;r.profileMeta.level=level;r.profileMeta.xp=0;
+  r.revision++;await persistRank(r);
+  return json(res,200,{profile:publicProfile(r)})
+ }
+ if(req.method==="POST"&&p==="/api/admin/player/xp"){
+  const b=await body(req),r=rankings[String(b.playerId||"")];
+  if(!r)return json(res,404,{error:"Jugador no encontrado"});
+  const amount=clamp(b.amount,0,100000);
+  gainRankXp(r,amount);
+  r.revision++;await persistRank(r);
+  return json(res,200,{profile:publicProfile(r)})
+ }
+ if(req.method==="POST"&&p==="/api/admin/player/unlock-all"){
+  const b=await body(req),r=rankings[String(b.playerId||"")];
+  if(!r)return json(res,404,{error:"Jugador no encontrado"});
+  r.profileMeta=normalizeProfileMeta(r.profileMeta||{});
+  r.profileMeta.creatorUnlockAll=true;
+  r.profileMeta.wardrobeOwned=["hoodie","academy","shadow","cosmic"];
+  r.profileMeta.aurasOwned=["none","spark","butterflies","firefeet","cosmic"];
+  r.revision++;await persistRank(r);
+  return json(res,200,{profile:publicProfile(r)})
+ }
  if(req.method==="POST"&&p==="/api/admin/player/reset-wheel"){const b=await body(req);if(b.all){for(const r of Object.values(rankings)){r.lastWheelSpin=0;r.revision++;await persistRank(r)}return json(res,200,{ok:true,count:Object.keys(rankings).length})}const r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.lastWheelSpin=0;r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/reset-stats"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.rating=1000;r.wins=0;r.losses=0;r.games=0;r.totalScore=0;r.recent=[];r.onlineStats=normalizeOnlineStats({});r.achievements=(r.achievements||[]).filter(x=>!x.startsWith('online_'));if(r.featuredAchievement?.startsWith('online_'))r.featuredAchievement="";r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/reset-auth"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.authHash='';r.revision++;await persistRank(r);return json(res,200,{ok:true,profile:publicProfile(r)})}
