@@ -1,0 +1,52 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.6
+SOCIAL PROFILES + ACHIEVEMENTS + 2 VS 2
+
+NOVEDADES
+
+1. SISTEMA DE LOGROS AMPLIADO
+- 42 logros en total.
+- 16 logros se consiguen mediante partidas online.
+- Categorías: General, Colección, Competición, Torre de Jefes, Educación, Social, Online y Equipos 2v2.
+- Los logros locales muestran progreso.
+- Los logros online son validados y guardados por el servidor.
+- Se puede elegir un logro desbloqueado para exhibirlo bajo el avatar.
+
+2. PERFIL ONLINE PERSONALIZABLE
+- Nombre visible.
+- Avatar.
+- Bio pública corta (máximo 90 caracteres).
+- Marco de perfil.
+- Logro exhibido.
+- Rating, victorias, derrotas y partidas.
+- Los demás jugadores pueden abrir el perfil desde lobby, marcador, resultados y ranking.
+
+3. AVATAR MASCULINO / FEMENINO
+- Se añaden dos avatares iniciales gratuitos: Masculino y Femenino.
+- Ambos están disponibles desde el inicio.
+- Se mantienen los animales, personajes, avatares de tienda y desbloqueables existentes.
+
+4. NUEVO MODO ONLINE: EQUIPOS 2 VS 2
+- Requiere exactamente 4 jugadores.
+- Equipo A vs Equipo B, dos jugadores por equipo.
+- Se suman los puntos de ambos compañeros.
+- 12 preguntas con el temporizador online de 15 segundos.
+- Los jugadores pueden cambiar de equipo antes de empezar; si el equipo destino está lleno, el servidor intercambia un jugador para conservar 2 vs 2.
+- Registra partidas/victorias de equipo y desbloquea logros específicos.
+
+5. NUEVOS MARCOS
+- Marco Online.
+- Marco Rubí.
+- Marco Equipo.
+- Se desbloquean mediante logros online.
+
+6. POSTGRESQL
+- La actualización agrega automáticamente las columnas necesarias a la tabla players.
+- NO hay que borrar ni recrear la base de datos.
+- Se conservan perfiles, rating, monedas, diamantes, llaves y estadísticas existentes.
+
+ACTUALIZACIÓN EN RENDER
+- Reemplaza/sube estos archivos al MISMO repositorio GitHub semantropic-trivia.
+- Haz commit.
+- Render hará el deploy automático.
+- No cambies DATABASE_URL ni ADMIN_KEY.
+- Tras el deploy, /api/status debe seguir mostrando storage: postgres.

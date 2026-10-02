@@ -40,3 +40,23 @@ HOTFIX DE CREDENCIALES ONLINE (Alpha 0.2.6)
 - El Panel del Propietario incluye "REPARAR ACCESO".
 - Reparar acceso NO borra monedas, diamantes, llaves, rating ni estadísticas.
 - Después de usar REPARAR ACCESO, el jugador solo debe recargar la página.
+
+
+SOCIAL / PROFILES / ACHIEVEMENTS PATCH — ALPHA 0.2.6
+- Sistema de logros ampliado con categorías y progreso.
+- Logros online persistentes: partidas, victorias, rating, modos y 2v2.
+- Avatar inicial masculino o femenino.
+- Perfil online personalizable: nombre, avatar, bio, marco y logro exhibido.
+- Los perfiles de otros jugadores se pueden abrir desde lobby, marcador, resultados y ranking.
+- El logro exhibido aparece bajo el avatar/perfil para presumirlo.
+- Nuevo modo online Equipos 2 vs 2 para exactamente 4 jugadores.
+- Equipos A/B editables antes de comenzar.
+- Nuevos marcos desbloqueables por logros online.
+- Migración automática de columnas nuevas en PostgreSQL: no hay que recrear la base.
+
+VALIDACIÓN DEL PARCHE SOCIAL
+- JavaScript del juego validado con node --check.
+- server.js validado con node --check.
+- Probado localmente: creación y personalización de perfiles, perfil público, sala 2v2, 4 jugadores, cambio de equipos, inicio de partida y partida completa 12/12.
+- Verificado: victorias/derrotas 2v2 y logros online se actualizan al terminar la partida.
+- La bio del perfil es pública: la interfaz recomienda no incluir datos personales.

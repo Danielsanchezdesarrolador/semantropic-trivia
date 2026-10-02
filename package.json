@@ -2,7 +2,7 @@
   "name": "semantropic-trivia",
   "version": "0.2.6",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.2.6 - persistent online profiles and owner admin",
+  "description": "Semantropic Trivia Alpha 0.2.6 - social profiles, online achievements and 2v2 teams",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
