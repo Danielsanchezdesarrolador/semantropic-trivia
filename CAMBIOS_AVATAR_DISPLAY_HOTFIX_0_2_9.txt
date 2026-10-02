@@ -1,0 +1,16 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9
+AVATAR / FRAME DISPLAY HOTFIX
+
+Problema:
+Los avatares Premium se veían deformados o tapados cuando se mostraban dentro del
+perfil lateral, cartas públicas y espacios pequeños de multijugador, especialmente
+si tenían marcos Premium ornamentados.
+
+Corrección:
+- Se ajustó el render compacto de avatares Premium.
+- Ahora el retrato entra con padding interno dentro del marco.
+- Se redujo el tamaño de adornos ::before / ::after en contextos pequeños.
+- Se suavizó el grosor visual de los marcos Premium en el sidebar, perfiles y mini slots.
+- Se mantiene el diseño completo en la tienda y en las vistas grandes.
+
+No cambia cuentas, progreso ni inventario.

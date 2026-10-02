@@ -558,6 +558,47 @@ input,select,textarea{
 .premium-card .premium-price{margin-top:8px;font-weight:900}.premium-card .premium-description{min-height:38px}
 .premium-portrait{--skin:#e2a77b;--hair:#493127;--shirt:#5566dd;--portrait-bg:#86a9c2;position:relative;width:92px;height:92px;margin:0 auto;border-radius:50%;overflow:hidden;background:var(--portrait-bg);box-shadow:inset 0 0 0 3px rgba(255,255,255,.14),0 8px 24px rgba(0,0,0,.18)}
 .avatar .premium-portrait,.public-avatar .premium-portrait,.mp-mini-avatar .premium-portrait{width:100%;height:100%;margin:0;box-shadow:none}
+/* Compact avatar rendering hotfix: make premium avatars and premium frames readable
+   in sidebar, online cards and mini multiplayer slots */
+.avatar,.public-avatar,.mp-mini-avatar{overflow:hidden;isolation:isolate}
+.avatar .premium-portrait,.public-avatar .premium-portrait,.mp-mini-avatar .premium-portrait{
+ position:absolute;inset:5px;width:auto;height:auto;margin:0;box-shadow:none;z-index:1
+}
+.avatar[class*="frame-"] .premium-portrait,.public-avatar[class*="frame-"] .premium-portrait,.mp-mini-avatar[class*="frame-"] .premium-portrait{
+ inset:7px
+}
+.avatar.frame-golden-square .premium-portrait,.avatar.frame-ruby-solar .premium-portrait,.avatar.frame-sapphire-imperial .premium-portrait,.avatar.frame-semantropic-throne .premium-portrait,
+.public-avatar.frame-golden-square .premium-portrait,.public-avatar.frame-ruby-solar .premium-portrait,.public-avatar.frame-sapphire-imperial .premium-portrait,.public-avatar.frame-semantropic-throne .premium-portrait,
+.mp-mini-avatar.frame-golden-square .premium-portrait,.mp-mini-avatar.frame-ruby-solar .premium-portrait,.mp-mini-avatar.frame-sapphire-imperial .premium-portrait,.mp-mini-avatar.frame-semantropic-throne .premium-portrait{
+ border-radius:14px
+}
+.avatar[class*="frame-"]::before,.avatar[class*="frame-"]::after,
+.public-avatar[class*="frame-"]::before,.public-avatar[class*="frame-"]::after,
+.mp-mini-avatar[class*="frame-"]::before,.mp-mini-avatar[class*="frame-"]::after{
+ z-index:3;pointer-events:none;line-height:1
+}
+/* Smaller ornament sizes in compact contexts */
+.avatar.frame-amethyst-royal:before,.public-avatar.frame-amethyst-royal:before,.mp-mini-avatar.frame-amethyst-royal:before,
+.avatar.frame-amethyst-royal:after,.public-avatar.frame-amethyst-royal:after,.mp-mini-avatar.frame-amethyst-royal:after{font-size:11px;left:50%}
+.avatar.frame-ruby-solar:before,.public-avatar.frame-ruby-solar:before,.mp-mini-avatar.frame-ruby-solar:before{font-size:11px;top:1px}
+.avatar.frame-ruby-solar:after,.public-avatar.frame-ruby-solar:after,.mp-mini-avatar.frame-ruby-solar:after{font-size:13px;bottom:-1px}
+.avatar.frame-sapphire-imperial:before,.public-avatar.frame-sapphire-imperial:before,.mp-mini-avatar.frame-sapphire-imperial:before,
+.avatar.frame-sapphire-imperial:after,.public-avatar.frame-sapphire-imperial:after,.mp-mini-avatar.frame-sapphire-imperial:after{font-size:10px}
+.avatar.frame-golden-wings:before,.public-avatar.frame-golden-wings:before,.mp-mini-avatar.frame-golden-wings:before{font-size:10px;bottom:-1px}
+.avatar.frame-golden-wings:after,.public-avatar.frame-golden-wings:after,.mp-mini-avatar.frame-golden-wings:after{font-size:12px;top:1px}
+.avatar.frame-celestial-crown:before,.public-avatar.frame-celestial-crown:before,.mp-mini-avatar.frame-celestial-crown:before,
+.avatar.frame-semantropic-throne:before,.public-avatar.frame-semantropic-throne:before,.mp-mini-avatar.frame-semantropic-throne:before{font-size:14px;top:-1px}
+.avatar.frame-celestial-crown:after,.public-avatar.frame-celestial-crown:after,.mp-mini-avatar.frame-celestial-crown:after{font-size:11px}
+.avatar.frame-semantropic-throne:after,.public-avatar.frame-semantropic-throne:after,.mp-mini-avatar.frame-semantropic-throne:after{font-size:12px}
+.avatar.frame-solar-ring,.public-avatar.frame-solar-ring,.mp-mini-avatar.frame-solar-ring{box-shadow:0 0 0 3px #ffb510,0 0 0 5px #ff7d11,0 0 14px rgba(255,177,30,.45)!important}
+.avatar.frame-golden-square,.public-avatar.frame-golden-square,.mp-mini-avatar.frame-golden-square{box-shadow:0 0 0 3px #ffc226,0 0 0 5px #e97b0b,0 0 14px rgba(255,176,29,.42)!important}
+.avatar.frame-amethyst-royal,.public-avatar.frame-amethyst-royal,.mp-mini-avatar.frame-amethyst-royal{box-shadow:0 0 0 3px #ffb20e,0 0 0 5px #ed7a09,0 0 16px rgba(215,73,255,.46)!important}
+.avatar.frame-ruby-solar,.public-avatar.frame-ruby-solar,.mp-mini-avatar.frame-ruby-solar{box-shadow:0 0 0 3px #ffc126,0 0 0 5px #e67709,0 0 16px rgba(255,66,57,.44)!important}
+.avatar.frame-sapphire-imperial,.public-avatar.frame-sapphire-imperial,.mp-mini-avatar.frame-sapphire-imperial{box-shadow:0 0 0 3px #ffc226,0 0 0 5px #ee7a0b,0 0 18px rgba(48,197,255,.46)!important}
+.avatar.frame-golden-wings,.public-avatar.frame-golden-wings,.mp-mini-avatar.frame-golden-wings{box-shadow:0 0 0 3px #ffc226,0 0 0 5px #e97b0b,0 0 18px rgba(244,70,255,.40)!important}
+.avatar.frame-celestial-crown,.public-avatar.frame-celestial-crown,.mp-mini-avatar.frame-celestial-crown{box-shadow:0 0 0 3px #ffd02f,0 0 0 5px #f17c0b,0 0 10px #ffe966,0 0 20px rgba(187,72,255,.42)!important}
+.avatar.frame-semantropic-throne,.public-avatar.frame-semantropic-throne,.mp-mini-avatar.frame-semantropic-throne{box-shadow:0 0 0 3px #ffd33e,0 0 0 5px #f5790c,0 0 10px #fff0a1,0 0 22px rgba(255,174,31,.42)!important}
+
 .premium-portrait .pp-body{position:absolute;left:19%;right:19%;height:38%;bottom:-7%;border-radius:48% 48% 12% 12%;background:var(--shirt)}
 .premium-portrait .pp-neck{position:absolute;left:43%;width:14%;height:18%;bottom:25%;background:var(--skin);border-radius:0 0 45% 45%}
 .premium-portrait .pp-head{position:absolute;left:25%;top:15%;width:50%;height:58%;border-radius:47% 47% 44% 44%;background:var(--skin);z-index:3}
