@@ -1,0 +1,36 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.8
+LEVEL-UP + AVATAR VISUAL HOTFIX
+
+PROGRESIÓN
+- Corregido un bug: existían dos funciones gainXp y la antigua anulaba parte del sistema 0.2.8.
+- Ahora existe un solo sistema de XP.
+- Al subir de nivel aparece una celebración grande en el centro de la pantalla.
+- Cada 5 niveles se entregan:
+  +50 monedas
+  +1 gema
+  +1 llave
+- Nivel máximo: 30.
+- Las partidas online también aplican las recompensas de hitos de nivel.
+
+CREADOR / ADMIN
+- DESBLOQUEAR TODO ahora lleva inmediatamente al jugador a NIVEL 30.
+- Desbloquea todos los outfits y auras actuales.
+- Coloca las prendas en maestría máxima para revisar inmediatamente sus etapas visuales.
+
+AVATAR FEMENINO
+- El personaje personalizado ahora tiene selector Masculino / Femenino.
+- La versión femenina usa una variante visual propia del rostro y la silueta superior.
+- Los avatares antiguos se migran usando el género que ya tenía el perfil.
+
+ROPA
+- Se reforzó la diferencia visual entre Hoodie Pulse, Academia Neo, Shadow Runner y Cosmic Drift.
+- Cada outfit incorpora detalles específicos sobre el torso.
+
+AURAS
+- Aumentó el brillo y el tamaño visual de todas las auras.
+- El perfil lateral refleja el aura con un resplandor exterior más fuerte.
+- Los perfiles públicos y miniaturas online ahora pueden renderizar el avatar personalizado con ropa/aura.
+
+RECOMPENSAS DE NIVEL
+- Los cambios manuales de nivel hechos por ADMIN siguen siendo controles de prueba y no entregan recompensas.
+- La XP obtenida jugando sí activa recompensas y celebración.

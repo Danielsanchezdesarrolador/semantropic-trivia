@@ -1,0 +1,21 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9
+HOTFIX DE AVATARES PREMIUM
+
+Se cambiaron 3 personajes manteniendo sus IDs internos para conservar compras existentes:
+
+- premium_nara:
+  Antes: Nara Artista
+  Ahora: Margarita Cool
+  Estilo: moderno, relajado, lentes llamativos.
+
+- premium_max:
+  Antes: Max Atleta
+  Ahora: Fernanda Boxeadora
+  Estilo: boxeadora femenina con guantes visibles.
+
+- premium_nova:
+  Antes: Dra. Nova
+  Ahora: Evelyn Genio
+  Estilo: super inteligente, lentes y destello intelectual.
+
+Precios y rarezas se mantienen para no alterar la economía de la Alpha 0.2.9.

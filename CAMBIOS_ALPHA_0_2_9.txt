@@ -1,0 +1,14 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9
+AVATAR COLLECTION REWORK
+
+- Primera colección oficial de 12 avatares premium.
+- Primera colección oficial de 8 marcos premium.
+- Rarezas: Común, Raro, Épico y Legendario.
+- Nueva tienda separada en Avatares Premium, Marcos Premium, Utilidades y Efectos.
+- Colección reorganizada.
+- Avatares premium con estilo cartoon circular.
+- Marcos ornamentales dorados con gemas, inspirados en la referencia visual.
+- Compras de avatares y marcos persistentes entre dispositivos mediante profile_meta.
+- Recompensas visuales de nivel 30.
+- Compatibilidad con avatares/marcos previos: no se eliminan los objetos antiguos ya obtenidos.
+- El modo creador Desbloquear todo incluye todos los cosméticos nuevos.

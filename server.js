@@ -37,7 +37,7 @@ const MAX_LEVEL=30;
 function xpThreshold(level){level=clamp(level,1,MAX_LEVEL);return Math.min(260,80+Math.max(0,level-1)*12)}
 function cleanStringArray(v,allowedDefault=[]){return [...new Set((Array.isArray(v)?v:allowedDefault).map(x=>String(x||"").trim()).filter(Boolean))]}
 function normalizeProfileMeta(meta={}){
- const defaults={level:1,xp:0,totalXp:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",creatorUnlockAll:false};
+ const defaults={level:1,xp:0,totalXp:0,customAvatar:{presentation:"male",skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",ownedAvatars:["starter_m","starter_f","brain"],ownedFrames:["none"],creatorUnlockAll:false};
  const out={...defaults,...(meta||{})};
  out.level=clamp(out.level,1,MAX_LEVEL);
  out.xp=Math.max(0,Number(out.xp||0));
@@ -45,6 +45,8 @@ function normalizeProfileMeta(meta={}){
  out.customAvatar={...defaults.customAvatar,...(meta?.customAvatar||{})};
  out.wardrobeOwned=cleanStringArray(out.wardrobeOwned,["hoodie"]);if(!out.wardrobeOwned.includes("hoodie"))out.wardrobeOwned.unshift("hoodie");
  out.aurasOwned=cleanStringArray(out.aurasOwned,["none"]);if(!out.aurasOwned.includes("none"))out.aurasOwned.unshift("none");
+ out.ownedAvatars=cleanStringArray(out.ownedAvatars,["starter_m","starter_f","brain"]);["starter_m","starter_f","brain"].forEach(x=>{if(!out.ownedAvatars.includes(x))out.ownedAvatars.push(x)});
+ out.ownedFrames=cleanStringArray(out.ownedFrames,["none"]);if(!out.ownedFrames.includes("none"))out.ownedFrames.unshift("none");
  out.equippedOutfit=String(out.equippedOutfit||"hoodie");if(!out.wardrobeOwned.includes(out.equippedOutfit))out.equippedOutfit=out.wardrobeOwned[0]||"hoodie";
  out.selectedAura=String(out.selectedAura||"none");if(!out.aurasOwned.includes(out.selectedAura))out.selectedAura=out.aurasOwned[0]||"none";
  out.creatorUnlockAll=!!out.creatorUnlockAll;
@@ -55,9 +57,13 @@ function gainRankXp(r,amount){
  amount=Math.max(0,Math.round(Number(amount)||0));if(!amount)return;
  const meta=normalizeProfileMeta(r.profileMeta||{level:r.level||1,xp:r.xp||0});
  meta.totalXp=Math.max(0,Number(meta.totalXp||0))+amount;
- if(meta.level>=MAX_LEVEL){meta.xp=xpThreshold(MAX_LEVEL);r.level=meta.level;r.xp=meta.xp;r.profileMeta=meta;return}
+ if(meta.level>=MAX_LEVEL){meta.level=MAX_LEVEL;meta.xp=xpThreshold(MAX_LEVEL);r.level=meta.level;r.xp=meta.xp;r.profileMeta=meta;return}
  meta.xp+=amount;
- while(meta.level<MAX_LEVEL&&meta.xp>=xpThreshold(meta.level)){meta.xp-=xpThreshold(meta.level);meta.level++}
+ while(meta.level<MAX_LEVEL&&meta.xp>=xpThreshold(meta.level)){
+  meta.xp-=xpThreshold(meta.level);
+  meta.level++;
+  if(meta.level%5===0){r.coins+=50;r.gems+=1;r.keys+=1}
+ }
  if(meta.level>=MAX_LEVEL){meta.level=MAX_LEVEL;meta.xp=xpThreshold(MAX_LEVEL)}
  r.level=meta.level;r.xp=meta.xp;r.profileMeta=meta
 }
@@ -313,7 +319,10 @@ function publicView(r){return{id:r.id,name:r.name,rating:r.rating,wins:r.wins,lo
 function publicProfile(r){return{...publicView(r),coins:r.coins,gems:r.gems,keys:r.keys,lastWheelSpin:r.lastWheelSpin,revision:r.revision||0,storage:storageMode,accountUsername:adminAccountUsername(r.id)}}
 function topRanking(){return Object.values(rankings).sort((a,b)=>b.rating-a.rating||b.wins-a.wins||b.totalScore-a.totalScore).slice(0,50).map(publicView)}
 function verifyProfileToken(r,token){return !!(r&&r.authHash&&token&&secureEqual(r.authHash,hashToken(token)))}
-function profileSummary(id){const r=rankings[id];return r?{avatarId:r.avatarId,gender:r.gender,frameId:r.frameId,featuredAchievement:r.featuredAchievement||"",achievementCount:(r.achievements||[]).length}:{avatarId:"starter_m",gender:"neutral",frameId:"none",featuredAchievement:"",achievementCount:0}}
+function profileSummary(id){
+ const r=rankings[id];
+ return r?{avatarId:r.avatarId,gender:r.gender,frameId:r.frameId,featuredAchievement:r.featuredAchievement||"",achievementCount:(r.achievements||[]).length,level:r.level||1,profileMeta:normalizeProfileMeta(r.profileMeta||{})}:{avatarId:"starter_m",gender:"neutral",frameId:"none",featuredAchievement:"",achievementCount:0,level:1,profileMeta:normalizeProfileMeta({})}
+}
 function publicPlayers(room){return[...room.players.values()].map(p=>({id:p.id,name:p.name,score:p.score,lives:p.lives,answered:!!p.answered,eliminated:!!p.eliminated,online:(room.streams.get(p.id)?.size||0)>0,team:p.team||null,...profileSummary(p.id)}))}
 function applyClientProfileFields(r,b,{initial=false}={}){
  if(initial){
@@ -499,6 +508,12 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   r.profileMeta.creatorUnlockAll=true;
   r.profileMeta.wardrobeOwned=["hoodie","academy","shadow","cosmic"];
   r.profileMeta.aurasOwned=["none","spark","butterflies","firefeet","cosmic"];
+  r.profileMeta.ownedAvatars=["starter_m","starter_f","brain","premium_alma","premium_nico","premium_nara","premium_max","premium_nova","premium_sol","premium_vega","premium_kai","premium_mia","premium_orion","premium_reina","premium_maestro"];
+  r.profileMeta.ownedFrames=["none","solar_ring","golden_square","amethyst_royal","ruby_solar","sapphire_imperial","golden_wings","celestial_crown","semantropic_throne"];
+  r.profileMeta.outfitXp={hoodie:400,academy:400,shadow:400,cosmic:400};
+  r.level=MAX_LEVEL;r.xp=xpThreshold(MAX_LEVEL);
+  r.profileMeta.level=MAX_LEVEL;r.profileMeta.xp=r.xp;
+  r.profileMeta.totalXp=Math.max(Number(r.profileMeta.totalXp||0),5000);
   r.revision++;await persistRank(r);
   return json(res,200,{profile:publicProfile(r)})
  }

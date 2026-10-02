@@ -1,0 +1,35 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9
+LISTA FINAL — AVATAR COLLECTION REWORK
+
+AVATARES PREMIUM (12)
+1. Alma Estudiante — Común — 350 monedas
+2. Nico Gamer — Común — 350 monedas
+3. Margarita Cool — Raro — 520 monedas
+4. Fernanda Boxeadora — Raro — 550 monedas
+5. Evelyn Genio — Raro — 650 monedas
+6. Chef Sol — Raro — 650 monedas
+7. Detective Vega — Épico — 4 gemas
+8. Astro Kai — Épico — 5 gemas
+9. Mia Cyber — Épico — 5 gemas
+10. Orion Sabio — Legendario — 8 gemas
+11. Reina Nova — Legendario — 8 gemas
+12. Maestro Trivia — Legendario — desbloqueo nivel 30
+
+MARCOS PREMIUM (8)
+1. Aro Solar — Común — 260 monedas — Circular
+2. Cuadro Áureo — Común — 300 monedas — Cuadrado
+3. Amatista Real — Raro — 520 monedas — Circular
+4. Rubí Solar — Raro — 560 monedas — Cuadrado
+5. Zafiro Imperial — Épico — 4 gemas — Cuadrado
+6. Alas Doradas — Épico — 5 gemas — Circular
+7. Corona Celestial — Legendario — 8 gemas — Circular
+8. Trono Semantropic — Legendario — desbloqueo nivel 30 — Cuadrado
+
+SISTEMA 0.2.9
+- Avatar Personalizado y Avatares Premium son sistemas separados.
+- Rarezas: Común / Raro / Épico / Legendario.
+- Los avatares premium usan un nuevo render cartoon circular.
+- Los marcos premium usan oro, ornamentos y gemas.
+- Los objetos comprados se guardan en profile_meta para recuperarlos al iniciar sesión en otro dispositivo.
+- Nivel 30 desbloquea Maestro Trivia y Trono Semantropic.
+- ADMIN > Desbloquear todo incluye la colección 0.2.9 completa.
