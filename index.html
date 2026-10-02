@@ -1565,7 +1565,7 @@ function buildEducationQueue(count,subject,level,mixed,scope){
 
 
 /* ===== CLOUD PROFILE + ADMIN / ALPHA 0.2.7 ===== */
-let onlineProfileToken="",onlineProfileRevision=0,onlineProfileReady=false,onlineSyncTimer=null,onlineProfile=null,onlineAccountUsername="",accountLoggedIn=false;
+let onlineProfileToken="",onlineProfileRevision=0,onlineProfileReady=false,onlineSyncTimer=null,onlineProfile=null,onlineAccountUsername="",accountLoggedIn=false,serverProfilePollTimer=null,lastServerProfileCheck=0;
 function localAchievementIds(){return Object.keys(save.ach||{}).filter(id=>save.ach[id])}
 function achievementInfo(id){return ACH.find(a=>a.id===id)||null}
 function achievementLabel(id){const a=achievementInfo(id);return a?`${a.icon} ${a.name}`:"🏆 Sin logro exhibido"}
@@ -1616,7 +1616,7 @@ function showAuthGate(message=""){
  document.body.classList.add("auth-locked");$("authGate").classList.remove("hidden");$("authMessage").textContent=message;authSetMode("login")
 }
 function enterSemantropic(){
- document.body.classList.remove("auth-locked");$("authGate").classList.add("hidden");renderAccountUI();refresh();page("home")
+ document.body.classList.remove("auth-locked");$("authGate").classList.add("hidden");renderAccountUI();refresh();startServerProfilePolling();page("home")
 }
 async function initializeAccountGate(){
  authSetMode("login");
@@ -1663,6 +1663,7 @@ async function accountForgotPassword(){
 }
 async function accountLogout(){
  try{if(onlineProfileToken)await mpRequest("/api/account/logout",{token:onlineProfileToken})}catch(e){}
+ stopServerProfilePolling();
  accountLoggedIn=false;accountMustChangePassword=false;onlineAccountUsername="";onlineProfileToken="";onlineProfileReady=false;onlineProfile=null;try{localStorage.removeItem("semantropicAccountUsername");localStorage.removeItem("semantropicProfileToken")}catch(e){}renderAccountUI();showAuthGate("Sesión cerrada.");toast("Sesión cerrada")
 }
 function openPasswordModal(forced=false){
@@ -1707,6 +1708,56 @@ function applyOnlineProfile(p,replaceWallet=true){
  const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set("opName",p.name||save.name);set("opRating",p.rating??1000);set("opWins",p.wins??0);set("opLosses",p.losses??0);set("opGames",p.games??0);set("opCoins",p.coins??0);set("opGems",p.gems??0);set("opFeatured",achievementLabel(p.featuredAchievement));set("opStorage",p.storage==="postgres"?"☁️ Perfil persistente en base de datos":"💾 Perfil en almacenamiento local del servidor");
  const av=$("opAvatar");if(av){av.innerHTML=profileAvatarHTML(p);applyFrameToElement(av,p.frameId)}refresh();renderAch()
 }
+async function refreshAuthenticatedProfile({force=false,notify=false}={}){
+ if(location.protocol==="file:"||!accountLoggedIn||!onlineProfileToken)return null;
+ // Do not pull an old server copy while a local change is waiting to be synchronized.
+ if(!force&&onlineSyncTimer)return null;
+ try{
+  const r=await mpRequest("/api/account/me",{token:onlineProfileToken});
+  accountMustChangePassword=!!r.mustChangePassword;
+  const incomingRevision=Number(r.profile?.revision||0);
+  const changed=force||incomingRevision!==Number(onlineProfileRevision||0);
+  if(changed&&r.profile){
+   applyOnlineProfile(r.profile,true);
+   if(notify)toast("☁️ Perfil actualizado desde el servidor")
+  }
+  renderAccountUI();
+  lastServerProfileCheck=Date.now();
+  return r.profile||null
+ }catch(e){
+  if(e?.message&&/sesión|cuenta no encontrada/i.test(e.message)){
+   accountLoggedIn=false;onlineProfileReady=false;onlineProfile=null;onlineProfileToken="";onlineAccountUsername="";
+   try{
+    localStorage.removeItem("semantropicAccountUsername");
+    localStorage.removeItem("semantropicProfileToken");
+    localStorage.removeItem("semantropicOnlinePlayerId")
+   }catch(_){}
+   stopServerProfilePolling();
+   showAuthGate("Tu sesión ya no es válida. Inicia sesión nuevamente.")
+  }
+  return null
+ }
+}
+function startServerProfilePolling(){
+ stopServerProfilePolling();
+ serverProfilePollTimer=setInterval(()=>{
+  if(document.visibilityState==="visible"&&accountLoggedIn)refreshAuthenticatedProfile()
+ },10000)
+}
+function stopServerProfilePolling(){
+ if(serverProfilePollTimer)clearInterval(serverProfilePollTimer);
+ serverProfilePollTimer=null
+}
+function applyAdminProfileIfCurrent(playerId,profile){
+ if(profile&&String(playerId||"")===String(mpPlayerId()||"")){
+  applyOnlineProfile(profile,true);
+  return true
+ }
+ return false
+}
+window.addEventListener("focus",()=>{if(accountLoggedIn)refreshAuthenticatedProfile()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&accountLoggedIn)refreshAuthenticatedProfile()});
+
 async function bootstrapOnlineProfile(){
  if(location.protocol==="file:")return null;
  const playerId=mpPlayerId();
@@ -1806,13 +1857,58 @@ function renderAdminWheelConfig(c){
 }
 async function adminSaveWheelConfig(){
  const cooldownMinutes=Math.max(1,Number($("adminWheelCooldown").value||120)),prizes=[];document.querySelectorAll("[data-wheel-type]").forEach((s,i)=>{const type=s.value,amount=Math.max(1,Number(document.querySelector(`[data-wheel-amount="${i}"]`)?.value||1));prizes.push({type,amount})});
- try{const r=await adminRequest("/api/admin/wheel-config",{cooldownMinutes,prizes});renderAdminWheelConfig(r);gameConfigLoaded=true;toast("🎡 Configuración de ruleta guardada") }catch(e){toast(e.message)}
+ try{
+  const r=await adminRequest("/api/admin/wheel-config",{cooldownMinutes,prizes});
+  renderAdminWheelConfig(r);gameConfigLoaded=true;
+  renderRewardWheelLabels();updateRewardTimer();
+  toast("🎡 Configuración de ruleta guardada")
+ }catch(e){toast(e.message)}
 }
 
-async function adminGrant(){if(!adminSelectedId)return toast('Selecciona un jugador');try{await adminRequest('/api/admin/player/grant',{playerId:adminSelectedId,coins:Number($('adminCoinsDelta').value||0),gems:Number($('adminGemsDelta').value||0),keys:Number($('adminKeysDelta').value||0)});toast('💰 Recursos actualizados');adminRefresh()}catch(e){toast(e.message)}}
-async function adminSetRating(){if(!adminSelectedId)return toast('Selecciona un jugador');try{await adminRequest('/api/admin/player/rating',{playerId:adminSelectedId,rating:Number($('adminRatingValue').value||1000)});toast('🏆 Rating actualizado');adminRefresh()}catch(e){toast(e.message)}}
-async function adminResetWheel(all=false){if(!all&&!adminSelectedId)return toast('Selecciona un jugador');if(all&&!confirm('¿Reiniciar la ruleta de todos los perfiles?'))return;try{await adminRequest('/api/admin/player/reset-wheel',{playerId:all?null:adminSelectedId,all});toast(all?'🎡 Todas las ruletas reiniciadas':'🎡 Ruleta reiniciada');adminRefresh()}catch(e){toast(e.message)}}
-async function adminResetStats(){if(!adminSelectedId)return toast('Selecciona un jugador');if(!confirm('¿Reiniciar victorias, derrotas, partidas y rating de este jugador?'))return;try{await adminRequest('/api/admin/player/reset-stats',{playerId:adminSelectedId});toast('♻️ Estadísticas reiniciadas');adminRefresh()}catch(e){toast(e.message)}}
+async function adminGrant(){
+ if(!adminSelectedId)return toast('Selecciona un jugador');
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest('/api/admin/player/grant',{playerId:targetId,coins:Number($('adminCoinsDelta').value||0),gems:Number($('adminGemsDelta').value||0),keys:Number($('adminKeysDelta').value||0)});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  toast('💰 Recursos actualizados');
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminSetRating(){
+ if(!adminSelectedId)return toast('Selecciona un jugador');
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest('/api/admin/player/rating',{playerId:targetId,rating:Number($('adminRatingValue').value||1000)});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  toast('🏆 Rating actualizado');
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminResetWheel(all=false){
+ if(!all&&!adminSelectedId)return toast('Selecciona un jugador');
+ if(all&&!confirm('¿Reiniciar la ruleta de todos los perfiles?'))return;
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest('/api/admin/player/reset-wheel',{playerId:all?null:targetId,all});
+  if(all)await refreshAuthenticatedProfile({force:true});
+  else applyAdminProfileIfCurrent(targetId,r.profile);
+  updateRewardTimer();
+  toast(all?'🎡 Todas las ruletas reiniciadas':'🎡 Ruleta reiniciada');
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
+async function adminResetStats(){
+ if(!adminSelectedId)return toast('Selecciona un jugador');
+ if(!confirm('¿Reiniciar victorias, derrotas, partidas y rating de este jugador?'))return;
+ const targetId=adminSelectedId;
+ try{
+  const r=await adminRequest('/api/admin/player/reset-stats',{playerId:targetId});
+  applyAdminProfileIfCurrent(targetId,r.profile);
+  toast('♻️ Estadísticas reiniciadas');
+  await adminRefresh()
+ }catch(e){toast(e.message)}
+}
 async function adminResetAuth(){
  if(!adminSelectedId)return toast('Selecciona un jugador');
  const p=adminPlayers.find(x=>x.id===adminSelectedId);
@@ -2175,7 +2271,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c){

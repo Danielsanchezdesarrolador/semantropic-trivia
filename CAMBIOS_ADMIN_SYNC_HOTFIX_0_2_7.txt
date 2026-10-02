@@ -1,0 +1,23 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.7
+ADMIN ↔ PROFILE SYNC HOTFIX
+
+BUG CORREGIDO
+- El Admin modificaba correctamente PostgreSQL, pero el navegador del jugador seguía mostrando su copia local anterior.
+- Esto hacía parecer que las monedas no se entregaban o que la ruleta no se había reiniciado.
+
+CORRECCIONES
+- Si el administrador modifica su propio perfil, monedas/diamantes/llaves/ruleta se actualizan inmediatamente en pantalla.
+- Reiniciar la ruleta actualiza de inmediato el contador del jugador.
+- Reiniciar todas las ruletas también refresca el perfil actual.
+- Cambios de rating y estadísticas también refrescan el perfil seleccionado si es el jugador actual.
+- Cambiar premios o cooldown de la ruleta actualiza inmediatamente el temporizador y la presentación.
+
+SINCRONIZACIÓN ENTRE DISPOSITIVOS
+- Cada sesión autenticada comprueba cada 10 segundos si el servidor tiene una revisión de perfil más reciente.
+- También comprueba al volver a enfocar la ventana o pestaña.
+- Solo descarga el perfil cuando la revisión del servidor cambió.
+- No pisa cambios locales que están esperando ser sincronizados.
+- Esto permite que los cambios hechos por ADMIN aparezcan también en otros dispositivos conectados.
+
+SERVIDOR
+- No se modificó la base de datos ni se requiere nueva migración.

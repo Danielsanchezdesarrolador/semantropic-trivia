@@ -89,3 +89,8 @@ ACCOUNT CLEANUP + ADMIN DELETE — 0.2.7
 - Limpieza única de cuentas/perfiles de prueba anteriores.
 - Las cuentas nuevas posteriores al deploy permanecen normalmente.
 - ADMIN permite eliminar definitivamente una cuenta y su perfil.
+
+
+ADMIN SYNC HOTFIX — 0.2.7
+- Las modificaciones de monedas, diamantes, llaves y ruleta hechas desde ADMIN ahora se reflejan inmediatamente.
+- Los jugadores conectados refrescan automáticamente cambios administrativos del servidor.
