@@ -95,6 +95,13 @@ function saveAccountsFile(){
 async function initStore(){
  if(!DATABASE_URL){
   storageMode="file";
+  const cleanupMarker=path.join(DATA_DIR,"alpha_0_2_7_initial_account_cleanup.done");
+  if(!fs.existsSync(cleanupMarker)){
+   rankings={};accounts={};accountByPlayerId={};accountSessions=new Map();passwordResetRequests={};
+   saveFile();saveAccountsFile();
+   fs.writeFileSync(cleanupMarker,"done","utf8");
+   console.log("[Alpha 0.2.7] Limpieza única: cuentas y perfiles de prueba eliminados.")
+  }
   for(const [id,r] of Object.entries(rankings))rankings[id]=normalizeRank(id,r);
   accountByPlayerId={};
   for(const [k,a] of Object.entries(accounts)){
@@ -134,6 +141,28 @@ async function initStore(){
   )`);
   await pool.query(`CREATE TABLE IF NOT EXISTS account_sessions(token_hash TEXT PRIMARY KEY,username_key TEXT NOT NULL,player_id TEXT NOT NULL,expires_at BIGINT NOT NULL,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   await pool.query(`CREATE TABLE IF NOT EXISTS game_settings(key TEXT PRIMARY KEY,value JSONB NOT NULL,updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
+  await pool.query(`CREATE TABLE IF NOT EXISTS app_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL,updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
+
+  // Limpieza ÚNICA de las cuentas/perfiles de prueba existentes antes de este hotfix.
+  // El marcador queda guardado en PostgreSQL y evita que futuros reinicios borren cuentas nuevas.
+  const cleanupKey="alpha_0_2_7_initial_account_cleanup";
+  const cleanupState=await pool.query('SELECT value FROM app_meta WHERE key=$1',[cleanupKey]);
+  if(!cleanupState.rows.length){
+   await pool.query('BEGIN');
+   try{
+    await pool.query('DELETE FROM account_sessions');
+    await pool.query('DELETE FROM password_reset_requests');
+    await pool.query('DELETE FROM accounts');
+    await pool.query('DELETE FROM players');
+    await pool.query('INSERT INTO app_meta(key,value) VALUES($1,$2)',[cleanupKey,'done']);
+    await pool.query('COMMIT');
+    console.log("[Alpha 0.2.7] Limpieza única: cuentas y perfiles de prueba eliminados.")
+   }catch(cleanupError){
+    await pool.query('ROLLBACK');
+    throw cleanupError
+   }
+  }
+
   const {rows}=await pool.query('SELECT id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats FROM players');
   rankings={};for(const row of rows)rankings[row.id]=normalizeRank(row.id,row);
   const ar=await pool.query('SELECT username_key,username,player_id,password_salt,password_hash,force_password_change FROM accounts');accounts={};accountByPlayerId={};for(const a of ar.rows){accounts[a.username_key]={username:a.username,playerId:a.player_id,passwordSalt:a.password_salt,passwordHash:a.password_hash,forcePasswordChange:!!a.force_password_change};accountByPlayerId[a.player_id]=a.username_key}
@@ -168,6 +197,48 @@ async function deleteAllAccountSessions(usernameKey){
  for(const [h,s] of [...accountSessions])if(s.usernameKey===usernameKey)accountSessions.delete(h);
  if(storageMode==="postgres"&&pool)await pool.query('DELETE FROM account_sessions WHERE username_key=$1',[usernameKey]);
  else saveAccountsFile()
+}
+async function deleteAccountAndProfile(playerId){
+ const id=String(playerId||"");
+ if(!id)throw new Error("Jugador inválido");
+ const key=accountByPlayerId[id]||"";
+
+ if(storageMode==="postgres"&&pool){
+  await pool.query('BEGIN');
+  try{
+   if(key){
+    await pool.query('DELETE FROM account_sessions WHERE username_key=$1',[key]);
+    await pool.query('DELETE FROM password_reset_requests WHERE username_key=$1',[key]);
+    await pool.query('DELETE FROM accounts WHERE username_key=$1',[key])
+   }
+   await pool.query('DELETE FROM players WHERE id=$1',[id]);
+   await pool.query('COMMIT')
+  }catch(e){
+   await pool.query('ROLLBACK');throw e
+  }
+ }else{
+  if(key){
+   for(const [h,s] of [...accountSessions])if(s.usernameKey===key)accountSessions.delete(h);
+   delete passwordResetRequests[key];
+   delete accounts[key];
+   delete accountByPlayerId[id]
+  }
+  delete rankings[id];
+  saveFile();saveAccountsFile()
+ }
+
+ if(key){
+  for(const [h,s] of [...accountSessions])if(s.usernameKey===key)accountSessions.delete(h);
+  delete passwordResetRequests[key];
+  delete accounts[key];
+  delete accountByPlayerId[id]
+ }
+ delete rankings[id];
+
+ for(const room of rooms.values()){
+  if(room.players?.has(id))kickRoomPlayer(room,id,"Tu cuenta fue eliminada por el administrador")
+ }
+ return {ok:true,playerId:id,username:key}
 }
 async function persistPasswordResetRequest(usernameKey){
  const requestedAt=Date.now();passwordResetRequests[usernameKey]={requestedAt};
@@ -375,6 +446,15 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   if(!a)return json(res,404,{error:"Este perfil no tiene una cuenta registrada"});
   await deleteAllAccountSessions(key);
   return json(res,200,{ok:true,username:a.username})
+ }
+ if(req.method==="POST"&&p==="/api/admin/account/delete"){
+  const b=await body(req),playerId=String(b.playerId||"");
+  if(!playerId)return json(res,400,{error:"Jugador inválido"});
+  const r=rankings[playerId];
+  if(!r)return json(res,404,{error:"Perfil no encontrado"});
+  const username=adminAccountUsername(playerId),name=r.name;
+  await deleteAccountAndProfile(playerId);
+  return json(res,200,{ok:true,playerId,username,name})
  }
  if(req.method==="GET"&&p==="/api/multi/stream"){const code=(u.searchParams.get("code")||"").toUpperCase(),id=u.searchParams.get("playerId")||"",room=rooms.get(code);if(!room||!room.players.has(id))return json(res,404,{error:"Sala o jugador no encontrado"});res.writeHead(200,{"Content-Type":"text/event-stream","Cache-Control":"no-cache","Connection":"keep-alive","X-Accel-Buffering":"no"});res.write(": connected\n\n");if(!room.streams.has(id))room.streams.set(id,new Set());room.streams.get(id).add(res);const hb=setInterval(()=>{try{res.write(": ping\n\n")}catch(e){}},20000);req.on("close",()=>{clearInterval(hb);room.streams.get(id)?.delete(res);if(room.status==="lobby")lobby(room)});if(room.status==="lobby")sendSSE(res,{type:"lobby",code:room.code,mode:room.mode,hostId:room.hostId,players:publicPlayers(room)});return}
  if(req.method==="POST"&&p==="/api/multi/create"){const b=await body(req),mode=["battle","ranked","competition","teams"].includes(b.mode)?b.mode:"competition",id=String(b.playerId||'');if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileAccess(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});const accKey=accountByPlayerId[id],acc=accKey&&accounts[accKey];if(acc?.forcePasswordChange)return json(res,403,{error:"Debes cambiar tu contraseña temporal antes de jugar online",mustChangePassword:true});const room=createRoom(id,b.name,mode);await persistRank(r);return json(res,200,{code:room.code,mode,hostId:room.hostId})}

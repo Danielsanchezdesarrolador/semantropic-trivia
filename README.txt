@@ -84,3 +84,8 @@ ALPHA 0.2.7 — UNIFIED LOGIN HOTFIX
 - Multijugador ya no crea cuentas ni usa un nombre separado.
 - Recuperación por solicitud al administrador + contraseña temporal.
 - ADMIN muestra solicitudes de recuperación.
+
+ACCOUNT CLEANUP + ADMIN DELETE — 0.2.7
+- Limpieza única de cuentas/perfiles de prueba anteriores.
+- Las cuentas nuevas posteriores al deploy permanecen normalmente.
+- ADMIN permite eliminar definitivamente una cuenta y su perfil.

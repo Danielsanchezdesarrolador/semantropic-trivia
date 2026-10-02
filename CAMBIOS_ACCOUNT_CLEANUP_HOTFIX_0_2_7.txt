@@ -1,0 +1,21 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.7
+ACCOUNT CLEANUP + ADMIN DELETE HOTFIX
+
+LIMPIEZA ÚNICA
+- En el primer deploy de este hotfix se eliminan las cuentas y perfiles DE PRUEBA existentes.
+- Se eliminan también sus sesiones y solicitudes de recuperación.
+- PostgreSQL guarda un marcador para que esta limpieza ocurra UNA SOLA VEZ.
+- Las cuentas creadas después de este deploy NO se borran en reinicios futuros.
+
+ADMIN
+- Nuevo botón: ELIMINAR CUENTA Y PERFIL.
+- Borra cuenta, perfil, sesiones, progreso persistido, monedas, rating y logros.
+- Exige escribir ELIMINAR para confirmar.
+- También retira al jugador de una sala activa si corresponde.
+
+LOGIN
+- Una sesión antigua que ya no existe vuelve automáticamente a la pantalla de acceso.
+- Una cuenta nueva no hereda el guardado local de otra persona que haya usado ese equipo.
+
+IMPORTANTE
+- El borrado desde ADMIN es definitivo.

@@ -25,9 +25,14 @@ background:
 button,input,select{font:inherit}.hidden{display:none!important}
 button{transition:.16s ease}.app{min-height:100vh}
 .shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-aside{background:rgba(8,13,25,.97);border-right:1px solid rgba(255,255,255,.07);padding:18px;position:sticky;top:0;height:100vh;z-index:20}
+aside{background:rgba(8,13,25,.97);border-right:1px solid rgba(255,255,255,.07);padding:18px;position:sticky;top:0;height:100vh;z-index:20;overflow-y:auto;overflow-x:hidden}
 .logo{font-weight:1000;letter-spacing:.08em;font-size:1.1rem;margin:5px 0 18px}.logo b{color:var(--gold)}
 .profile{padding:14px;border-radius:18px;background:linear-gradient(155deg,#1a294c,#10182e);border:1px solid rgba(255,255,255,.08);margin-bottom:15px}
+.sidebar-account-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-4px 0 10px;padding:0 2px}
+.sidebar-account-name{font-size:.72rem;color:var(--muted);font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px}
+.sidebar-logout{border:1px solid rgba(255,100,127,.34);background:rgba(255,100,127,.10);color:#ff8da0;border-radius:9px;padding:6px 9px;font-size:.70rem;font-weight:950;cursor:pointer;white-space:nowrap}
+.sidebar-logout:hover{background:rgba(255,100,127,.20);transform:translateY(-1px)}
+
 .avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.8rem;background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 0 0 3px rgba(255,255,255,.05)}
 .xp{height:7px;background:#07101f;border-radius:99px;overflow:hidden;margin-top:8px}.xp>div{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan))}
 nav{display:flex;flex-direction:column;gap:6px}
@@ -580,6 +585,10 @@ body.auth-locked .app{display:none!important}
 <div class="app"><div class="shell">
 <aside>
   <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.2.7</div>
+  <div class="sidebar-account-row">
+   <span class="sidebar-account-name">@<span id="sidebarAccountUsername">usuario</span></span>
+   <button class="sidebar-logout" onclick="accountLogout()" title="Cerrar sesión">⎋ Salir</button>
+  </div>
   <div class="profile"><div class="avatar custom-avatar" id="sideAvatar"></div><div style="margin-top:9px"><b id="sideName">Jugador</b><div class="muted">Nivel <span id="sideLevel">1</span></div><div id="sideShowcase" class="profile-showcase">🏆 Sin logro exhibido</div></div><div class="xp"><div id="sideXp" style="width:0%"></div></div></div>
   <nav>
     <button class="active" onclick="page('home',this)">🏠 Inicio</button>
@@ -668,8 +677,6 @@ body.auth-locked .app{display:none!important}
   <div class="card account-logged">
    <div><span class="tag">CUENTA ACTIVA</span><h3 style="margin:7px 0 2px">@<span id="accountLoggedUsername">usuario</span></h3><div class="muted">Tu cuenta ya identifica este perfil en todo Semantropic.</div></div>
    <button class="btn secondary" onclick="page('settings')">⚙️ CUENTA Y AJUSTES</button>
-  </div></div>
-   <div class="account-session-actions"><button class="btn secondary" onclick="openPasswordModal(false)">🔑 CAMBIAR CONTRASEÑA</button><button class="btn secondary" onclick="accountLogoutAll()">🚪 CERRAR TODAS</button><button class="btn secondary" onclick="accountLogout()">CERRAR SESIÓN</button></div>
   </div>
   <div id="onlineProfileCard" class="card online-profile-card">
    <div class="online-profile-identity">
@@ -801,6 +808,7 @@ body.auth-locked .app{display:none!important}
     <button class="btn secondary" onclick="adminGenerateTempPassword()">🎲 CONTRASEÑA TEMPORAL</button>
     <button class="btn secondary" onclick="adminSetTempPassword()">🔐 FIJAR CONTRASEÑA TEMPORAL</button>
     <button class="btn secondary" onclick="adminLogoutPlayerSessions()">🚪 CERRAR SUS SESIONES</button>
+    <button class="btn danger" onclick="adminDeleteAccount()">🗑️ ELIMINAR CUENTA Y PERFIL</button>
     <button class="btn danger" onclick="adminResetStats()">♻️ REINICIAR STATS</button>
    </div>
   </div>
@@ -876,7 +884,7 @@ body.auth-locked .app{display:none!important}
  <div class="top"><h1>Ajustes</h1></div>
  <div class="card account-settings-card">
   <div class="account-settings-head"><div><div class="tag">TU CUENTA</div><h2 style="margin:6px 0">@<span id="settingsAccountUsername">usuario</span></h2><div class="muted">Esta cuenta es tu único perfil de Semantropic.</div></div><div class="pill">🔐 Sesión activa</div></div>
-  <div class="account-settings-actions"><button class="btn secondary" onclick="openPasswordModal(false)">🔑 CAMBIAR CONTRASEÑA</button><button class="btn secondary" onclick="accountLogoutAll()">🚪 CERRAR TODAS LAS SESIONES</button><button class="btn danger" onclick="accountLogout()">SALIR DE LA CUENTA</button></div>
+  <div class="account-settings-actions"><button class="btn secondary" onclick="openPasswordModal(false)">🔑 CAMBIAR CONTRASEÑA</button><button class="btn secondary" onclick="accountLogoutAll()">🚪 CERRAR TODAS LAS SESIONES</button></div>
  </div>
  <div class="card">
   <div class="settingrow"><div><b>Música de fondo</b><div class="muted">Melodía original generada por el navegador.</div></div><div id="musicToggle" class="toggle on" onclick="toggleSetting('music')"></div></div>
@@ -1575,13 +1583,23 @@ function setAccountSession(username,playerId,token,profile,mustChangePassword=fa
  if(profile){onlineProfileReady=true;applyOnlineProfile(profile,true)}renderAccountUI()
 }
 function renderAccountUI(){
- const u=$("accountLoggedUsername"),su=$("settingsAccountUsername");
- if(u)u.textContent=onlineAccountUsername||"usuario";if(su)su.textContent=onlineAccountUsername||"usuario";
+ const u=$("accountLoggedUsername"),su=$("settingsAccountUsername"),sideU=$("sidebarAccountUsername");
+ if(u)u.textContent=onlineAccountUsername||"usuario";
+ if(su)su.textContent=onlineAccountUsername||"usuario";
+ if(sideU)sideU.textContent=onlineAccountUsername||"usuario";
  if(accountLoggedIn&&accountMustChangePassword)setTimeout(()=>openPasswordModal(true),120)
 }
 async function refreshAccountSession(){
  accountLoggedIn=false;if(!onlineAccountUsername||!onlineProfileToken){renderAccountUI();return false}
- try{const r=await mpRequest("/api/account/me",{token:onlineProfileToken});setAccountSession(r.username,r.playerId,onlineProfileToken,r.profile,r.mustChangePassword);return true}catch(e){accountLoggedIn=false;onlineAccountUsername="";try{localStorage.removeItem("semantropicAccountUsername")}catch(_){}renderAccountUI();return false}
+ try{const r=await mpRequest("/api/account/me",{token:onlineProfileToken});setAccountSession(r.username,r.playerId,onlineProfileToken,r.profile,r.mustChangePassword);return true}catch(e){
+  accountLoggedIn=false;accountMustChangePassword=false;onlineAccountUsername="";onlineProfileToken="";onlineProfileReady=false;onlineProfile=null;
+  try{
+   localStorage.removeItem("semantropicAccountUsername");
+   localStorage.removeItem("semantropicProfileToken");
+   localStorage.removeItem("semantropicOnlinePlayerId")
+  }catch(_){}
+  renderAccountUI();return false
+ }
 }
 let authMode="login";
 function authSetMode(mode){
@@ -1620,6 +1638,8 @@ async function accountRegister(){
  msg.textContent="Creando tu cuenta…";
  try{
   const r=await mpRequest("/api/account/register",{username,password,gender});
+  save=blank();
+  quietPersist();
   setAccountSession(r.username,r.playerId,r.token,r.profile,r.mustChangePassword);
   msg.textContent="";toast("✅ Cuenta creada. Bienvenido a Semantropic.");enterSemantropic()
  }catch(e){msg.textContent="❌ "+e.message}
@@ -1831,6 +1851,34 @@ async function adminLogoutPlayerSessions(){
  if(!p?.accountUsername)return toast("Este perfil todavía no tiene una cuenta registrada");
  if(!confirm(`¿Cerrar todas las sesiones de @${p.accountUsername}?`))return;
  try{await adminRequest("/api/admin/account/logout-sessions",{playerId:adminSelectedId});toast("🚪 Todas las sesiones fueron cerradas")}catch(e){toast(e.message)}
+}
+async function adminDeleteAccount(){
+ if(!adminSelectedId)return toast("Selecciona un jugador");
+ const p=adminPlayers.find(x=>x.id===adminSelectedId);
+ const label=p?.accountUsername?`@${p.accountUsername}`:(p?.name||"este perfil");
+ const deletingSelf=adminSelectedId===mp?.playerId;
+ const typed=prompt(
+  `⚠️ ELIMINACIÓN DEFINITIVA\n\nSe borrará ${label} junto con su perfil, progreso guardado en servidor, monedas, rating, logros y todas sus sesiones.\n\nEscribe ELIMINAR para confirmar:`
+ );
+ if(typed!=="ELIMINAR")return toast("Eliminación cancelada");
+ try{
+  await adminRequest("/api/admin/account/delete",{playerId:adminSelectedId});
+  adminSelectedId="";
+  $("adminSelectedName").textContent="Ninguno";
+  $("adminSelectedId").textContent="—";
+  toast("🗑️ Cuenta y perfil eliminados");
+  if(deletingSelf){
+   accountLoggedIn=false;accountMustChangePassword=false;onlineAccountUsername="";onlineProfileToken="";onlineProfileReady=false;onlineProfile=null;
+   try{
+    localStorage.removeItem("semantropicAccountUsername");
+    localStorage.removeItem("semantropicProfileToken");
+    localStorage.removeItem("semantropicOnlinePlayerId")
+   }catch(e){}
+   showAuthGate("Tu cuenta fue eliminada.");
+   return
+  }
+  await adminRefresh()
+ }catch(e){toast(e.message)}
 }
 
 /* ===== ONLINE MULTIPLAYER ALPHA 0.2.7 =====
@@ -2127,7 +2175,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c){
