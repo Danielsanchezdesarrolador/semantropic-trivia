@@ -1,4 +1,4 @@
-SEMANTROPIC TRIVIA — ALPHA 0.2.6
+SEMANTROPIC TRIVIA — ALPHA 0.2.7
 
 NOVEDADES
 - Ranking persistente con PostgreSQL.
@@ -42,7 +42,7 @@ HOTFIX DE CREDENCIALES ONLINE (Alpha 0.2.6)
 - Después de usar REPARAR ACCESO, el jugador solo debe recargar la página.
 
 
-SOCIAL / PROFILES / ACHIEVEMENTS PATCH — ALPHA 0.2.6
+SOCIAL / PROFILES / ACHIEVEMENTS PATCH — ALPHA 0.2.7
 - Sistema de logros ampliado con categorías y progreso.
 - Logros online persistentes: partidas, victorias, rating, modos y 2v2.
 - Avatar inicial masculino o femenino.
@@ -60,3 +60,18 @@ VALIDACIÓN DEL PARCHE SOCIAL
 - Probado localmente: creación y personalización de perfiles, perfil público, sala 2v2, 4 jugadores, cambio de equipos, inicio de partida y partida completa 12/12.
 - Verificado: victorias/derrotas 2v2 y logros online se actualizan al terminar la partida.
 - La bio del perfil es pública: la interfaz recomienda no incluir datos personales.
+
+
+ALPHA 0.2.7
+- Cuenta Semantropic con usuario/contraseña y login multidispositivo.
+- Tienda depurada de nombres duplicados.
+- Ruleta configurable en vivo desde ADMIN.
+- Migración automática de PostgreSQL; no crear una base nueva.
+
+
+PASSWORD RECOVERY HOTFIX — 0.2.7
+- Admin puede generar/fijar contraseñas temporales.
+- Admin puede cerrar todas las sesiones de una cuenta.
+- Los jugadores pueden cambiar su propia contraseña.
+- Una contraseña temporal obliga a crear una contraseña nueva antes de jugar online.
+- Las contraseñas originales nunca son visibles.

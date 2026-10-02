@@ -1,8 +1,8 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.2.6 - social profiles, online achievements and 2v2 teams",
+  "description": "Semantropic Trivia Alpha 0.2.7 - accounts, cross-device login and admin wheel configuration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

@@ -1,0 +1,18 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.7
+
+CAMBIOS PRINCIPALES
+- Corregidos avatares con nombres repetidos en la tienda.
+- Protección adicional para que la tienda no renderice duplicados exactos.
+- Registro básico con nombre de usuario + contraseña.
+- Inicio de sesión desde otros PCs, celulares o tablets.
+- Las cuentas se vinculan al perfil existente para conservar rating, recursos, avatar, logros y estadísticas online.
+- Contraseñas almacenadas mediante scrypt + salt; nunca se guardan en texto plano.
+- Sesiones de cuenta persistentes por hasta 30 días y compatibles con PostgreSQL.
+- El multijugador exige iniciar sesión con una Cuenta Semantropic.
+- Panel ADMIN: nueva configuración global de Ruleta.
+- ADMIN puede cambiar cooldown en minutos y los 8 premios de la ruleta (tipo y cantidad).
+- Configuración de ruleta guardada en PostgreSQL, sin necesidad de hacer un nuevo deploy.
+- Se mantiene compatibilidad con perfiles anteriores para que puedan registrar su cuenta sin perder progreso.
+
+MIGRACIÓN
+No debes crear otra base ni modificar DATABASE_URL. server.js crea automáticamente las tablas accounts, account_sessions y game_settings al iniciar.
