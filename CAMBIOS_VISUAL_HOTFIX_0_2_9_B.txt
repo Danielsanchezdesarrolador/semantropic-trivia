@@ -1,0 +1,21 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9-B
+HOTFIX VISUAL DE AVATARES PREMIUM
+
+Qué se corrigió:
+- Se redibujaron mejor las proporciones del retrato premium.
+- Se ajustó la versión compacta para:
+  * perfil lateral,
+  * slots pequeños,
+  * online,
+  * mini vistas.
+- Se reemplazaron accesorios problemáticos basados en emoji por diseños CSS:
+  * Headset
+  * Boxeadora
+  * Chef
+  * Corona
+  * Maestro
+- Se suavizó la composición de miniaturas en colección/tienda.
+
+Objetivo:
+Que los avatares comprables se vean limpios, legibles y más cercanos al estilo cartoon
+que definiste, evitando que el accesorio tape la cara o se vea deforme.

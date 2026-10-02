@@ -1,0 +1,27 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9.1
+
+FOCO DE ESTA VERSIÓN
+- Rebuild visual de avatares premium comprables
+- Mejor separación visual entre avatar base, accesorio, marco y aura
+- Mejor lectura del avatar en:
+  * perfil lateral
+  * colección
+  * tienda
+  * multijugador
+
+MEJORAS
+1. Se corrigió la base del retrato premium (cara, cabello, cuerpo y cuello).
+2. Se agregó soporte correcto al estilo de cabello straight para Evelyn Genio.
+3. Se redibujaron accesorios premium con CSS limpio:
+   - headset
+   - boxer
+   - chef
+   - glasses/genius
+   - crown/master
+4. Se corrigió el bug de posicionamiento del avatar en el perfil lateral
+   agregando posicionamiento relativo a contenedores compactos.
+5. Se mejoró la presentación de los cards premium en tienda y colección.
+
+NOTA
+Después de desplegar en Render, hacer hard refresh (Ctrl+F5)
+para evitar caché antigua del CSS.
