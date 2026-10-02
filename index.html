@@ -404,6 +404,35 @@ input,select,textarea{
 .avatar-render .av-earring{display:none;position:absolute;right:39px;top:88px;width:8px;height:8px;background:#ffd166;border-radius:50%;z-index:12;box-shadow:0 0 0 2px rgba(255,255,255,.35)}.avatar-render.acc-earring .av-earring{display:block}
 .custom-avatar .avatar-render{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.34);transform-origin:center}
 .avatar-progress-card{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center}
+.avatar-progress-top{margin-bottom:14px;border-color:rgba(94,221,255,.22)}
+.avatar-studio-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px;position:sticky;top:8px;z-index:8;background:rgba(8,13,25,.88);backdrop-filter:blur(12px);padding:8px;border-radius:16px;border:1px solid rgba(255,255,255,.06)}
+.avatar-studio-tab{border:1px solid #2d3d67;background:#101a34;color:#aebbe0;border-radius:12px;padding:12px 10px;font-weight:950;cursor:pointer}
+.avatar-studio-tab.active{color:white;border-color:#55dfff;background:linear-gradient(135deg,rgba(110,88,255,.36),rgba(43,197,255,.20));box-shadow:0 0 0 1px rgba(85,223,255,.12) inset}
+.avatar-category-intro{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.avatar-equipped-summary{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px}
+.avatar-equipped-summary span{font-size:.78rem;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)}
+.avatar-builder .avatar-preview{width:220px;height:220px;border-radius:42px}
+.avatar-builder .avatar-preview-v2 .avatar-render{transform:translate(-50%,-48%) scale(1.18)}
+.avatar-render .av-shoulders{height:57px;left:19px;right:19px;border-radius:46px 46px 12px 12px}
+.avatar-render .av-shoulders:before,.avatar-render .av-shoulders:after{content:"";position:absolute;pointer-events:none}
+.avatar-render.outfit-hoodie .av-shoulders:before{left:50%;top:3px;width:3px;height:48px;background:rgba(255,255,255,.42);transform:translateX(-50%);border-radius:6px}
+.avatar-render.outfit-hoodie .av-shoulders:after{left:49px;top:6px;width:23px;height:13px;border:3px solid rgba(255,255,255,.55);border-top:0;border-radius:0 0 20px 20px;box-shadow:49px 0 0 -3px transparent}
+.avatar-render.outfit-academy .av-shoulders:before{left:50%;top:0;width:32px;height:27px;background:#f4f7ff;transform:translateX(-50%);clip-path:polygon(0 0,50% 65%,100% 0,78% 100%,50% 78%,22% 100%)}
+.avatar-render.outfit-academy .av-shoulders:after{left:50%;top:13px;width:8px;height:35px;background:#ffcf57;transform:translateX(-50%);clip-path:polygon(50% 0,100% 22%,68% 100%,32% 100%,0 22%)}
+.avatar-render.outfit-shadow .av-shoulders:before{left:23px;right:23px;top:6px;height:42px;border-left:8px solid #151a28;border-right:8px solid #151a28;border-radius:12px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.05)}
+.avatar-render.outfit-shadow .av-shoulders:after{left:50%;top:12px;width:36px;height:17px;border:2px solid #808aa5;transform:translateX(-50%);border-radius:4px}
+.avatar-render.outfit-cosmic .av-shoulders:before{inset:5px 14px 6px;border-radius:30px;background:radial-gradient(circle at 20% 40%,#fff 0 1px,transparent 2px),radial-gradient(circle at 65% 18%,#7fe7ff 0 2px,transparent 3px),radial-gradient(circle at 82% 70%,#fff 0 1px,transparent 2px),linear-gradient(135deg,rgba(153,92,255,.25),rgba(34,8,91,.10))}
+.avatar-render.outfit-stage-2 .av-outfit-emblem{font-size:17px}
+.avatar-render.outfit-stage-3 .av-outfit-emblem{font-size:21px;animation:floaty 2.1s ease-in-out infinite}
+.avatar-render.outfit-stage-3 .av-shoulders{filter:saturate(1.2);box-shadow:0 0 0 2px rgba(255,255,255,.18),0 0 28px rgba(95,220,255,.34)}
+.avatar-render.aura-butterflies .av-particles-layer:before{content:"🦋";background:none;width:auto;height:auto;font-size:17px}
+.avatar-render.aura-butterflies .av-particles-layer:after{content:"🦋";background:none;width:auto;height:auto;font-size:13px}
+.avatar-render.aura-firefeet .av-particles-layer:before{content:"🔥";background:none;width:auto;height:auto;font-size:18px}
+.avatar-render.aura-firefeet .av-particles-layer:after{content:"🔥";background:none;width:auto;height:auto;font-size:15px}
+.avatar-render.aura-cosmic .av-particles-layer:before{content:"✦";background:none;width:auto;height:auto;font-size:18px;color:#9ef5ff;text-shadow:0 0 10px #78e8ff}
+.avatar-render.aura-cosmic .av-particles-layer:after{content:"✧";background:none;width:auto;height:auto;font-size:18px;color:#c7a3ff;text-shadow:0 0 10px #a36dff}
+@media(max-width:700px){.avatar-studio-tabs{position:static}.avatar-builder .avatar-preview{width:190px;height:190px}.avatar-studio-tab{font-size:.78rem;padding:10px 6px}}
+
 .avatar-level-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(125,92,255,.18);border:1px solid rgba(125,92,255,.3);font-weight:800}
 .avatar-progress-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .avatar-progress-meta .pill{background:rgba(255,255,255,.05)}
@@ -862,50 +891,69 @@ body.auth-locked .app{display:none!important}
 
 <section id="avatarStudio" class="page hidden">
  <div class="top"><h1>🧑 Estudio de Avatar</h1><div class="pill">Personalizable</div></div>
- <div class="section"><h2>Avatar inicial</h2><span class="muted">Puedes partir con una opción masculina o femenina y cambiarla cuando quieras.</span></div>
- <div class="starter-avatar-row">
-  <div id="starterMaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_m','male')"><div class="bigico">👨</div><h3>Masculino</h3><div class="muted">Avatar masculino predeterminado</div></div>
-  <div id="starterFemaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_f','female')"><div class="bigico">👩</div><h3>Femenino</h3><div class="muted">Avatar femenino predeterminado</div></div>
- </div>
- <div class="card avatar-builder">
-  <div class="avatar-preview-wrap">
-   <div id="customPreview" class="avatar-preview avatar-preview-v2"></div>
-   <div class="muted" style="margin-top:10px;text-align:center">Tu avatar personalizado</div>
-  </div>
-  <div>
-   <h3>Tono de piel</h3><div id="skinOptions" class="option-row"></div>
-   <h3>Estilo de cabello</h3><div id="hairOptions" class="option-row"></div>
-   <h3>Color de cabello</h3><div id="hairColorOptions" class="option-row"></div>
-   <h3>Expresión</h3><div id="expressionOptions" class="option-row"></div>
-   <h3>Accesorio</h3><div id="accOptions" class="option-row"></div>
-   <h3>Fondo</h3><div id="bgOptions" class="option-row"></div>
-   <div style="margin-top:16px"><button class="btn primary" onclick="saveCustomAvatar()">GUARDAR AVATAR</button></div>
-  </div>
- </div>
- <div class="card avatar-progress-card">
+ <div class="card avatar-progress-card avatar-progress-top">
   <div>
    <div class="tag">PROGRESIÓN 0.2.8</div>
-   <h2 style="margin:10px 0 8px">Nivel y experiencia</h2>
-   <div class="avatar-level-badge">⭐ Nivel <span id="avatarStudioLevel">1</span> / 30</div>
+   <h2 style="margin:10px 0 8px">⭐ Nivel <span id="avatarStudioLevel">1</span> / 30</h2>
    <div class="avatar-small-progress"><div id="avatarStudioXpBar" style="width:0%"></div></div>
    <div class="muted" id="avatarStudioXpText" style="margin-top:8px">0 / 100 XP</div>
    <div class="avatar-progress-meta">
-    <div class="pill">🎯 Ganarás XP al acertar, completar rondas y jugar online</div>
-    <div class="pill">👕 Tu outfit sube de etapa mientras lo usas equipado</div>
+    <div class="pill">🎯 XP por aciertos y partidas</div>
+    <div class="pill">🌐 XP por jugar online</div>
+    <div class="pill">👕 Maestría para la ropa equipada</div>
    </div>
   </div>
   <div class="card" style="margin:0;background:rgba(7,16,31,.5)">
-   <b>Bonificaciones por nivel</b>
-   <div class="muted" style="margin-top:6px">Cada nivel entrega progreso. Cada 5 niveles ganas una 🔑 y cada 10 niveles además ganas un 💎.</div>
+   <b>Recompensas</b>
+   <div class="muted" style="margin-top:6px">Cada 5 niveles obtienes una 🔑 y cada 10 niveles además un 💎.</div>
    <div class="muted" id="avatarLevelRewardHint" style="margin-top:12px">Próximo hito: nivel 5</div>
   </div>
  </div>
- <div class="section"><h2>Wardrobe evolutivo</h2><div class="muted">Equipa una prenda y súbela de etapa con experiencia acumulada.</div></div>
- <div id="avatarOutfitGrid" class="wardrobe-grid"></div>
- <div class="section"><h2>Auras y partículas</h2><div class="muted">Efectos independientes del outfit: fuego, mariposas, brillo cósmico y más.</div></div>
- <div id="avatarAuraGrid" class="aura-grid"></div>
- <div class="section"><h2>Avatares completos</h2><div class="muted">También puedes seguir usando y comprando avatares prediseñados.</div></div>
- <div id="avatarGridStudio" class="avatargrid"></div>
+
+ <div class="avatar-studio-tabs">
+  <button id="avatarTabCharacter" class="avatar-studio-tab active" onclick="setAvatarStudioTab('character')">🧑 PERSONAJE</button>
+  <button id="avatarTabOutfits" class="avatar-studio-tab" onclick="setAvatarStudioTab('outfits')">👕 ROPA</button>
+  <button id="avatarTabAuras" class="avatar-studio-tab" onclick="setAvatarStudioTab('auras')">✨ AURAS</button>
+ </div>
+
+ <div id="avatarPanelCharacter">
+  <div class="section"><h2>Personaje</h2><span class="muted">Edita rostro, cabello, expresión y accesorios. Guarda el personaje para usarlo en tu perfil.</span></div>
+  <div class="starter-avatar-row">
+   <div id="starterMaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_m','male')"><div class="bigico">👨</div><h3>Masculino</h3><div class="muted">Avatar masculino predeterminado</div></div>
+   <div id="starterFemaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_f','female')"><div class="bigico">👩</div><h3>Femenino</h3><div class="muted">Avatar femenino predeterminado</div></div>
+  </div>
+  <div class="card avatar-builder">
+   <div class="avatar-preview-wrap">
+    <div id="customPreview" class="avatar-preview avatar-preview-v2"></div>
+    <div class="avatar-equipped-summary">
+     <span id="avatarEquippedOutfit">👕 Hoodie Pulse</span>
+     <span id="avatarEquippedAura">✨ Sin aura</span>
+    </div>
+    <div class="muted" style="margin-top:8px;text-align:center">Vista previa en tiempo real</div>
+   </div>
+   <div>
+    <h3>Tono de piel</h3><div id="skinOptions" class="option-row"></div>
+    <h3>Estilo de cabello</h3><div id="hairOptions" class="option-row"></div>
+    <h3>Color de cabello</h3><div id="hairColorOptions" class="option-row"></div>
+    <h3>Expresión</h3><div id="expressionOptions" class="option-row"></div>
+    <h3>Accesorio</h3><div id="accOptions" class="option-row"></div>
+    <h3>Fondo</h3><div id="bgOptions" class="option-row"></div>
+    <div style="margin-top:16px"><button class="btn primary" onclick="saveCustomAvatar()">GUARDAR Y USAR PERSONAJE</button></div>
+   </div>
+  </div>
+  <div class="section"><h2>Avatares prediseñados</h2><div class="muted">Si prefieres, también puedes usar uno de los personajes completos.</div></div>
+  <div id="avatarGridStudio" class="avatargrid"></div>
+ </div>
+
+ <div id="avatarPanelOutfits" class="hidden">
+  <div class="card avatar-category-intro"><div class="bigico">👕</div><div><h2>Ropa evolutiva</h2><div class="muted">Al equipar una prenda, parte de la XP que ganes alimentará su maestría. Cada prenda tiene 3 etapas visuales.</div></div></div>
+  <div id="avatarOutfitGrid" class="wardrobe-grid"></div>
+ </div>
+
+ <div id="avatarPanelAuras" class="hidden">
+  <div class="card avatar-category-intro"><div class="bigico">✨</div><div><h2>Auras y partículas</h2><div class="muted">Se equipan por separado de la ropa. Algunas requieren nivel antes de poder comprarse.</div></div></div>
+  <div id="avatarAuraGrid" class="aura-grid"></div>
+ </div>
 </section>
 
 <section id="collection" class="page hidden">
@@ -2419,7 +2467,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="education")renderEducation();if(id==="avatarStudio"){setAvatarStudioTab("character");renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c,meta={}){
@@ -2449,8 +2497,24 @@ function renderFrames(){
 function renderSideAvatar(){const el=$("sideAvatar");if(save.avatar==="custom"){el.innerHTML=avatarMarkup(save.customAvatar,{equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura});el.style.background=bgStyle(save.customAvatar.bg)}else{const a=AVATARS.find(a=>a.id===save.avatar)||AVATARS[0];el.innerHTML=avatarVisual(a);el.style.background="linear-gradient(135deg,var(--purple),var(--cyan))"}applyProfileFrame()}
 function refresh(){renderSideAvatar();$("sideName").textContent=save.name;$("sideLevel").textContent=save.level;const sc=$("sideShowcase");if(sc)sc.textContent=achievementLabel(save.featuredAchievement);$("sideXp").style.width=levelProgressPercent()+"%";document.querySelectorAll(".coins").forEach(e=>e.textContent=save.coins);updateRewardTimer();applyGameFx();document.querySelectorAll(".gems").forEach(e=>e.textContent=save.gems);document.querySelectorAll(".keys").forEach(e=>e.textContent=save.keys);$("hLevel").textContent=save.level;$("hGames").textContent=save.games;$("hBosses").textContent=save.bosses.length+"/10";$("hAch").textContent=Object.keys(save.ach).length;updateMusicIndicator();renderAvatarProgressUI()}
 function renderEducation(){const sg=$("subjectGrid");sg.innerHTML="";Object.entries(EDU_SUBJECTS).forEach(([s,ic])=>{const d=document.createElement("div");d.className="card subject "+(save.eduPrefs.subject===s?"selected":"");d.innerHTML=`<div class="ico">${ic}</div><h3>${s}</h3>`;d.onclick=()=>{save.eduPrefs.subject=s;persist();renderEducation()};sg.appendChild(d)});const ag=$("ageGrid");ag.innerHTML="";EDU_LEVELS.forEach(l=>{const d=document.createElement("div");d.className="card age-card "+(save.eduPrefs.level===l.id?"selected":"");d.innerHTML=`<h3>${l.label}</h3><div class="muted">${l.desc}</div>`;d.onclick=()=>{save.eduPrefs.level=l.id;persist();renderEducation()};ag.appendChild(d)})}
+let avatarStudioActiveTab="character";
+function setAvatarStudioTab(tab){
+ avatarStudioActiveTab=tab;
+ ["character","outfits","auras"].forEach(x=>{
+  const panel=$("avatarPanel"+x.charAt(0).toUpperCase()+x.slice(1));
+  if(panel)panel.classList.toggle("hidden",x!==tab);
+  const btn=$("avatarTab"+x.charAt(0).toUpperCase()+x.slice(1));
+  if(btn)btn.classList.toggle("active",x===tab)
+ });
+ if(tab==="outfits")renderAvatarOutfits();
+ if(tab==="auras")renderAvatarAuras();
+ window.scrollTo({top:0,left:0,behavior:"smooth"})
+}
 function renderAvatarBuilder(){
  const p=$("customPreview");p.innerHTML=avatarMarkup(save.customAvatar,{equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura});p.style.background=bgStyle(save.customAvatar.bg);
+ const outfitText=$("avatarEquippedOutfit"),auraText=$("avatarEquippedAura");
+ if(outfitText){const o=currentOutfit();outfitText.textContent=`${o.icon} ${o.name} · Etapa ${outfitStage(o.id)}/3`}
+ if(auraText){const a=currentAura();auraText.textContent=`${a.icon} ${a.name}`}
  const makeText=(id,list,key)=>{const box=$(id);box.innerHTML="";list.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar[key]===v[0]?"active":"");b.textContent=v[1];b.onclick=()=>{save.customAvatar[key]=v[0];renderAvatarBuilder()};box.appendChild(b)})};
  makeText("skinOptions",SKINS.map(v=>[v[0],v[2]]),"skin");
  makeText("hairOptions",HAIR_STYLES,"hairStyle");
@@ -2472,9 +2536,9 @@ function buyOutfit(id){
  const item=OUTFITS.find(x=>x.id===id);if(!item)return;
  if(!canUseCosmetic(item))return toast(`Necesitas nivel ${item.levelReq}`);
  if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost}
- save.wardrobeOwned.push(item.id);save.outfitXp[item.id]=save.outfitXp[item.id]||0;save.equippedOutfit=item.id;persist();renderAvatarBuilder();toast(`${item.icon} ${item.name} desbloqueado`)
+ save.wardrobeOwned.push(item.id);save.outfitXp[item.id]=save.outfitXp[item.id]||0;save.equippedOutfit=item.id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueado y equipado`)
 }
-function equipOutfit(id){if(!save.wardrobeOwned.includes(id))return;save.equippedOutfit=id;persist();renderAvatarBuilder();toast(`👕 ${OUTFITS.find(x=>x.id===id)?.name||id} equipado`)}
+function equipOutfit(id){if(!save.wardrobeOwned.includes(id))return;save.equippedOutfit=id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`👕 ${OUTFITS.find(x=>x.id===id)?.name||id} equipado en tu personaje`)}
 function renderAvatarOutfits(){
  const box=$("avatarOutfitGrid");if(!box)return;box.innerHTML="";
  OUTFITS.forEach(item=>{
@@ -2491,9 +2555,9 @@ function buyAura(id){
  const item=AVATAR_AURAS.find(x=>x.id===id);if(!item)return;
  if(!canUseCosmetic(item))return toast(`Necesitas nivel ${item.levelReq}`);
  if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost}
- save.aurasOwned.push(item.id);save.selectedAura=item.id;persist();renderAvatarBuilder();toast(`${item.icon} ${item.name} desbloqueada`)
+ save.aurasOwned.push(item.id);save.selectedAura=item.id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueada y equipada`)
 }
-function equipAura(id){if(!save.aurasOwned.includes(id))return;save.selectedAura=id;persist();renderAvatarBuilder();toast(`${AVATAR_AURAS.find(x=>x.id===id)?.icon||"✨"} Aura equipada`)}
+function equipAura(id){if(!save.aurasOwned.includes(id))return;save.selectedAura=id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${AVATAR_AURAS.find(x=>x.id===id)?.icon||"✨"} Aura equipada en tu personaje`)}
 function renderAvatarAuras(){
  const box=$("avatarAuraGrid");if(!box)return;box.innerHTML="";
  AVATAR_AURAS.forEach(item=>{
@@ -2527,7 +2591,7 @@ function gainXp(n,cosmeticShare=.55){
  if(save.level>=MAX_LEVEL){save.level=MAX_LEVEL;save.xp=levelXpRequired(MAX_LEVEL)}
  refresh()
 }
-function saveCustomAvatar(){save.avatar="custom";persist();beep("power");toast("Avatar personalizado guardado")}
+function saveCustomAvatar(){save.avatar="custom";persist();beep("power");renderSideAvatar();toast("✅ Personaje personalizado guardado y equipado")}
 function renderMap(){const g=$("map");g.innerHTML="";const unlocked=Math.min(10,Math.max(1,(save.bossBest||0)+1));$("campProgress").textContent=unlocked;BOSS_LADDER.forEach((b,i)=>{const open=i<unlocked,done=save.bosses.includes(b.cat),d=document.createElement("div");d.className="card node "+(open?"":"locked");d.innerHTML=`<div class="boss">${done?"✅":b.name.split(" ")[0]}</div><h3>${CATS[b.cat]} ${b.name.replace(/^\S+\s/,"")}</h3><div class="muted">${done?"Derrotado":`Jefe ${i+1}/10 · ${b.cat}`}</div>`;if(open)d.onclick=()=>startBossLadder(i);g.appendChild(d)})}
 function medalCount(s){let n=0;Object.values(s.catStats).forEach(x=>{if(x.correct>=5)n++;if(x.correct>=12)n++;if(x.correct>=25)n++});return n}
 function goldCount(s){let n=0;Object.values(s.catStats).forEach(x=>{if(x.correct>=25)n++});return n}

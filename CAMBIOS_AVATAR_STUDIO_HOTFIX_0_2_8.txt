@@ -1,0 +1,31 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.8
+AVATAR STUDIO UX HOTFIX
+
+CORREGIDO
+- Nivel, ropa y auras ya no quedan escondidos debajo del editor.
+- El sistema de progresión aparece inmediatamente al entrar al Estudio de Avatar.
+
+NUEVA NAVEGACIÓN
+- PERSONAJE
+- ROPA
+- AURAS
+
+VISTA PREVIA
+- Vista previa aumentada de tamaño.
+- Muestra claramente la ropa equipada y su etapa.
+- Muestra el aura equipada.
+- La ropa ahora tiene elementos visuales diferentes:
+  Hoodie Pulse: cierre/capucha.
+  Academia Neo: cuello y corbata.
+  Shadow Runner: arnés táctico.
+  Cosmic Drift: patrón espacial.
+- Las etapas 2 y 3 aumentan brillo y efectos.
+
+AURAS
+- Mariposas usa partículas visibles tipo mariposa.
+- Fuego en los pies muestra llamas.
+- Destello Cósmico muestra estrellas/energía.
+
+IMPORTANTE
+- Equipar/comprar ropa o aura cambia automáticamente al PERSONAJE PERSONALIZADO.
+- Ya no es necesario recordar pulsar primero "Guardar avatar" para ver la ropa/aura en el perfil lateral.
