@@ -32,6 +32,35 @@ const adminFailures=new Map();
 const accountFailures=new Map();
 const MIME={".html":"text/html; charset=utf-8",".js":"application/javascript; charset=utf-8",".json":"application/json; charset=utf-8",".css":"text/css; charset=utf-8",".png":"image/png",".jpg":"image/jpeg",".jpeg":"image/jpeg",".svg":"image/svg+xml",".txt":"text/plain; charset=utf-8"};
 
+
+const MAX_LEVEL=30;
+function xpThreshold(level){level=clamp(level,1,MAX_LEVEL);return Math.min(260,80+Math.max(0,level-1)*12)}
+function cleanStringArray(v,allowedDefault=[]){return [...new Set((Array.isArray(v)?v:allowedDefault).map(x=>String(x||"").trim()).filter(Boolean))]}
+function normalizeProfileMeta(meta={}){
+ const defaults={level:1,xp:0,totalXp:0,customAvatar:{skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none"};
+ const out={...defaults,...(meta||{})};
+ out.level=clamp(out.level,1,MAX_LEVEL);
+ out.xp=Math.max(0,Number(out.xp||0));
+ out.totalXp=Math.max(0,Number(out.totalXp||0));
+ out.customAvatar={...defaults.customAvatar,...(meta?.customAvatar||{})};
+ out.wardrobeOwned=cleanStringArray(out.wardrobeOwned,["hoodie"]);if(!out.wardrobeOwned.includes("hoodie"))out.wardrobeOwned.unshift("hoodie");
+ out.aurasOwned=cleanStringArray(out.aurasOwned,["none"]);if(!out.aurasOwned.includes("none"))out.aurasOwned.unshift("none");
+ out.equippedOutfit=String(out.equippedOutfit||"hoodie");if(!out.wardrobeOwned.includes(out.equippedOutfit))out.equippedOutfit=out.wardrobeOwned[0]||"hoodie";
+ out.selectedAura=String(out.selectedAura||"none");if(!out.aurasOwned.includes(out.selectedAura))out.selectedAura=out.aurasOwned[0]||"none";
+ const ox={hoodie:0};for(const [k,v] of Object.entries(out.outfitXp||{}))ox[String(k)]=Math.max(0,Number(v||0));out.outfitXp=ox;
+ return out
+}
+function gainRankXp(r,amount){
+ amount=Math.max(0,Math.round(Number(amount)||0));if(!amount)return;
+ const meta=normalizeProfileMeta(r.profileMeta||{level:r.level||1,xp:r.xp||0});
+ meta.totalXp=Math.max(0,Number(meta.totalXp||0))+amount;
+ if(meta.level>=MAX_LEVEL){meta.xp=xpThreshold(MAX_LEVEL);r.level=meta.level;r.xp=meta.xp;r.profileMeta=meta;return}
+ meta.xp+=amount;
+ while(meta.level<MAX_LEVEL&&meta.xp>=xpThreshold(meta.level)){meta.xp-=xpThreshold(meta.level);meta.level++}
+ if(meta.level>=MAX_LEVEL){meta.level=MAX_LEVEL;meta.xp=xpThreshold(MAX_LEVEL)}
+ r.level=meta.level;r.xp=meta.xp;r.profileMeta=meta
+}
+
 const ONLINE_ACH_RULES=[
  ["online_first_game",r=>r.games>=1],
  ["online_first_win",r=>r.wins>=1],
@@ -76,11 +105,14 @@ function normalizeOnlineStats(s={}){return{
  battleWins:Number(s.battleWins||0),rankedWins:Number(s.rankedWins||0),competitionWins:Number(s.competitionWins||0),teamWins:Number(s.teamWins||0),
  correct:Number(s.correct||0),answers:Number(s.answers||0),perfectGames:Number(s.perfectGames||0),bestScore:Number(s.bestScore||0)
 }}
-function normalizeRank(id,r={}){return{
+function normalizeRank(id,r={}){
+ const profileMeta=normalizeProfileMeta(r.profileMeta??r.profile_meta??{level:r.level||1,xp:r.xp||0});
+ return{
  id:String(id),name:cleanName(r.name),rating:Number(r.rating??1000),wins:Number(r.wins||0),losses:Number(r.losses||0),games:Number(r.games||0),totalScore:Number(r.totalScore??r.total_score??0),
  coins:Number(r.coins??200),gems:Number(r.gems||0),keys:Number(r.keys??1),lastWheelSpin:Number(r.lastWheelSpin??r.last_wheel_spin??0),recent:Array.isArray(r.recent)?r.recent:[],revision:Number(r.revision||0),authHash:r.authHash||r.auth_hash||null,
  avatarId:cleanId(r.avatarId??r.avatar_id,"starter_m")||"starter_m",gender:cleanGender(r.gender||"neutral"),frameId:cleanId(r.frameId??r.frame_id,"none")||"none",
- featuredAchievement:cleanId(r.featuredAchievement??r.featured_achievement,""),bio:cleanBio(r.bio),achievements:cleanAchievements(r.achievements),onlineStats:normalizeOnlineStats(r.onlineStats??r.online_stats??{})
+ featuredAchievement:cleanId(r.featuredAchievement??r.featured_achievement,""),bio:cleanBio(r.bio),achievements:cleanAchievements(r.achievements),onlineStats:normalizeOnlineStats(r.onlineStats??r.online_stats??{}),
+ level:clamp(r.level??profileMeta.level,1,MAX_LEVEL),xp:Math.max(0,Number(r.xp??profileMeta.xp??0)),profileMeta
 }}
 function saveFile(){const safe={};for(const [id,r] of Object.entries(rankings))safe[id]={...r,recent:(r.recent||[]).slice(-250)};try{fs.writeFileSync(RANK_FILE,JSON.stringify(safe,null,2),"utf8")}catch(e){console.error("file persistence:",e.message)}}
 function saveAccountsFile(){
@@ -117,7 +149,7 @@ async function initStore(){
   await pool.query(`CREATE TABLE IF NOT EXISTS players(
    id TEXT PRIMARY KEY,name TEXT NOT NULL,rating INTEGER NOT NULL DEFAULT 1000,wins INTEGER NOT NULL DEFAULT 0,losses INTEGER NOT NULL DEFAULT 0,games INTEGER NOT NULL DEFAULT 0,total_score INTEGER NOT NULL DEFAULT 0,
    coins INTEGER NOT NULL DEFAULT 200,gems INTEGER NOT NULL DEFAULT 0,keys INTEGER NOT NULL DEFAULT 1,last_wheel_spin BIGINT NOT NULL DEFAULT 0,recent JSONB NOT NULL DEFAULT '[]'::jsonb,revision INTEGER NOT NULL DEFAULT 0,auth_hash TEXT,
-   avatar_id TEXT NOT NULL DEFAULT 'starter_m',gender TEXT NOT NULL DEFAULT 'neutral',frame_id TEXT NOT NULL DEFAULT 'none',featured_achievement TEXT NOT NULL DEFAULT '',bio TEXT NOT NULL DEFAULT '',achievements JSONB NOT NULL DEFAULT '[]'::jsonb,online_stats JSONB NOT NULL DEFAULT '{}'::jsonb,
+   avatar_id TEXT NOT NULL DEFAULT 'starter_m',gender TEXT NOT NULL DEFAULT 'neutral',frame_id TEXT NOT NULL DEFAULT 'none',featured_achievement TEXT NOT NULL DEFAULT '',bio TEXT NOT NULL DEFAULT '',achievements JSONB NOT NULL DEFAULT '[]'::jsonb,online_stats JSONB NOT NULL DEFAULT '{}'::jsonb,level INTEGER NOT NULL DEFAULT 1,xp INTEGER NOT NULL DEFAULT 0,profile_meta JSONB NOT NULL DEFAULT '{}'::jsonb,
    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   const migrations=[
    `ALTER TABLE players ADD COLUMN IF NOT EXISTS avatar_id TEXT NOT NULL DEFAULT 'starter_m'`,
@@ -126,7 +158,10 @@ async function initStore(){
    `ALTER TABLE players ADD COLUMN IF NOT EXISTS featured_achievement TEXT NOT NULL DEFAULT ''`,
    `ALTER TABLE players ADD COLUMN IF NOT EXISTS bio TEXT NOT NULL DEFAULT ''`,
    `ALTER TABLE players ADD COLUMN IF NOT EXISTS achievements JSONB NOT NULL DEFAULT '[]'::jsonb`,
-   `ALTER TABLE players ADD COLUMN IF NOT EXISTS online_stats JSONB NOT NULL DEFAULT '{}'::jsonb`
+   `ALTER TABLE players ADD COLUMN IF NOT EXISTS online_stats JSONB NOT NULL DEFAULT '{}'::jsonb`,
+   `ALTER TABLE players ADD COLUMN IF NOT EXISTS level INTEGER NOT NULL DEFAULT 1`,
+   `ALTER TABLE players ADD COLUMN IF NOT EXISTS xp INTEGER NOT NULL DEFAULT 0`,
+   `ALTER TABLE players ADD COLUMN IF NOT EXISTS profile_meta JSONB NOT NULL DEFAULT '{}'::jsonb`
   ];
   for(const sql of migrations)await pool.query(sql);
   await pool.query(`CREATE TABLE IF NOT EXISTS accounts(
@@ -163,7 +198,7 @@ async function initStore(){
    }
   }
 
-  const {rows}=await pool.query('SELECT id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats FROM players');
+  const {rows}=await pool.query('SELECT id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats,level,xp,profile_meta FROM players');
   rankings={};for(const row of rows)rankings[row.id]=normalizeRank(row.id,row);
   const ar=await pool.query('SELECT username_key,username,player_id,password_salt,password_hash,force_password_change FROM accounts');accounts={};accountByPlayerId={};for(const a of ar.rows){accounts[a.username_key]={username:a.username,playerId:a.player_id,passwordSalt:a.password_salt,passwordHash:a.password_hash,forcePasswordChange:!!a.force_password_change};accountByPlayerId[a.player_id]=a.username_key}
   const pr=await pool.query('SELECT username_key,requested_at FROM password_reset_requests ORDER BY requested_at ASC');
@@ -177,11 +212,15 @@ async function initStore(){
 }
 async function persistRank(r){
  rankings[r.id]=r;
+ r.profileMeta=normalizeProfileMeta(r.profileMeta||{level:r.level||1,xp:r.xp||0});
+ r.level=clamp(r.level??r.profileMeta.level,1,MAX_LEVEL);
+ r.xp=Math.max(0,Number(r.xp??r.profileMeta.xp??0));
+ r.profileMeta.level=r.level;r.profileMeta.xp=r.xp;
  if(storageMode!=="postgres"||!pool){saveFile();return}
- await pool.query(`INSERT INTO players(id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats,updated_at)
- VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13,$14,$15,$16,$17,$18,$19,$20::jsonb,$21::jsonb,NOW())
- ON CONFLICT(id) DO UPDATE SET name=EXCLUDED.name,rating=EXCLUDED.rating,wins=EXCLUDED.wins,losses=EXCLUDED.losses,games=EXCLUDED.games,total_score=EXCLUDED.total_score,coins=EXCLUDED.coins,gems=EXCLUDED.gems,keys=EXCLUDED.keys,last_wheel_spin=EXCLUDED.last_wheel_spin,recent=EXCLUDED.recent,revision=EXCLUDED.revision,auth_hash=EXCLUDED.auth_hash,avatar_id=EXCLUDED.avatar_id,gender=EXCLUDED.gender,frame_id=EXCLUDED.frame_id,featured_achievement=EXCLUDED.featured_achievement,bio=EXCLUDED.bio,achievements=EXCLUDED.achievements,online_stats=EXCLUDED.online_stats,updated_at=NOW()`,
- [r.id,r.name,r.rating,r.wins,r.losses,r.games,r.totalScore,r.coins,r.gems,r.keys,String(r.lastWheelSpin||0),JSON.stringify((r.recent||[]).slice(-250)),r.revision||0,r.authHash||null,r.avatarId,r.gender,r.frameId,r.featuredAchievement||"",r.bio||"",JSON.stringify(r.achievements||[]),JSON.stringify(r.onlineStats||{})])
+ await pool.query(`INSERT INTO players(id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats,level,xp,profile_meta,updated_at)
+ VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13,$14,$15,$16,$17,$18,$19,$20::jsonb,$21::jsonb,$22,$23,$24::jsonb,NOW())
+ ON CONFLICT(id) DO UPDATE SET name=EXCLUDED.name,rating=EXCLUDED.rating,wins=EXCLUDED.wins,losses=EXCLUDED.losses,games=EXCLUDED.games,total_score=EXCLUDED.total_score,coins=EXCLUDED.coins,gems=EXCLUDED.gems,keys=EXCLUDED.keys,last_wheel_spin=EXCLUDED.last_wheel_spin,recent=EXCLUDED.recent,revision=EXCLUDED.revision,auth_hash=EXCLUDED.auth_hash,avatar_id=EXCLUDED.avatar_id,gender=EXCLUDED.gender,frame_id=EXCLUDED.frame_id,featured_achievement=EXCLUDED.featured_achievement,bio=EXCLUDED.bio,achievements=EXCLUDED.achievements,online_stats=EXCLUDED.online_stats,level=EXCLUDED.level,xp=EXCLUDED.xp,profile_meta=EXCLUDED.profile_meta,updated_at=NOW()`,
+ [r.id,r.name,r.rating,r.wins,r.losses,r.games,r.totalScore,r.coins,r.gems,r.keys,String(r.lastWheelSpin||0),JSON.stringify((r.recent||[]).slice(-250)),r.revision||0,r.authHash||null,r.avatarId,r.gender,r.frameId,r.featuredAchievement||"",r.bio||"",JSON.stringify(r.achievements||[]),JSON.stringify(r.onlineStats||{}),r.level||1,r.xp||0,JSON.stringify(r.profileMeta||{})])
 }
 async function persistAccount(key,a){
  accounts[key]=a;accountByPlayerId[a.playerId]=key;
@@ -269,7 +308,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function hashToken(v){return crypto.createHash('sha256').update(String(v||'')).digest('hex')}
 function secureEqual(a,b){const x=Buffer.from(String(a||'')),y=Buffer.from(String(b||''));return x.length===y.length&&crypto.timingSafeEqual(x,y)}
 function getRank(id,name){id=String(id);if(!rankings[id])rankings[id]=normalizeRank(id,{name});rankings[id].name=cleanName(name||rankings[id].name);return rankings[id]}
-function publicView(r){return{id:r.id,name:r.name,rating:r.rating,wins:r.wins,losses:r.losses,games:r.games,totalScore:r.totalScore,avatarId:r.avatarId,gender:r.gender,frameId:r.frameId,featuredAchievement:r.featuredAchievement||"",bio:r.bio||"",achievements:r.achievements||[],achievementCount:(r.achievements||[]).length,onlineStats:r.onlineStats||{}}}
+function publicView(r){return{id:r.id,name:r.name,rating:r.rating,wins:r.wins,losses:r.losses,games:r.games,totalScore:r.totalScore,avatarId:r.avatarId,gender:r.gender,frameId:r.frameId,featuredAchievement:r.featuredAchievement||"",bio:r.bio||"",achievements:r.achievements||[],achievementCount:(r.achievements||[]).length,onlineStats:r.onlineStats||{},level:r.level||1,xp:r.xp||0,profileMeta:normalizeProfileMeta(r.profileMeta||{level:r.level||1,xp:r.xp||0})}}
 function publicProfile(r){return{...publicView(r),coins:r.coins,gems:r.gems,keys:r.keys,lastWheelSpin:r.lastWheelSpin,revision:r.revision||0,storage:storageMode,accountUsername:adminAccountUsername(r.id)}}
 function topRanking(){return Object.values(rankings).sort((a,b)=>b.rating-a.rating||b.wins-a.wins||b.totalScore-a.totalScore).slice(0,50).map(publicView)}
 function verifyProfileToken(r,token){return !!(r&&r.authHash&&token&&secureEqual(r.authHash,hashToken(token)))}
@@ -277,7 +316,7 @@ function profileSummary(id){const r=rankings[id];return r?{avatarId:r.avatarId,g
 function publicPlayers(room){return[...room.players.values()].map(p=>({id:p.id,name:p.name,score:p.score,lives:p.lives,answered:!!p.answered,eliminated:!!p.eliminated,online:(room.streams.get(p.id)?.size||0)>0,team:p.team||null,...profileSummary(p.id)}))}
 function applyClientProfileFields(r,b,{initial=false}={}){
  if(initial){
-  if((!r.avatarId||r.avatarId==="starter_m")&&b.avatarId)r.avatarId=cleanId(b.avatarId,"starter_m")||"starter_m";
+  if((!r.avatarId||r.avatarId==="starter_m")&&b.avatarId!==undefined)r.avatarId=cleanId(b.avatarId,"starter_m")||"starter_m";
   if(!r.bio&&b.bio)r.bio=cleanBio(b.bio);
   if(!r.featuredAchievement&&b.featuredAchievement)r.featuredAchievement=cleanId(b.featuredAchievement,"");
   if((!r.frameId||r.frameId==="none")&&b.frameId)r.frameId=cleanId(b.frameId,"none")||"none";
@@ -290,6 +329,13 @@ function applyClientProfileFields(r,b,{initial=false}={}){
  }
  if(Array.isArray(b.achievements))r.achievements=[...new Set([...(r.achievements||[]),...cleanAchievements(b.achievements)])];
  if(b.featuredAchievement!==undefined){const f=cleanId(b.featuredAchievement,"");r.featuredAchievement=!f||(r.achievements||[]).includes(f)?f:r.featuredAchievement}
+ if(b.profileMeta!==undefined){
+  const incoming=normalizeProfileMeta({...r.profileMeta,...b.profileMeta,level:b.profileMeta?.level??r.level,xp:b.profileMeta?.xp??r.xp});
+  r.profileMeta=incoming;r.level=incoming.level;r.xp=incoming.xp
+ }
+ if(b.level!==undefined)r.level=clamp(b.level,1,MAX_LEVEL);
+ if(b.xp!==undefined)r.xp=Math.max(0,Number(b.xp||0));
+ r.profileMeta=normalizeProfileMeta({...r.profileMeta,level:r.level||1,xp:r.xp||0});
  r.name=cleanName(b.name||r.name)
 }
 function unlockOnlineAchievements(r){const before=new Set(r.achievements||[]),added=[];for(const [id,fn] of ONLINE_ACH_RULES){if(!before.has(id)&&fn(r)){before.add(id);added.push(id)}}r.achievements=[...before];return added}
@@ -324,6 +370,8 @@ async function finishMatch(room){
   if(won){r.wins++;if(modeKey==="battle")s.battleWins++;else if(modeKey==="ranked")s.rankedWins++;else if(modeKey==="competition")s.competitionWins++;else if(modeKey==="team")s.teamWins++}else if(lost)r.losses++;
   if((p.answerCount||0)>=5&&(p.correctCount||0)===(p.answerCount||0))s.perfectGames++;
   let delta=0;if(room.mode==="ranked"){delta=deltas[i]||0;r.rating=Math.max(100,r.rating+delta)}
+  const xpBase=12+Math.max(0,Math.round((p.correctCount||0)*4))+Math.max(0,Math.round((p.score||0)/45))+(won?20:6);
+  gainRankXp(r,xpBase);
   r.recent=[...(r.recent||[]),...room.used].slice(-250);const newAchievements=unlockOnlineAchievements(r);r.revision=(r.revision||0)+1;p.finalRating=r.rating;p.delta=delta;p.newAchievements=newAchievements;await persistRank(r)
  }
  broadcast(room,{type:"matchEnd",mode:room.mode,teamScores:teamData?.scores||null,winningTeam:teamData?.winner||null,results:results.map((p,i)=>({id:p.id,name:p.name,place:i+1,score:p.score,lives:p.lives,rating:p.finalRating,delta:p.delta,team:p.team||null,newAchievements:p.newAchievements||[],...profileSummary(p.id)})),ranking:topRanking()})

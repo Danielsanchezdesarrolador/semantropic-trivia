@@ -94,3 +94,9 @@ ACCOUNT CLEANUP + ADMIN DELETE — 0.2.7
 ADMIN SYNC HOTFIX — 0.2.7
 - Las modificaciones de monedas, diamantes, llaves y ruleta hechas desde ADMIN ahora se reflejan inmediatamente.
 - Los jugadores conectados refrescan automáticamente cambios administrativos del servidor.
+
+
+ALPHA 0.2.8
+- Sistema de niveles hasta 30.
+- Avatar Studio expandido con wardrobe evolutivo y auras.
+- Se persiste level/xp/profile_meta en servidor.

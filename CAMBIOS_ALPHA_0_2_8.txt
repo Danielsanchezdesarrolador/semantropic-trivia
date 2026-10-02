@@ -1,0 +1,45 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.8
+
+ENFOQUE PRINCIPAL
+- Avatar Studio más profundo
+- Progresión por nivel hasta 30
+- Wardrobe evolutivo con experiencia
+- Auras y partículas para el personaje
+
+NUEVO SISTEMA DE PROGRESIÓN
+- Nivel máximo: 30
+- Se gana XP al acertar preguntas, completar partidas y jugar online
+- Cada 5 niveles: +1 llave
+- Cada 10 niveles: +1 diamante
+- La barra lateral ahora muestra progreso real hacia el siguiente nivel
+
+AVATAR STUDIO
+- Nuevo panel de progresión dentro del estudio de avatar
+- Outfits evolutivos:
+  • Hoodie Pulse
+  • Academia Neo
+  • Shadow Runner
+  • Cosmic Drift
+- Cada outfit tiene 3 etapas visuales según su XP de maestría
+- Nuevas auras:
+  • Sin aura
+  • Brillo Arcano
+  • Mariposas
+  • Fuego en los pies
+  • Destello Cósmico
+
+PERSISTENCIA
+- El servidor ahora guarda:
+  • level
+  • xp
+  • profile_meta
+- profile_meta conserva datos del Avatar Studio:
+  • customAvatar
+  • wardrobeOwned
+  • equippedOutfit
+  • outfitXp
+  • aurasOwned
+  • selectedAura
+
+ONLINE
+- Las partidas online ahora también entregan XP al perfil.
