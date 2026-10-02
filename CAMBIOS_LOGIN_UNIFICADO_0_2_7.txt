@@ -1,0 +1,34 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.7
+UNIFIED LOGIN HOTFIX
+
+CAMBIO PRINCIPAL
+- Semantropic ahora inicia en una pantalla de autenticación.
+- Nadie entra al juego sin iniciar sesión o crear una cuenta.
+- Cuenta y perfil pasan a ser una sola identidad.
+- Se eliminó la creación de cuenta desde Multijugador.
+- Se eliminó el nombre online separado: Multijugador usa el nombre del perfil.
+
+PANTALLA INICIAL
+- Iniciar sesión: usuario + contraseña.
+- Crear cuenta: usuario + contraseña + confirmación + avatar inicial masculino/femenino.
+- Olvidé mi contraseña: registra una solicitud segura para el administrador.
+
+RECUPERACIÓN
+- Como esta Alpha aún no usa email o teléfono, “Olvidé mi contraseña” NO cambia una contraseña por sí solo.
+- El administrador ve las solicitudes pendientes en ADMIN.
+- El administrador genera una contraseña temporal.
+- El jugador inicia sesión con ella y Semantropic obliga a crear una contraseña nueva.
+- Esto evita que otra persona pueda resetear una cuenta solo conociendo el nombre de usuario.
+
+AJUSTES
+- La gestión de la cuenta está ahora en Ajustes:
+  cambiar contraseña, cerrar todas las sesiones y cerrar sesión.
+
+ADMIN
+- Nueva sección “Solicitudes de recuperación”.
+- Permite seleccionar rápidamente al usuario que pidió recuperar su cuenta.
+- Se conserva el sistema existente de contraseña temporal.
+
+POSTGRESQL
+- Crea automáticamente password_reset_requests.
+- No hay que crear otra base ni modificar DATABASE_URL.

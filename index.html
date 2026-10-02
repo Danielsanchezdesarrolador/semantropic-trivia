@@ -520,6 +520,25 @@ input,select,textarea{
 @media(max-width:760px){.profile-edit-grid{grid-template-columns:1fr}.profile-avatar-picker{grid-template-columns:repeat(3,1fr)}.public-profile-stats{grid-template-columns:repeat(2,1fr)}.online-profile-identity{grid-template-columns:72px 1fr}}
 
 
+
+/* ===== Alpha 0.2.7: unified account gate ===== */
+body.auth-locked{overflow:hidden}
+body.auth-locked .app{display:none!important}
+.auth-gate{position:fixed;inset:0;z-index:9998;display:grid;place-items:center;padding:22px;background:
+ radial-gradient(circle at 20% 10%,rgba(128,104,255,.30),transparent 34%),
+ radial-gradient(circle at 80% 90%,rgba(66,213,255,.18),transparent 36%),
+ #07101f}
+.auth-gate.hidden{display:none!important}
+.auth-shell{width:min(470px,100%);background:linear-gradient(180deg,rgba(18,30,55,.98),rgba(10,18,35,.98));border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:26px;box-shadow:0 28px 90px rgba(0,0,0,.45)}
+.auth-brand{text-align:center;margin-bottom:22px}.auth-brand .auth-logo{font-weight:1000;letter-spacing:.08em;font-size:1.08rem}.auth-brand .auth-logo b{color:#8b7cff}.auth-brand .auth-icon{font-size:3rem;margin-bottom:8px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:#0b1529;padding:5px;border-radius:13px;margin-bottom:17px}.auth-tabs button{border:0;border-radius:10px;padding:10px;background:transparent;color:#9eacc8;font-weight:900;cursor:pointer}.auth-tabs button.active{background:#26385e;color:#fff}
+.auth-form{display:grid;gap:10px}.auth-form input,.auth-form select{width:100%;background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:12px;padding:13px 14px;font-size:1rem}
+.auth-link{background:none;border:0;color:#7fdcff;font-weight:800;cursor:pointer;padding:7px;text-align:center}.auth-link:hover{text-decoration:underline}
+.auth-message{min-height:22px;text-align:center;margin-top:6px;color:#aab9d9}.auth-help{padding:12px;border-radius:12px;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.14);font-size:.82rem;line-height:1.45;color:#d9e2f5}
+.auth-version{text-align:center;color:#6f7e9e;font-size:.72rem;margin-top:16px}
+.account-settings-card{margin-top:14px}.account-settings-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.account-settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.reset-request{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.reset-request:last-child{border-bottom:0}.reset-request small{display:block;color:#9aa8c8;margin-top:3px}
+
 /* ===== Alpha 0.2.7: accounts + wheel admin ===== */
 .account-card{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,rgba(61,207,255,.09),rgba(128,104,255,.16));margin-bottom:14px}
 .account-fields{display:grid;gap:9px}.account-fields input,.admin-wheel-editor select,.admin-wheel-editor input{background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:11px;padding:11px 12px;font-size:.95rem}.account-actions{grid-column:1/-1;display:flex;gap:9px;flex-wrap:wrap}.account-logged{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:14px;border-color:rgba(53,211,154,.3)}.account-session-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.password-change-fields{display:grid;gap:9px;margin:16px 0}.password-change-fields input{width:100%;background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:11px;padding:12px 13px;font-size:.95rem}.account-force-warning{color:#ffd166!important;font-weight:800}
@@ -528,8 +547,36 @@ input,select,textarea{
 
 </style>
 </head>
-<body>
+<body class="auth-locked">
 <div id="toast" class="toast">Logro desbloqueado</div><div id="flash" class="flash"></div><div id="musicIndicator" class="music-indicator">🎵 Música: ON</div>
+<div id="authGate" class="auth-gate">
+ <div class="auth-shell">
+  <div class="auth-brand">
+   <div class="auth-icon">🧠</div>
+   <div class="auth-logo">SEMANTROPIC <b>TRIVIA</b></div>
+   <div class="muted" style="margin-top:7px">Tu cuenta es tu perfil de juego</div>
+  </div>
+  <div id="authMainModes" class="auth-tabs">
+   <button id="authLoginTab" class="active" onclick="authSetMode('login')">INICIAR SESIÓN</button>
+   <button id="authRegisterTab" onclick="authSetMode('register')">CREAR CUENTA</button>
+  </div>
+  <div class="auth-form">
+   <input id="authUsername" maxlength="20" autocomplete="username" placeholder="Nombre de usuario">
+   <input id="authPassword" type="password" maxlength="72" autocomplete="current-password" placeholder="Contraseña">
+   <input id="authPassword2" class="hidden" type="password" maxlength="72" autocomplete="new-password" placeholder="Repite la contraseña">
+   <select id="authStarterAvatar" class="hidden">
+    <option value="male">👨 Avatar masculino</option>
+    <option value="female">👩 Avatar femenino</option>
+   </select>
+   <div id="authForgotHelp" class="auth-help hidden">Escribe tu nombre de usuario y enviaremos una solicitud al administrador. El administrador podrá darte una contraseña temporal; al entrar con ella Semantropic te pedirá crear una nueva.</div>
+   <button id="authPrimaryBtn" class="btn primary" onclick="authPrimaryAction()">ENTRAR A SEMANTROPIC</button>
+   <button id="authForgotBtn" class="auth-link" onclick="authSetMode('forgot')">Olvidé mi contraseña</button>
+   <button id="authBackBtn" class="auth-link hidden" onclick="authSetMode('login')">← Volver a iniciar sesión</button>
+   <div id="authMessage" class="auth-message"></div>
+  </div>
+  <div class="auth-version">Alpha 0.2.7 · Perfil único</div>
+ </div>
+</div>
 <div class="app"><div class="shell">
 <aside>
   <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.2.7</div>
@@ -617,14 +664,11 @@ input,select,textarea{
  </div>
 
  <div id="mpSetup">
-  <div id="accountAuthCard" class="card account-card">
-   <div><div class="tag">CUENTA SEMANTROPIC</div><h2>Inicia sesión o crea tu cuenta</h2><p class="muted">Tu usuario y contraseña te permiten abrir el mismo perfil desde otro PC, celular o tablet.</p></div>
-   <div class="account-fields"><input id="accountUsername" maxlength="20" autocomplete="username" placeholder="Nombre de usuario"><input id="accountPassword" type="password" maxlength="72" autocomplete="current-password" placeholder="Contraseña (mínimo 8 caracteres)"></div>
-   <div class="account-actions"><button class="btn primary" onclick="accountLogin()">INICIAR SESIÓN</button><button class="btn secondary" onclick="accountRegister()">CREAR CUENTA CON ESTE PERFIL</button></div>
-   <div id="accountMessage" class="muted"></div>
-  </div>
-  <div id="accountLoggedCard" class="card account-logged hidden">
-   <div><span class="tag">SESIÓN ACTIVA</span><h3 style="margin:7px 0 2px">@<span id="accountLoggedUsername">usuario</span></h3><div class="muted" id="accountSessionNote">Este perfil puede abrirse desde otros dispositivos.</div></div>
+  <input id="mpName" type="hidden" value="">
+  <div class="card account-logged">
+   <div><span class="tag">CUENTA ACTIVA</span><h3 style="margin:7px 0 2px">@<span id="accountLoggedUsername">usuario</span></h3><div class="muted">Tu cuenta ya identifica este perfil en todo Semantropic.</div></div>
+   <button class="btn secondary" onclick="page('settings')">⚙️ CUENTA Y AJUSTES</button>
+  </div></div>
    <div class="account-session-actions"><button class="btn secondary" onclick="openPasswordModal(false)">🔑 CAMBIAR CONTRASEÑA</button><button class="btn secondary" onclick="accountLogoutAll()">🚪 CERRAR TODAS</button><button class="btn secondary" onclick="accountLogout()">CERRAR SESIÓN</button></div>
   </div>
   <div id="onlineProfileCard" class="card online-profile-card">
@@ -646,10 +690,6 @@ input,select,textarea{
     <div class="tag">ALPHA ONLINE</div>
     <h2>Juega con 2 a 4 personas</h2>
     <p class="muted">Crea una sala, comparte el código con tus compañeros y compitan con las mismas preguntas y el mismo reloj de 15 segundos.</p>
-   </div>
-   <div class="mp-name-row">
-    <label for="mpName"><b>Nombre online</b></label>
-    <input id="mpName" maxlength="18" placeholder="Tu nombre">
    </div>
   </div>
 
@@ -741,6 +781,8 @@ input,select,textarea{
    <div id="adminWheelSlots" class="admin-wheel-slots"></div>
    <button class="btn primary" onclick="adminSaveWheelConfig()">💾 GUARDAR RULETA</button>
   </div>
+  <div class="section"><h2>🔑 Solicitudes de recuperación</h2><span class="muted">Usuarios que pulsaron “Olvidé mi contraseña”. Selecciona uno y genera una contraseña temporal.</span></div>
+  <div id="adminResetRequests" class="card"><div class="muted">No hay solicitudes pendientes.</div></div>
   <div class="section"><h2>Gestionar jugador</h2><span class="muted">Selecciona un perfil de la tabla.</span></div>
   <div class="card admin-editor">
    <div class="admin-selected"><div><span class="muted">Jugador seleccionado</span><h2 id="adminSelectedName">Ninguno</h2><div class="muted" id="adminSelectedId">—</div></div><button class="btn secondary" onclick="adminRefresh()">↻ ACTUALIZAR</button></div>
@@ -831,7 +873,12 @@ input,select,textarea{
 </section>
 
 <section id="settings" class="page hidden">
- <div class="top"><h1>Ajustes</h1></div><div class="card">
+ <div class="top"><h1>Ajustes</h1></div>
+ <div class="card account-settings-card">
+  <div class="account-settings-head"><div><div class="tag">TU CUENTA</div><h2 style="margin:6px 0">@<span id="settingsAccountUsername">usuario</span></h2><div class="muted">Esta cuenta es tu único perfil de Semantropic.</div></div><div class="pill">🔐 Sesión activa</div></div>
+  <div class="account-settings-actions"><button class="btn secondary" onclick="openPasswordModal(false)">🔑 CAMBIAR CONTRASEÑA</button><button class="btn secondary" onclick="accountLogoutAll()">🚪 CERRAR TODAS LAS SESIONES</button><button class="btn danger" onclick="accountLogout()">SALIR DE LA CUENTA</button></div>
+ </div>
+ <div class="card">
   <div class="settingrow"><div><b>Música de fondo</b><div class="muted">Melodía original generada por el navegador.</div></div><div id="musicToggle" class="toggle on" onclick="toggleSetting('music')"></div></div>
   <div class="settingrow"><div><b>Efectos de sonido</b><div class="muted">Ruleta, aciertos, errores, recompensas y comodines.</div></div><div id="soundToggle" class="toggle on" onclick="toggleSetting('sound')"></div></div>
   <div class="settingrow"><div><b>Animaciones</b><div class="muted">Destellos y transiciones visuales.</div></div><div id="animToggle" class="toggle on" onclick="toggleSetting('animations')"></div></div>
@@ -1528,26 +1575,75 @@ function setAccountSession(username,playerId,token,profile,mustChangePassword=fa
  if(profile){onlineProfileReady=true;applyOnlineProfile(profile,true)}renderAccountUI()
 }
 function renderAccountUI(){
- const auth=$("accountAuthCard"),logged=$("accountLoggedCard"),u=$("accountLoggedUsername");if(!auth||!logged)return;
- auth.classList.toggle("hidden",accountLoggedIn);logged.classList.toggle("hidden",!accountLoggedIn);if(u)u.textContent=onlineAccountUsername||"usuario";
- const note=$("accountSessionNote");if(note){note.textContent=accountMustChangePassword?"⚠️ Debes cambiar tu contraseña temporal antes de jugar online.":"Este perfil puede abrirse desde otros dispositivos.";note.classList.toggle("account-force-warning",accountMustChangePassword)}
- if(accountLoggedIn&&accountMustChangePassword)setTimeout(()=>openPasswordModal(true),100)
+ const u=$("accountLoggedUsername"),su=$("settingsAccountUsername");
+ if(u)u.textContent=onlineAccountUsername||"usuario";if(su)su.textContent=onlineAccountUsername||"usuario";
+ if(accountLoggedIn&&accountMustChangePassword)setTimeout(()=>openPasswordModal(true),120)
 }
 async function refreshAccountSession(){
  accountLoggedIn=false;if(!onlineAccountUsername||!onlineProfileToken){renderAccountUI();return false}
  try{const r=await mpRequest("/api/account/me",{token:onlineProfileToken});setAccountSession(r.username,r.playerId,onlineProfileToken,r.profile,r.mustChangePassword);return true}catch(e){accountLoggedIn=false;onlineAccountUsername="";try{localStorage.removeItem("semantropicAccountUsername")}catch(_){}renderAccountUI();return false}
 }
+let authMode="login";
+function authSetMode(mode){
+ authMode=mode;const reg=mode==="register",forgot=mode==="forgot";
+ $("authLoginTab").classList.toggle("active",mode==="login");$("authRegisterTab").classList.toggle("active",reg);
+ $("authMainModes").classList.toggle("hidden",forgot);
+ $("authPassword").classList.toggle("hidden",forgot);$("authPassword2").classList.toggle("hidden",!reg);$("authStarterAvatar").classList.toggle("hidden",!reg);
+ $("authForgotHelp").classList.toggle("hidden",!forgot);$("authForgotBtn").classList.toggle("hidden",forgot||reg);$("authBackBtn").classList.toggle("hidden",!forgot);
+ $("authPrimaryBtn").textContent=reg?"CREAR MI CUENTA":forgot?"SOLICITAR RECUPERACIÓN":"ENTRAR A SEMANTROPIC";
+ $("authPassword").autocomplete=reg?"new-password":"current-password";
+ $("authMessage").textContent="";
+}
+function showAuthGate(message=""){
+ document.body.classList.add("auth-locked");$("authGate").classList.remove("hidden");$("authMessage").textContent=message;authSetMode("login")
+}
+function enterSemantropic(){
+ document.body.classList.remove("auth-locked");$("authGate").classList.add("hidden");renderAccountUI();refresh();page("home")
+}
+async function initializeAccountGate(){
+ authSetMode("login");
+ const msg=$("authMessage");
+ if(onlineAccountUsername&&onlineProfileToken){
+  msg.textContent="Restaurando tu sesión…";
+  if(await refreshAccountSession()){enterSemantropic();return}
+ }
+ showAuthGate()
+}
+async function authPrimaryAction(){
+ if(authMode==="register")return accountRegister();
+ if(authMode==="forgot")return accountForgotPassword();
+ return accountLogin()
+}
 async function accountRegister(){
- const username=($("accountUsername")?.value||"").trim(),password=$("accountPassword")?.value||"",msg=$("accountMessage");if(msg)msg.textContent="Creando cuenta…";
- try{if(!onlineProfileReady)await bootstrapOnlineProfile();const r=await mpRequest("/api/account/register",{username,password,playerId:mpPlayerId(),profileToken:onlineProfileToken,name:save.name,...profileSyncPayload()});setAccountSession(r.username,r.playerId,r.token,r.profile,r.mustChangePassword);if(msg)msg.textContent="✅ Cuenta creada. Ya puedes iniciar sesión desde otros dispositivos.";toast("✅ Cuenta Semantropic creada") }catch(e){if(msg)msg.textContent="❌ "+e.message}
+ const username=($("authUsername")?.value||"").trim(),password=$("authPassword")?.value||"",password2=$("authPassword2")?.value||"",gender=$("authStarterAvatar")?.value||"male",msg=$("authMessage");
+ if(password!==password2){msg.textContent="❌ Las contraseñas no coinciden.";return}
+ msg.textContent="Creando tu cuenta…";
+ try{
+  const r=await mpRequest("/api/account/register",{username,password,gender});
+  setAccountSession(r.username,r.playerId,r.token,r.profile,r.mustChangePassword);
+  msg.textContent="";toast("✅ Cuenta creada. Bienvenido a Semantropic.");enterSemantropic()
+ }catch(e){msg.textContent="❌ "+e.message}
 }
 async function accountLogin(){
- const username=($("accountUsername")?.value||"").trim(),password=$("accountPassword")?.value||"",msg=$("accountMessage");if(msg)msg.textContent="Iniciando sesión…";
- try{const r=await mpRequest("/api/account/login",{username,password});setAccountSession(r.username,r.playerId,r.token,r.profile,r.mustChangePassword);if(msg)msg.textContent="";toast(`👋 Bienvenido, @${r.username}`);await renderMultiplayerPage()}catch(e){if(msg)msg.textContent="❌ "+e.message}
+ const username=($("authUsername")?.value||"").trim(),password=$("authPassword")?.value||"",msg=$("authMessage");msg.textContent="Iniciando sesión…";
+ try{
+  const r=await mpRequest("/api/account/login",{username,password});
+  setAccountSession(r.username,r.playerId,r.token,r.profile,r.mustChangePassword);
+  msg.textContent="";toast(`👋 Bienvenido, @${r.username}`);enterSemantropic()
+ }catch(e){msg.textContent="❌ "+e.message}
+}
+async function accountForgotPassword(){
+ const username=($("authUsername")?.value||"").trim(),msg=$("authMessage");
+ if(!username){msg.textContent="Escribe primero tu nombre de usuario.";return}
+ msg.textContent="Enviando solicitud…";
+ try{
+  await mpRequest("/api/account/forgot-password",{username});
+  msg.textContent="✅ Solicitud enviada. El administrador podrá darte una contraseña temporal. Luego inicia sesión con ella y Semantropic te pedirá crear una nueva."
+ }catch(e){msg.textContent="❌ No se pudo enviar la solicitud. Intenta nuevamente."}
 }
 async function accountLogout(){
  try{if(onlineProfileToken)await mpRequest("/api/account/logout",{token:onlineProfileToken})}catch(e){}
- accountLoggedIn=false;accountMustChangePassword=false;onlineAccountUsername="";onlineProfileToken="";onlineProfileReady=false;onlineProfile=null;try{localStorage.removeItem("semantropicAccountUsername");localStorage.removeItem("semantropicProfileToken")}catch(e){}renderAccountUI();toast("Sesión cerrada")
+ accountLoggedIn=false;accountMustChangePassword=false;onlineAccountUsername="";onlineProfileToken="";onlineProfileReady=false;onlineProfile=null;try{localStorage.removeItem("semantropicAccountUsername");localStorage.removeItem("semantropicProfileToken")}catch(e){}renderAccountUI();showAuthGate("Sesión cerrada.");toast("Sesión cerrada")
 }
 function openPasswordModal(forced=false){
  if(!accountLoggedIn)return;
@@ -1637,7 +1733,7 @@ async function openPublicProfile(id){try{const r=await mpRequest(`/api/profile/p
 function selectStarterAvatar(id,gender){save.avatar=id;save.profileGender=gender;if(!save.avatars.includes(id))save.avatars.push(id);persist();renderAvatarBuilder();renderAvatars("avatarGridStudio");toast(id==="starter_f"?"👩 Avatar femenino seleccionado":"👨 Avatar masculino seleccionado")}
 function setFeaturedAchievement(id){if(id&&!save.ach[id])return;save.featuredAchievement=id||"";persist();renderAch();scheduleOnlineProfileSync();toast(id?`🏆 Ahora exhibes: ${achievementInfo(id)?.name||id}`:"Logro exhibido eliminado")}
 
-let adminToken="",adminPlayers=[],adminRooms=[],adminSelectedId=null;
+let adminToken="",adminPlayers=[],adminRooms=[],adminPasswordResets=[],adminSelectedId=null;
 try{adminToken=sessionStorage.getItem("semantropicAdminToken")||""}catch(e){}
 async function adminRequest(path,data=null){
  const opts={headers:{"Authorization":"Bearer "+adminToken}};if(data!==null){opts.method="POST";opts.headers["Content-Type"]="application/json";opts.body=JSON.stringify(data)}
@@ -1654,11 +1750,22 @@ async function adminLogin(){
 function adminLogout(){adminToken='';adminSelectedId=null;try{sessionStorage.removeItem('semantropicAdminToken')}catch(e){}renderAdminPage()}
 async function adminRefresh(){
  try{
-  const [r,rr,wc]=await Promise.all([adminRequest('/api/admin/players'),adminRequest('/api/admin/rooms'),adminRequest('/api/admin/wheel-config')]);
-  adminPlayers=r.players||[];adminRooms=rr.rooms||[];renderAdminWheelConfig(wc);
+  const [r,rr,wc,pr]=await Promise.all([adminRequest('/api/admin/players'),adminRequest('/api/admin/rooms'),adminRequest('/api/admin/wheel-config'),adminRequest('/api/admin/password-resets')]);
+  adminPlayers=r.players||[];adminRooms=rr.rooms||[];adminPasswordResets=pr.requests||[];renderAdminWheelConfig(wc);renderAdminPasswordResets();
   $('adminPlayersCount').textContent=r.summary?.players??adminPlayers.length;$('adminGamesCount').textContent=r.summary?.games??0;$('adminRoomsCount').textContent=adminRooms.length;$('adminStorageMode').textContent=r.summary?.storage==='postgres'?'POSTGRES':'LOCAL';
   renderAdminPlayers();renderAdminRooms();if(adminSelectedId&&!adminPlayers.some(p=>p.id===adminSelectedId))adminSelect(null)
  }catch(e){if(e.message.toLowerCase().includes('sesión')||e.message.toLowerCase().includes('token'))adminLogout();else toast(e.message)}
+}
+function renderAdminPasswordResets(){
+ const box=$("adminResetRequests");if(!box)return;box.innerHTML="";
+ if(!adminPasswordResets.length){box.innerHTML='<div class="muted">No hay solicitudes pendientes.</div>';return}
+ adminPasswordResets.forEach(r=>{
+  const d=document.createElement("div");d.className="reset-request";
+  const when=r.requestedAt?new Date(r.requestedAt).toLocaleString():"";
+  d.innerHTML=`<div><b>@${r.username}</b><small>${when}</small></div><button class="btn secondary">SELECCIONAR</button>`;
+  d.querySelector("button").onclick=()=>{adminSelect(r.playerId);toast(`Seleccionado @${r.username}. Usa “Contraseña temporal”.`)};
+  box.appendChild(d)
+ })
 }
 function renderAdminPlayers(){
  const body=$('adminPlayersBody');if(!body)return;body.innerHTML='';const q=($('adminSearch')?.value||'').trim().toLowerCase();const rows=adminPlayers.filter(p=>!q||p.name.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
@@ -1740,8 +1847,8 @@ function mpPlayerId(){
 }
 function mpModeName(mode){return mode==="battle"?"⚔️ Batalla":mode==="ranked"?"🏆 Clasificatorio":mode==="teams"?"🤝 Equipos 2 vs 2":"🎯 Competencia"}
 function mpName(){
- const el=$("mpName"),value=(el?.value||save.name||"Jugador").trim().slice(0,18);
- if(el)el.value=value;return value||"Jugador"
+ const value=(save.name||onlineProfile?.name||onlineAccountUsername||"Jugador").trim().slice(0,18);
+ const el=$("mpName");if(el)el.value=value;return value||"Jugador"
 }
 async function mpRequest(path,data=null){
  const opts=data?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}:{};
@@ -1749,10 +1856,10 @@ async function mpRequest(path,data=null){
  if(!r.ok){const err=new Error(out.error||"Error de servidor");err.payload=out;throw err}return out
 }
 async function renderMultiplayerPage(){
- const name=$("mpName");if(name&&!name.value)name.value=save.name||"Jugador";
+ const name=$("mpName");if(name)name.value=save.name||onlineAccountUsername||"Jugador";
  renderAccountUI();
- if(onlineAccountUsername&&onlineProfileToken)await refreshAccountSession();
- if(!accountLoggedIn){onlineProfileReady=false;const os=$("opStorage");if(os)os.textContent="🔐 Inicia sesión o crea una cuenta para jugar online"}
+ if(!accountLoggedIn){showAuthGate("Inicia sesión para continuar.");return}
+ if(!onlineProfileReady&&onlineAccountUsername&&onlineProfileToken)await refreshAccountSession();
  const status=$("mpServerStatus");
  if(location.protocol==="file:"){
   status.textContent="🔴 Online requiere iniciar server.js";status.className="pill bad";
@@ -2020,7 +2127,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings")renderSettings();refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards")renderRewards();if(id==="multiplayer")renderMultiplayerPage();if(id==="admin")renderAdminPage();if(id==="education")renderEducation();if(id==="avatarStudio"){renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderMedals();renderAchievementAvatars();renderFrames()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c){
@@ -2196,7 +2303,7 @@ function useSkip(){if(state.pSkip||state.locked)return;stopQuestionTimer();beep(
 function useDouble(){if((state.pDouble&&!state.freeDouble)||state.locked)return;beep("power");if(state.freeDouble)state.freeDouble=false;else state.pDouble=true;state.double=true;$("pDouble").disabled=true;$("feedback").textContent="⚡ Doble puntaje activado"}
 function useShield(){if(state.pShield||state.locked)return;beep("power");state.pShield=true;state.shield=true;$("pShield").disabled=true;$("feedback").textContent="🛡️ Escudo activado"}
 function updateHUD(){const wl=$("walletLives");if(wl&&state)wl.textContent=(state.mode==="boss"||state.mode==="bossrush")?Math.max(0,state.php??3):(state.mode==="education"&&state.eduMode==="practice"?"∞":Math.max(0,state.lives||0));if(!state)return;$("gScore").textContent=state.mode==="local"?state.scores[state.turn]:(state.score||0);$("gLives").textContent=(state.mode==="boss"||state.mode==="bossrush")?"❤️".repeat(Math.max(0,state.php??3)):(state.mode==="education"&&state.eduMode==="practice"?"∞":"❤️".repeat(Math.max(0,state.lives||0)));$("gStreak").textContent="x"+state.streak;$("gRival").textContent=state.mode==="tournament"?state.cpu:state.mode==="local"?state.scores[state.turn===1?2:1]:"—";$("gTurn").textContent=state.mode==="local"?(state.turn===1?state.p1:state.p2):save.name;if(state.mode==="tournament"){$("roundLabel").textContent=`Ronda ${Math.min(state.round,7)}/7`;renderRoundDots()}else $("roundLabel").textContent=`Pregunta ${Math.min((state.idx||0)+1,state.target||8)}/${state.target||8}`}
-unlockAchievementAvatars();unlockFrames();refresh();loadGameConfig().then(()=>{renderRewards();updateRewardTimer()});setInterval(updateRewardTimer,1000);renderMap();renderEducation();renderAvatarBuilder();renderAvatars("avatarGridStudio");renderMedals();renderAchievementAvatars();renderShop();renderAch();renderStats();renderSettings();
+unlockAchievementAvatars();unlockFrames();refresh();loadGameConfig().then(()=>{renderRewards();updateRewardTimer()});setInterval(updateRewardTimer,1000);renderMap();renderEducation();renderAvatarBuilder();renderAvatars("avatarGridStudio");renderMedals();renderAchievementAvatars();renderShop();renderAch();renderStats();renderSettings();renderAccountUI();initializeAccountGate();
 if(!storageOK){setTimeout(()=>toast("⚠️ Modo visor: puedes jugar, pero el progreso no se guardará"),500)}
 </script>
 </body>

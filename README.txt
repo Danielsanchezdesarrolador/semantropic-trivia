@@ -75,3 +75,12 @@ PASSWORD RECOVERY HOTFIX — 0.2.7
 - Los jugadores pueden cambiar su propia contraseña.
 - Una contraseña temporal obliga a crear una contraseña nueva antes de jugar online.
 - Las contraseñas originales nunca son visibles.
+
+
+ALPHA 0.2.7 — UNIFIED LOGIN HOTFIX
+- Login obligatorio al abrir Semantropic.
+- Cuenta y perfil unificados.
+- Registro nuevo crea automáticamente el perfil.
+- Multijugador ya no crea cuentas ni usa un nombre separado.
+- Recuperación por solicitud al administrador + contraseña temporal.
+- ADMIN muestra solicitudes de recuperación.

@@ -15,14 +15,16 @@ const RANK_FILE=path.join(DATA_DIR,"rankings.json");
 const ACCOUNTS_FILE=path.join(DATA_DIR,"accounts.json");
 const SESSIONS_FILE=path.join(DATA_DIR,"account_sessions.json");
 const SETTINGS_FILE=path.join(DATA_DIR,"game_settings.json");
+const RESET_REQUESTS_FILE=path.join(DATA_DIR,"password_reset_requests.json");
 if(!fs.existsSync(DATA_DIR))fs.mkdirSync(DATA_DIR,{recursive:true});
 
-let rankings={},accounts={},accountByPlayerId={},accountSessions=new Map();
+let rankings={},accounts={},accountByPlayerId={},accountSessions=new Map(),passwordResetRequests={};
 let gameConfig={wheelCooldownMs:2*60*60*1000,wheelPrizes:[{type:"coins",amount:100},{type:"coins",amount:250},{type:"gems",amount:1},{type:"gems",amount:2},{type:"keys",amount:1},{type:"shield",amount:1},{type:"double",amount:1},{type:"surprise",amount:1}]};
 try{rankings=JSON.parse(fs.readFileSync(RANK_FILE,"utf8"))}catch(e){rankings={}}
 try{accounts=JSON.parse(fs.readFileSync(ACCOUNTS_FILE,"utf8"))}catch(e){accounts={}}
 try{const raw=JSON.parse(fs.readFileSync(SESSIONS_FILE,"utf8"));accountSessions=new Map(Object.entries(raw||{}))}catch(e){accountSessions=new Map()}
 try{const raw=JSON.parse(fs.readFileSync(SETTINGS_FILE,"utf8"));if(raw&&raw.wheelCooldownMs)gameConfig=raw}catch(e){}
+try{passwordResetRequests=JSON.parse(fs.readFileSync(RESET_REQUESTS_FILE,"utf8"))||{}}catch(e){passwordResetRequests={}}
 let pool=null,storageMode="file";
 const rooms=new Map();
 const adminSessions=new Map();
@@ -81,7 +83,14 @@ function normalizeRank(id,r={}){return{
  featuredAchievement:cleanId(r.featuredAchievement??r.featured_achievement,""),bio:cleanBio(r.bio),achievements:cleanAchievements(r.achievements),onlineStats:normalizeOnlineStats(r.onlineStats??r.online_stats??{})
 }}
 function saveFile(){const safe={};for(const [id,r] of Object.entries(rankings))safe[id]={...r,recent:(r.recent||[]).slice(-250)};try{fs.writeFileSync(RANK_FILE,JSON.stringify(safe,null,2),"utf8")}catch(e){console.error("file persistence:",e.message)}}
-function saveAccountsFile(){try{fs.writeFileSync(ACCOUNTS_FILE,JSON.stringify(accounts,null,2),"utf8");fs.writeFileSync(SESSIONS_FILE,JSON.stringify(Object.fromEntries(accountSessions),null,2),"utf8");fs.writeFileSync(SETTINGS_FILE,JSON.stringify(gameConfig,null,2),"utf8")}catch(e){console.error("account/settings persistence:",e.message)}}
+function saveAccountsFile(){
+ try{
+  fs.writeFileSync(ACCOUNTS_FILE,JSON.stringify(accounts,null,2),"utf8");
+  fs.writeFileSync(SESSIONS_FILE,JSON.stringify(Object.fromEntries(accountSessions),null,2),"utf8");
+  fs.writeFileSync(SETTINGS_FILE,JSON.stringify(gameConfig,null,2),"utf8");
+  fs.writeFileSync(RESET_REQUESTS_FILE,JSON.stringify(passwordResetRequests,null,2),"utf8")
+ }catch(e){console.error("account/settings persistence:",e.message)}
+}
 
 async function initStore(){
  if(!DATABASE_URL){
@@ -119,11 +128,18 @@ async function initStore(){
    force_password_change BOOLEAN NOT NULL DEFAULT FALSE,
    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   await pool.query(`ALTER TABLE accounts ADD COLUMN IF NOT EXISTS force_password_change BOOLEAN NOT NULL DEFAULT FALSE`);
+  await pool.query(`CREATE TABLE IF NOT EXISTS password_reset_requests(
+   username_key TEXT PRIMARY KEY REFERENCES accounts(username_key) ON DELETE CASCADE,
+   requested_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )`);
   await pool.query(`CREATE TABLE IF NOT EXISTS account_sessions(token_hash TEXT PRIMARY KEY,username_key TEXT NOT NULL,player_id TEXT NOT NULL,expires_at BIGINT NOT NULL,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   await pool.query(`CREATE TABLE IF NOT EXISTS game_settings(key TEXT PRIMARY KEY,value JSONB NOT NULL,updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   const {rows}=await pool.query('SELECT id,name,rating,wins,losses,games,total_score,coins,gems,keys,last_wheel_spin,recent,revision,auth_hash,avatar_id,gender,frame_id,featured_achievement,bio,achievements,online_stats FROM players');
   rankings={};for(const row of rows)rankings[row.id]=normalizeRank(row.id,row);
   const ar=await pool.query('SELECT username_key,username,player_id,password_salt,password_hash,force_password_change FROM accounts');accounts={};accountByPlayerId={};for(const a of ar.rows){accounts[a.username_key]={username:a.username,playerId:a.player_id,passwordSalt:a.password_salt,passwordHash:a.password_hash,forcePasswordChange:!!a.force_password_change};accountByPlayerId[a.player_id]=a.username_key}
+  const pr=await pool.query('SELECT username_key,requested_at FROM password_reset_requests ORDER BY requested_at ASC');
+  passwordResetRequests={};
+  for(const row of pr.rows)passwordResetRequests[row.username_key]={requestedAt:new Date(row.requested_at).getTime()};
   const sr=await pool.query('SELECT token_hash,username_key,player_id,expires_at FROM account_sessions WHERE expires_at>$1',[Date.now()]);accountSessions=new Map(sr.rows.map(s=>[s.token_hash,{usernameKey:s.username_key,playerId:s.player_id,expiresAt:Number(s.expires_at)}]));
   const gr=await pool.query("SELECT value FROM game_settings WHERE key='wheel'");if(gr.rows[0]?.value)gameConfig=normalizeGameConfig(gr.rows[0].value);else gameConfig=normalizeGameConfig(gameConfig);
   storageMode="postgres";
@@ -151,6 +167,19 @@ async function deleteAccountSession(token){const h=hashToken(token);accountSessi
 async function deleteAllAccountSessions(usernameKey){
  for(const [h,s] of [...accountSessions])if(s.usernameKey===usernameKey)accountSessions.delete(h);
  if(storageMode==="postgres"&&pool)await pool.query('DELETE FROM account_sessions WHERE username_key=$1',[usernameKey]);
+ else saveAccountsFile()
+}
+async function persistPasswordResetRequest(usernameKey){
+ const requestedAt=Date.now();passwordResetRequests[usernameKey]={requestedAt};
+ if(storageMode==="postgres"&&pool){
+  await pool.query(`INSERT INTO password_reset_requests(username_key,requested_at) VALUES($1,NOW())
+   ON CONFLICT(username_key) DO UPDATE SET requested_at=NOW()`,[usernameKey])
+ }else saveAccountsFile();
+ return requestedAt
+}
+async function clearPasswordResetRequest(usernameKey){
+ delete passwordResetRequests[usernameKey];
+ if(storageMode==="postgres"&&pool)await pool.query('DELETE FROM password_reset_requests WHERE username_key=$1',[usernameKey]);
  else saveAccountsFile()
 }
 function sessionForToken(token){const h=hashToken(token),s=accountSessions.get(h);if(!s)return null;if(Number(s.expiresAt)<=Date.now()){accountSessions.delete(h);return null}return s}
@@ -244,12 +273,28 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
  if(req.method==="GET"&&p==="/api/game/config")return json(res,200,gameConfig);
  if(req.method==="POST"&&p==="/api/account/register"){
-  const b=await body(req),username=cleanUsername(b.username),key=usernameKey(b.username),password=String(b.password||""),id=String(b.playerId||""),r=rankings[id];
-  if(!username||!key)return json(res,400,{error:"El usuario debe tener 3–20 caracteres: letras, números, punto, guion o guion bajo"});if(!validPassword(password))return json(res,400,{error:"La contraseña debe tener entre 8 y 72 caracteres"});if(accounts[key])return json(res,409,{error:"Ese nombre de usuario ya existe"});if(!r)return json(res,404,{error:"Primero crea/sincroniza tu perfil"});if(accountByPlayerId[id])return json(res,409,{error:"Este perfil ya tiene una cuenta. Usa Iniciar sesión."});if(!verifyProfileAccess(r,b.profileToken))return json(res,401,{error:"No se pudo verificar el perfil que quieres registrar"});
-  applyClientProfileFields(r,b);await persistRank(r);const hp=hashPassword(password),a={username,playerId:id,passwordSalt:hp.salt,passwordHash:hp.hash,forcePasswordChange:false};await persistAccount(key,a);const token=await createAccountSession(key,id);return json(res,200,{ok:true,username,playerId:id,token,profile:publicProfile(r)})
+  const b=await body(req),username=cleanUsername(b.username),key=usernameKey(b.username),password=String(b.password||"");
+  if(!username||!key)return json(res,400,{error:"El usuario debe tener 3–20 caracteres: letras, números, punto, guion o guion bajo"});
+  if(!validPassword(password))return json(res,400,{error:"La contraseña debe tener entre 8 y 72 caracteres"});
+  if(accounts[key])return json(res,409,{error:"Ese nombre de usuario ya existe"});
+  const id="p_"+crypto.randomBytes(12).toString("hex");
+  const gender=["male","female"].includes(b.gender)?b.gender:"neutral";
+  const avatarId=gender==="female"?"starter_f":"starter_m";
+  const r=normalizeRank(id,{name:username,coins:200,gems:0,keys:1,avatarId,gender,frameId:"none",achievements:[],onlineStats:{}});
+  rankings[id]=r;
+  await persistRank(r);
+  const hp=hashPassword(password),a={username,playerId:id,passwordSalt:hp.salt,passwordHash:hp.hash,forcePasswordChange:false};
+  await persistAccount(key,a);
+  const token=await createAccountSession(key,id);
+  return json(res,200,{ok:true,username,playerId:id,token,mustChangePassword:false,profile:publicProfile(r)})
  }
  if(req.method==="POST"&&p==="/api/account/login"){
   const b=await body(req),key=usernameKey(b.username),password=String(b.password||"");if(!key||!accountLoginAllowed(req,key))return json(res,429,{error:"Demasiados intentos. Prueba más tarde."});const a=accounts[key];if(!a||!verifyPassword(password,a)){accountFail(req,key);return json(res,401,{error:"Usuario o contraseña incorrectos"})}const r=rankings[a.playerId];if(!r)return json(res,404,{error:"El perfil asociado no existe"});const token=await createAccountSession(key,a.playerId);return json(res,200,{ok:true,username:a.username,playerId:a.playerId,token,mustChangePassword:!!a.forcePasswordChange,profile:publicProfile(r)})
+ }
+ if(req.method==="POST"&&p==="/api/account/forgot-password"){
+  const b=await body(req),key=usernameKey(b.username);
+  if(key&&accounts[key])await persistPasswordResetRequest(key);
+  return json(res,200,{ok:true,message:"Si la cuenta existe, la solicitud de recuperación quedó registrada."})
  }
  if(req.method==="POST"&&p==="/api/account/me"){const b=await body(req),s=sessionForToken(b.token);if(!s)return json(res,401,{error:"La sesión venció. Inicia sesión nuevamente."});const a=accounts[s.usernameKey],r=rankings[s.playerId];if(!a||!r)return json(res,404,{error:"Cuenta no encontrada"});return json(res,200,{username:a.username,playerId:s.playerId,mustChangePassword:!!a.forcePasswordChange,profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/account/logout"){const b=await body(req);if(b.token)await deleteAccountSession(b.token);return json(res,200,{ok:true})}
@@ -263,6 +308,7 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   if(currentPassword===newPassword)return json(res,400,{error:"La nueva contraseña debe ser diferente"});
   const hp=hashPassword(newPassword);a.passwordSalt=hp.salt;a.passwordHash=hp.hash;a.forcePasswordChange=false;
   await persistAccount(s.usernameKey,a);
+  await clearPasswordResetRequest(s.usernameKey);
   await deleteAllAccountSessions(s.usernameKey);
   const newToken=await createAccountSession(s.usernameKey,a.playerId);
   return json(res,200,{ok:true,token:newToken,username:a.username,playerId:a.playerId,mustChangePassword:false})
@@ -296,6 +342,12 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   });
   return json(res,200,{players,summary:{players:players.length,games:players.reduce((a,x)=>a+x.games,0),rooms:rooms.size,storage:storageMode}})
  }
+ if(req.method==="GET"&&p==="/api/admin/password-resets"){
+  const requests=Object.entries(passwordResetRequests).map(([key,v])=>{
+   const a=accounts[key];return a?{username:a.username,playerId:a.playerId,requestedAt:Number(v.requestedAt||0)}:null
+  }).filter(Boolean).sort((a,b)=>a.requestedAt-b.requestedAt);
+  return json(res,200,{requests})
+ }
  if(req.method==="GET"&&p==="/api/admin/wheel-config")return json(res,200,gameConfig);
  if(req.method==="POST"&&p==="/api/admin/wheel-config"){const b=await body(req);gameConfig=normalizeGameConfig({wheelCooldownMs:Number(b.cooldownMinutes||120)*60000,wheelPrizes:b.prizes});await persistGameConfig();return json(res,200,gameConfig)}
  if(req.method==="GET"&&p==="/api/admin/rooms")return json(res,200,{rooms:publicRooms()});
@@ -314,6 +366,7 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   if(!validPassword(temporaryPassword))return json(res,400,{error:"La contraseña temporal debe tener entre 8 y 72 caracteres"});
   const hp=hashPassword(temporaryPassword);a.passwordSalt=hp.salt;a.passwordHash=hp.hash;a.forcePasswordChange=b.forceChange!==false;
   await persistAccount(key,a);
+  await clearPasswordResetRequest(key);
   await deleteAllAccountSessions(key);
   return json(res,200,{ok:true,username:a.username,temporaryPassword,mustChangePassword:!!a.forcePasswordChange})
  }
