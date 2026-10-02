@@ -1,0 +1,27 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9
+LOGIN / RUNTIME HOTFIX
+
+BUG ENCONTRADO
+Durante el rework de la tienda 0.2.9 se reemplazó un bloque de JavaScript que contenía
+tres funciones todavía utilizadas por el juego:
+
+- renderAch()
+- buyItem()
+- openChest()
+
+Esto provocaba:
+"renderAch is not defined"
+al iniciar sesión, porque applyOnlineProfile() intenta actualizar la pantalla de logros.
+
+CORREGIDO
+- Restaurado renderAch().
+- Restaurado buyItem().
+- Restaurado openChest().
+- Los cofres legendarios ahora también pueden considerar avatares Premium 0.2.9.
+- Corregidos textos visibles que todavía decían Alpha 0.2.8.
+- No se modifica ninguna cuenta, contraseña, inventario ni base de datos.
+
+VALIDACIÓN
+- JavaScript validado con node --check.
+- server.js validado con node --check.
+- Comparación con Alpha 0.2.8 confirma que ya no faltan funciones heredadas.
