@@ -1,0 +1,18 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9.2
+
+CORRECCIONES PRINCIPALES
+1. Perfil online / multijugador
+- El selector de avatar del perfil online ahora muestra los avatares en un tamaño correcto y ordenado.
+- Se corrigió el render de mini-avatares del lobby multijugador para evitar que se vean gigantes o desalineados.
+
+2. Propiedad real de skins
+- El perfil online ahora solo puede equipar avatares realmente desbloqueados por el jugador.
+- Si un perfil intenta mostrar un avatar no poseído, el juego hace fallback automático al avatar inicial.
+- Esto evita que en el multijugador aparezcan skins no desbloqueadas.
+
+3. Pulido visual de avatares premium
+- Ajustes visuales a Nico Gamer, Chef Sol y Detective Vega.
+- Mejor presentación general de premium portraits en contextos compactos.
+
+RECOMENDACIÓN
+Después de subir a Render, hacer hard refresh (Ctrl+F5) o abrir en incógnito para limpiar caché.
