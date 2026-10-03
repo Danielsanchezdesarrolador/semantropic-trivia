@@ -100,3 +100,10 @@ ALPHA 0.2.8
 - Sistema de niveles hasta 30.
 - Avatar Studio expandido con wardrobe evolutivo y auras.
 - Se persiste level/xp/profile_meta en servidor.
+
+
+ALPHA 0.3.0 — AI DYNAMIC TRIVIA
+- Nuevo modo de preguntas generadas por IA.
+- Actualidad con web search.
+- Memoria persistente anti-repetición.
+- Configuración: ver AI_SETUP_RENDER_0_3_0.txt

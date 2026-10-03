@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<title>Semantropic Trivia — Alpha 0.2.9.5</title>
+<title>Semantropic Trivia — Alpha 0.3.0</title>
 <style>
 :root{
  --bg:#070b14;--bg2:#0d1427;--panel:#131d37;--panel2:#1a294e;--text:#f7f9ff;--muted:#9eabd0;
@@ -532,7 +532,7 @@ input,select,textarea{
 @media(max-width:720px){.reward-home{grid-template-columns:auto 1fr}.reward-home .btn{grid-column:1/-1}.semantropic-game{border-radius:0;margin:-12px;min-height:calc(100dvh - 74px);padding:9px 10px 18px}.semantropic-game .hud{display:none}.semantropic-game #qText{font-size:1.35rem!important;min-height:112px;padding:25px 15px 20px}.play-wallet{position:sticky;top:0;z-index:9;background:rgba(71,17,100,.58);border-radius:16px;margin-bottom:4px}}
 
 
-/* ===== ALPHA 0.2.9.5 PATCH ===== */
+/* ===== ALPHA 0.3.0 PATCH ===== */
 .reward-wheel-label{position:absolute;left:50%;top:50%;width:104px;text-align:center;font-size:.72rem;font-weight:1000;line-height:1.05;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.72);z-index:2;pointer-events:none}
 .reward-wheel-label .rw-icon{display:block;font-size:1.25rem;margin-bottom:2px}
 .frame-none{}
@@ -549,7 +549,7 @@ input,select,textarea{
 .pixel-warrior-icon:before{content:"";position:absolute;left:19px;top:8px;width:20px;height:18px;background:#d9e3ee;box-shadow:-5px 5px 0 #6b7a90,5px 5px 0 #6b7a90,0 18px 0 #3156a5,-7px 23px 0 #3156a5,7px 23px 0 #3156a5,-8px 34px 0 #657ca7,8px 34px 0 #657ca7}
 .pixel-warrior-icon:after{content:"";position:absolute;width:5px;height:35px;background:#eefcff;right:8px;top:10px;transform:rotate(38deg);box-shadow:0 0 5px #72e5ff}
 .frameitem{cursor:pointer;text-align:center}.frameitem.sel{outline:3px solid var(--gold)}
-/* ===== ALPHA 0.2.9.5 AVATAR COLLECTION REWORK ===== */
+/* ===== ALPHA 0.3.0 AVATAR COLLECTION REWORK ===== */
 .collection-hero,.shop-hero-029{display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(135deg,rgba(105,73,255,.16),rgba(33,205,231,.09));border-color:rgba(110,222,255,.18)}
 .shop-hero-icons{font-size:2.2rem;white-space:nowrap}
 .rarity-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:.66rem;font-weight:950;letter-spacing:.6px;text-transform:uppercase;border:1px solid rgba(255,255,255,.12)}
@@ -660,7 +660,7 @@ input,select,textarea{
 .boss-stage-pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#45205f;color:#ffe583;font-weight:1000;margin-top:8px}
 
 
-/* ===== Alpha 0.2.9.5: 15-second question timer ===== */
+/* ===== Alpha 0.3.0: 15-second question timer ===== */
 .question-timer-wrap{margin:10px 0 7px}
 .question-timer-top{display:flex;justify-content:space-between;align-items:center;color:#fff;font-weight:1000;font-size:.9rem;margin-bottom:6px}
 .question-timer-track{height:12px;border-radius:999px;background:rgba(42,7,58,.55);overflow:hidden;border:1px solid rgba(255,255,255,.14)}
@@ -672,7 +672,7 @@ input,select,textarea{
 .semantropic-game .question-timer-wrap{padding:0 4px}
 
 
-/* ===== Alpha 0.2.9.5: sidebar/settings navigation fix ===== */
+/* ===== Alpha 0.3.0: sidebar/settings navigation fix ===== */
 @media (min-width:1041px){
   aside{
     overflow-y:auto;
@@ -684,7 +684,7 @@ input,select,textarea{
 }
 
 
-/* ===== Alpha 0.2.9.5: Online multiplayer ===== */
+/* ===== Alpha 0.3.0: Online multiplayer ===== */
 .mp-intro{display:grid;grid-template-columns:1fr minmax(220px,320px);gap:20px;align-items:center;background:linear-gradient(135deg,rgba(66,213,255,.1),rgba(128,104,255,.18))}
 .mp-name-row{display:grid;gap:8px}.mp-name-row input,.mp-join input{background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:12px;padding:12px 14px;font-size:16px}
 .mp-join{display:flex;gap:10px;align-items:center}.mp-join input{text-transform:uppercase;letter-spacing:.18em;font-weight:1000;font-size:1.2rem;text-align:center;max-width:220px}
@@ -708,7 +708,7 @@ input,select,textarea{
 }
 
 
-/* ===== Alpha 0.2.9.5: persistent online profiles + owner admin ===== */
+/* ===== Alpha 0.3.0: persistent online profiles + owner admin ===== */
 .online-profile-card{display:grid;grid-template-columns:minmax(180px,1fr) 2fr;gap:18px;align-items:center;margin-bottom:14px;background:linear-gradient(135deg,rgba(40,210,170,.12),rgba(118,68,215,.18))}
 .online-profile-stats{display:grid;grid-template-columns:repeat(6,minmax(70px,1fr));gap:8px}.online-profile-stats div{background:#101a31;border:1px solid rgba(255,255,255,.07);padding:10px;border-radius:12px;text-align:center}.online-profile-stats span,.online-profile-stats b{display:block}.online-profile-stats span{font-size:.72rem;color:#9aa8c8;margin-bottom:3px}.online-profile-stats b{font-size:1.05rem}
 .admin-login-card{text-align:center;max-width:680px;margin:0 auto}.admin-login-row{display:flex;gap:10px;max-width:560px;margin:18px auto 0}.admin-login-row input,.admin-action-grid input,.admin-toolbar input{width:100%;background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:12px;padding:11px 13px}.admin-storage{font-size:1.05rem!important}.admin-editor{display:grid;gap:16px}.admin-selected{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.admin-selected h2{margin:3px 0}.admin-action-grid{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:10px}.admin-action-grid label{display:grid;gap:7px;font-size:.82rem;color:#b9c3dc}.admin-buttons,.admin-toolbar{display:flex;gap:9px;flex-wrap:wrap}.admin-toolbar input{max-width:330px}.admin-table tbody tr{cursor:pointer}.admin-table tbody tr:hover{background:rgba(88,188,255,.08)}.admin-table tbody tr.selected{background:rgba(255,209,102,.12);outline:1px solid rgba(255,209,102,.3)}
@@ -716,7 +716,7 @@ input,select,textarea{
 @media(max-width:560px){.online-profile-stats,.admin-action-grid{grid-template-columns:repeat(2,1fr)}.admin-login-row{flex-direction:column}.admin-buttons .btn,.admin-toolbar .btn{width:100%}.admin-toolbar input{max-width:none}}
 
 
-/* ===== Alpha 0.2.9.5 hotfix: room moderation ===== */
+/* ===== Alpha 0.3.0 hotfix: room moderation ===== */
 .mp-player-controls{display:flex;align-items:center;gap:7px}
 .mp-kick-btn{padding:5px 8px!important;font-size:.72rem!important;min-height:auto!important}
 .admin-room-players{display:flex;flex-wrap:wrap;gap:5px}
@@ -725,7 +725,7 @@ input,select,textarea{
 .admin-room-actions{display:flex;gap:6px;flex-wrap:wrap}
 
 
-/* ===== Alpha 0.2.9.5 Social Profiles + Expanded Achievements + 2v2 ===== */
+/* ===== Alpha 0.3.0 Social Profiles + Expanded Achievements + 2v2 ===== */
 .profile-showcase{margin-top:6px;font-size:.74rem;color:#ffd86a;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .online-profile-identity{display:grid;grid-template-columns:86px 1fr;gap:14px;align-items:center}
 .public-avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:2.25rem;background:linear-gradient(135deg,#8068ff,#42d5ff);position:relative;cursor:pointer;border:2px solid rgba(255,255,255,.13)}
@@ -749,7 +749,7 @@ input,select,textarea{
 
 
 
-/* ===== Alpha 0.2.9.5: unified account gate ===== */
+/* ===== Alpha 0.3.0: unified account gate ===== */
 body.auth-locked{overflow:hidden}
 body.auth-locked .app{display:none!important}
 .auth-gate{position:fixed;inset:0;z-index:9998;display:grid;place-items:center;padding:22px;background:
@@ -767,7 +767,7 @@ body.auth-locked .app{display:none!important}
 .account-settings-card{margin-top:14px}.account-settings-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.account-settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
 .reset-request{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.reset-request:last-child{border-bottom:0}.reset-request small{display:block;color:#9aa8c8;margin-top:3px}
 
-/* ===== Alpha 0.2.9.5: accounts + wheel admin ===== */
+/* ===== Alpha 0.3.0: accounts + wheel admin ===== */
 .account-card{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,rgba(61,207,255,.09),rgba(128,104,255,.16));margin-bottom:14px}
 .account-fields{display:grid;gap:9px}.account-fields input,.admin-wheel-editor select,.admin-wheel-editor input{background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:11px;padding:11px 12px;font-size:.95rem}.account-actions{grid-column:1/-1;display:flex;gap:9px;flex-wrap:wrap}.account-logged{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:14px;border-color:rgba(53,211,154,.3)}.account-session-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.password-change-fields{display:grid;gap:9px;margin:16px 0}.password-change-fields input{width:100%;background:#0d1730;border:1px solid #33466f;color:#fff;border-radius:11px;padding:12px 13px;font-size:.95rem}.account-force-warning{color:#ffd166!important;font-weight:800}
 .admin-wheel-slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0 16px}.admin-wheel-slot{display:grid;grid-template-columns:44px 1fr 100px;gap:8px;align-items:center;padding:10px;border-radius:12px;background:#101a31;border:1px solid rgba(255,255,255,.07)}.admin-wheel-slot .slot-num{font-weight:1000;text-align:center;color:#ffd166}.admin-wheel-slot input{width:100%}
@@ -864,7 +864,7 @@ body.auth-locked .app{display:none!important}
 .avatar .rarity-badge,.public-avatar .rarity-badge,.mp-mini-avatar .rarity-badge{font-size:.52rem;padding:2px 6px}
 
 
-/* ===== ALPHA 0.2.9.5 — PREMIUM AVATAR STYLE REBUILD ===== */
+/* ===== ALPHA 0.3.0 — PREMIUM AVATAR STYLE REBUILD ===== */
 .avatar,.public-avatar,.mp-mini-avatar{position:relative;overflow:hidden;isolation:isolate}
 .mp-mini-avatar{display:grid;place-items:center}
 .premium-portrait{--skin:#e2a77b;--hair:#493127;--shirt:#5566dd;--portrait-bg:#86a9c2;position:relative;width:92px;height:92px;margin:0 auto;border-radius:50%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--portrait-bg) 90%, #fff 10%),color-mix(in srgb,var(--portrait-bg) 82%, #000 18%));box-shadow:inset 0 0 0 3px rgba(255,255,255,.16),0 10px 24px rgba(0,0,0,.18)}
@@ -936,7 +936,7 @@ body.auth-locked .app{display:none!important}
 .premium-card .muted{min-height:40px}
 
 
-/* ===== ALPHA 0.2.9.5 MULTIPLAYER / PROFILE PICKER FIX ===== */
+/* ===== ALPHA 0.3.0 MULTIPLAYER / PROFILE PICKER FIX ===== */
 .mp-player{align-items:flex-start}
 .mp-mini-avatar{width:58px;height:58px;min-width:58px;min-height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 0 0 3px rgba(255,255,255,.06);overflow:hidden;position:relative}
 .mp-mini-avatar .premium-portrait{position:absolute;inset:4px;width:auto;height:auto;margin:0;box-shadow:none;border-radius:50%}
@@ -958,7 +958,7 @@ body.auth-locked .app{display:none!important}
 .profile-edit-preview .public-avatar .premium-portrait{inset:6px}
 
 
-/* ===== ALPHA 0.2.9.5 LOCKS + HEADSET FIX ===== */
+/* ===== ALPHA 0.3.0 LOCKS + HEADSET FIX ===== */
 .avataritem.locked,.profile-avatar-option.locked{position:relative;opacity:.78}
 .avataritem.locked .bigico,.profile-avatar-option.locked .big{filter:saturate(.72) brightness(.9)}
 .avataritem.locked:hover,.profile-avatar-option.locked:hover{transform:none}
@@ -970,7 +970,7 @@ body.auth-locked .app{display:none!important}
 .avatar .premium-portrait.acc-headset .pp-acc:before,.public-avatar .premium-portrait.acc-headset .pp-acc:before,.mp-mini-avatar .premium-portrait.acc-headset .pp-acc:before{border-width:3px;top:20%}
 
 
-/* ===== ALPHA 0.2.9.5 PROFILE EDITOR HOTFIX ===== */
+/* ===== ALPHA 0.3.0 PROFILE EDITOR HOTFIX ===== */
 .profile-avatar-option .big>.avatar-render{
  position:absolute;left:50%;top:50%;
  transform:translate(-50%,-50%) scale(.25);
@@ -983,7 +983,7 @@ body.auth-locked .app{display:none!important}
 }
 
 
-/* ===== ALPHA 0.2.9.5 — PROFILE AVATAR PICKER REBUILD ===== */
+/* ===== ALPHA 0.3.0 — PROFILE AVATAR PICKER REBUILD ===== */
 .profile-avatar-picker{
  display:grid;
  grid-template-columns:repeat(3,minmax(0,1fr));
@@ -1212,6 +1212,15 @@ body.auth-locked .app{display:none!important}
  .profile-avatar-option{min-height:142px}
 }
 
+
+/* ===== ALPHA 0.3.0 — AI DYNAMIC TRIVIA ===== */
+.ai-mode-card{background:radial-gradient(circle at 90% 10%,rgba(78,231,255,.15),transparent 34%),linear-gradient(145deg,#18254b,#161b3c);border-color:rgba(90,219,255,.3)}
+.ai-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;background:radial-gradient(circle at 85% 50%,rgba(69,221,255,.18),transparent 30%),linear-gradient(135deg,rgba(110,82,255,.18),rgba(17,33,68,.88));border-color:rgba(90,220,255,.22)}
+.ai-orb,.ai-loader-orb{width:110px;height:110px;min-width:110px;border-radius:50%;display:grid;place-items:center;font-weight:1000;font-size:2rem;letter-spacing:2px;color:white;background:radial-gradient(circle at 35% 30%,#67f0ff,#6257ff 55%,#25135f 100%);box-shadow:0 0 0 5px rgba(83,222,255,.13),0 0 45px rgba(93,95,255,.38)}
+.ai-config-grid{margin-top:16px}.ai-select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #31456f;background:#0d1830;color:#fff;font:inherit}.ai-source-option{display:flex;gap:11px;align-items:flex-start;padding:12px;border:1px solid #293b62;border-radius:13px;margin:10px 0;background:#0c1730;cursor:pointer}.ai-source-option input{margin-top:4px;accent-color:#5bdcf7}.ai-source-option span{display:grid;gap:3px}.ai-source-option small{color:#91a7ce}.ai-safety-note{margin-top:14px;padding:10px 12px;border-radius:11px;background:rgba(81,217,255,.08);color:#9fdff3;font-size:.85rem}.ai-memory-card{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:16px}.ai-memory-card b#aiGeneratedCount{font-size:2rem;color:#77e8ff}.ai-start-btn{width:100%;margin-top:16px;padding:16px;font-size:1.05rem}.ai-setup-hint{text-align:center;margin:12px 0}.ai-loading-box{text-align:center}.ai-loader-orb{margin:0 auto 20px;animation:aiPulse 1.35s ease-in-out infinite alternate}.ai-loading-dots{display:flex;justify-content:center;gap:7px;margin-top:20px}.ai-loading-dots i{width:8px;height:8px;background:#67e9ff;border-radius:50%;animation:aiDot 1s ease-in-out infinite}.ai-loading-dots i:nth-child(2){animation-delay:.15s}.ai-loading-dots i:nth-child(3){animation-delay:.3s}@keyframes aiPulse{to{transform:scale(1.06);box-shadow:0 0 0 9px rgba(83,222,255,.08),0 0 60px rgba(93,95,255,.55)}}@keyframes aiDot{50%{transform:translateY(-7px);opacity:.45}}
+.ai-explanation{margin-top:9px;padding:8px 10px;border-radius:10px;background:rgba(84,211,255,.08);border:1px solid rgba(84,211,255,.12);font-size:.82rem;line-height:1.3;color:#c4ddf5}.ai-source-link{display:inline-block;margin-top:6px;color:#69e4ff;text-decoration:none;font-weight:800}.ai-source-link:hover{text-decoration:underline}
+@media(max-width:700px){.ai-hero{align-items:flex-start}.ai-orb{width:72px;height:72px;min-width:72px;font-size:1.25rem}.ai-memory-card{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 <body class="auth-locked">
@@ -1241,12 +1250,12 @@ body.auth-locked .app{display:none!important}
    <button id="authBackBtn" class="auth-link hidden" onclick="authSetMode('login')">← Volver a iniciar sesión</button>
    <div id="authMessage" class="auth-message"></div>
   </div>
-  <div class="auth-version">Alpha 0.2.9.5 · Perfil único</div>
+  <div class="auth-version">Alpha 0.3.0 · Perfil único</div>
  </div>
 </div>
 <div class="app"><div class="shell">
 <aside>
-  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.2.9.5</div>
+  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.3.0</div>
   <div class="sidebar-account-row">
    <span class="sidebar-account-name">@<span id="sidebarAccountUsername">usuario</span></span>
    <button class="sidebar-logout" onclick="accountLogout()" title="Cerrar sesión">⎋ Salir</button>
@@ -1272,7 +1281,7 @@ body.auth-locked .app{display:none!important}
 <section id="home" class="page">
  <div class="top"><h1>Semantropic Trivia</h1><div class="currency"><div class="pill">🪙 <span class="coins">0</span></div><div class="pill">💎 <span class="gems">0</span></div><div class="pill">🔑 <span class="keys">0</span></div></div></div>
  <div class="grid g2">
-  <div class="card hero mode" onclick="page('modes')"><div class="tag">TRIVIA GENERAL</div><h2>🎮 Juega por diversión</h2><p>Cine, historia, ciencia, deportes, geografía, arte y videojuegos.</p><button class="btn primary">ENTRAR</button></div>
+  <div class="card hero mode" onclick="page('modes')"><div class="tag">TRIVIA GENERAL · IA 0.3.0</div><h2>🎮 Juega por diversión</h2><p>Preguntas clásicas + nuevo motor de inteligencia artificial con contenido dinámico y actualidad.</p><button class="btn primary">ENTRAR</button></div>
   <div class="card hero educational mode" onclick="page('education')"><div class="tag">MODO EDUCATIVO</div><h2>📚 Aprende jugando</h2><p>Lenguaje, matemáticas, ciencias, historia y ciencias del deporte, con nivel por edad.</p><button class="btn primary">ESTUDIAR JUGANDO</button></div>
  </div>
  <div class="section"><h2>Tu progreso</h2></div><div class="grid g4">
@@ -1315,7 +1324,8 @@ body.auth-locked .app{display:none!important}
 </section>
 
 <section id="modes" class="page hidden">
- <div class="top"><h1>🎮 Trivia General</h1><div class="pill">1.105 preguntas base · procedural · cooldown persistente</div></div><div class="grid g3">
+ <div class="top"><h1>🎮 Trivia General</h1><div class="pill">1.105 preguntas base · procedural · IA dinámica · actualidad</div></div><div class="grid g3">
+  <div class="card mode ai-mode-card" onclick="page('aiTrivia')"><div class="rib">0.3.0</div><div class="ico">🤖</div><h2>IA Dinámica</h2><p class="muted">Preguntas nuevas generadas por IA, con modo actualidad y memoria anti-repetición.</p></div>
   <div class="card mode" onclick="start('quick')"><div class="ico">⚡</div><h2>Rápida</h2><p class="muted">10 preguntas. 3 vidas.</p></div>
   <div class="card mode" onclick="start('tournament')"><div class="rib">POPULAR</div><div class="ico">🏆</div><h2>Torneo CPU</h2><p class="muted">7 rondas con ruleta.</p></div>
   <div class="card mode" onclick="start('survival')"><div class="ico">💀</div><h2>Supervivencia</h2><p class="muted">Juega hasta quedarte sin vidas.</p></div>
@@ -1327,6 +1337,29 @@ body.auth-locked .app{display:none!important}
 </section>
 
 
+
+<section id="aiTrivia" class="page hidden">
+ <div class="top"><h1>🤖 Trivia IA Dinámica</h1><div id="aiStatusPill" class="pill">🔄 Comprobando IA…</div></div>
+ <div class="card ai-hero">
+  <div><div class="tag">SEMANTROPIC 0.3.0</div><h2>Preguntas que evolucionan contigo</h2><p class="muted">El servidor genera preguntas nuevas, guarda una huella de cada concepto y evita reutilizar preguntas ya creadas. Para actualidad, la IA puede consultar la web.</p></div>
+  <div class="ai-orb">AI</div>
+ </div>
+ <div class="grid g2 ai-config-grid">
+  <div class="card">
+   <h3>🎯 Categoría</h3><select id="aiCategory" class="ai-select"><option value="Mixto">🌈 Mixto</option><option>Historia</option><option>Ciencia</option><option>Cine</option><option>Gaming</option><option>Geografía</option><option>Deportes</option><option>Arte</option><option>Tecnología</option><option>Naturaleza</option><option>Música</option></select>
+   <h3 style="margin-top:18px">🧠 Dificultad</h3><select id="aiDifficulty" class="ai-select"><option value="mixed">Mixta</option><option value="1">Fácil</option><option value="2">Media</option><option value="3">Difícil</option></select>
+  </div>
+  <div class="card">
+   <h3>🌐 Fuente</h3>
+   <label class="ai-source-option"><input type="radio" name="aiSource" value="evergreen" checked><span><b>🤖 Conocimiento dinámico</b><small>Preguntas nuevas sobre temas estables.</small></span></label>
+   <label class="ai-source-option"><input type="radio" name="aiSource" value="current"><span><b>📰 Actualidad</b><small>Busca información reciente en la web antes de preguntar.</small></span></label>
+   <div class="ai-safety-note">🛡️ Preguntas claras, verificables y aptas para adolescentes.</div>
+  </div>
+ </div>
+ <div class="card ai-memory-card"><div><b>🧬 Memoria anti-repetición</b><div class="muted">Cada pregunta generada queda registrada en el servidor mediante huella + concepto para evitar repetirla.</div></div><div><b id="aiGeneratedCount">0</b><small> preguntas IA archivadas</small></div></div>
+ <button id="aiStartBtn" class="btn primary ai-start-btn" onclick="startAITrivia()">✨ GENERAR 10 PREGUNTAS NUEVAS</button>
+ <div id="aiSetupHint" class="muted ai-setup-hint"></div>
+</section>
 
 <section id="multiplayer" class="page hidden">
  <div class="top">
@@ -1642,6 +1675,7 @@ body.auth-locked .app{display:none!important}
 </section>
 </main></div></div>
 
+<div id="aiLoadingModal" class="modal hidden"><div class="modalbox ai-loading-box"><div class="ai-loader-orb">AI</div><h2 id="aiLoadingTitle">Generando preguntas nuevas…</h2><p id="aiLoadingText" class="muted">La IA está creando una partida que no reutilice conceptos recientes.</p><div class="ai-loading-dots"><i></i><i></i><i></i></div></div></div>
 <div id="resultModal" class="modal hidden"><div class="modalbox"><div id="resultIcon" class="bigico">🏆</div><h2 id="resultTitle">Resultado</h2><p id="resultText" class="muted"></p><div class="grid g3" style="margin:17px 0"><div class="card"><div class="muted">Puntos</div><div id="rScore" class="stat">0</div></div><div class="card"><div class="muted">Aciertos</div><div id="rCorrect" class="stat">0</div></div><div class="card"><div class="muted">Premio</div><div id="rPrize" class="stat">0</div></div></div><button class="btn primary" onclick="closeResult()">CONTINUAR</button></div></div>
 <div id="localModal" class="modal hidden"><div class="modalbox"><h2>👥 Duelo local</h2><p class="muted">Dos jugadores, un dispositivo, turnos alternados.</p><input id="p1name" value="Jugador 1" style="width:100%;padding:11px;margin:6px 0;border-radius:10px;background:#0d1730;color:white;border:1px solid #334"><input id="p2name" value="Jugador 2" style="width:100%;padding:11px;margin:6px 0;border-radius:10px;background:#0d1730;color:white;border:1px solid #334"><button class="btn primary" style="margin-top:9px" onclick="startLocal()">COMENZAR</button></div></div>
 <div id="rewardModal" class="modal hidden"><div class="modalbox"><div id="rewardIcon" class="bigico">🎁</div><h2 id="rewardTitle">Premio</h2><p id="rewardText" class="muted"></p><button class="btn primary" onclick="document.getElementById('rewardModal').classList.add('hidden')">GENIAL</button></div></div>
@@ -2388,7 +2422,7 @@ function buildEducationQueue(count,subject,level,mixed,scope){
 
 
 
-/* ===== CLOUD PROFILE + ADMIN / ALPHA 0.2.9.5 ===== */
+/* ===== CLOUD PROFILE + ADMIN / ALPHA 0.3.0 ===== */
 let onlineProfileToken="",onlineProfileRevision=0,onlineProfileReady=false,onlineSyncTimer=null,onlineProfile=null,onlineAccountUsername="",accountLoggedIn=false,serverProfilePollTimer=null,lastServerProfileCheck=0;
 function localAchievementIds(){return Object.keys(save.ach||{}).filter(id=>save.ach[id])}
 function achievementInfo(id){return ACH.find(a=>a.id===id)||null}
@@ -3062,7 +3096,7 @@ async function adminDeleteAccount(){
  }catch(e){toast(e.message)}
 }
 
-/* ===== ONLINE MULTIPLAYER ALPHA 0.2.9.5 =====
+/* ===== ONLINE MULTIPLAYER ALPHA 0.3.0 =====
    Uses the bundled Semantropic Node server via HTTP + Server-Sent Events.
    Single-player remains fully functional without the server.
 */
@@ -3356,7 +3390,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="education")renderEducation();if(id==="avatarStudio"){setAvatarStudioTab("character");renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderPremiumCollection();renderFrames();renderAchievementAvatars();renderMedals()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="aiTrivia")renderAITriviaPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="education")renderEducation();if(id==="avatarStudio"){setAvatarStudioTab("character");renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderPremiumCollection();renderFrames();renderAchievementAvatars();renderMedals()}if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c,meta={}){
@@ -3745,6 +3779,40 @@ function filterBank(){const d=save.settings.difficulty;if(d==="mixed")return BAN
 function base(mode){return{mode,score:0,lives:3+(save.inv.life>0?1:0),streak:0,correct:0,totalAnswered:0,cpu:0,p50:false,pSkip:false,pDouble:false,pShield:false,double:false,shield:false,locked:false}}
 function consumeInv(){if(save.inv.life>0)save.inv.life--;if(save.inv.shield>0){save.inv.shield--;state.freeShield=true}if(save.inv.double>0){save.inv.double--;state.freeDouble=true}persist()}
 function startEducation(mode){ensureAudio();let pool;if(mode==="mixed")pool=EDU_BANK.filter(q=>q.level===save.eduPrefs.level);else pool=EDU_BANK.filter(q=>q.level===save.eduPrefs.level&&q.subject===save.eduPrefs.subject);if(!pool.length)return toast("No hay preguntas para esa selección");state=base("education");state.eduMode=mode;state.idx=0;const count=mode==="challenge"?15:10;const key=mode==="mixed"?`edu:mixed:${save.eduPrefs.level}`:`edu:${save.eduPrefs.subject}:${save.eduPrefs.level}`;state.queue=buildEducationQueue(count,save.eduPrefs.subject,save.eduPrefs.level,mode==="mixed",key);state.target=state.queue.length;state.lives=mode==="practice"?99:3;page("game");$("modeLabel").textContent=mode==="mixed"?"🎒 REPASO MIXTO":"📚 "+save.eduPrefs.subject.toUpperCase();$("duelBox").classList.add("hidden");$("bossBox").classList.add("hidden");$("wheelBox").classList.add("hidden");$("qBox").classList.remove("hidden");renderQ();updateHUD()}
+
+let aiServerStatus=null;
+async function renderAITriviaPage(){
+ const pill=$("aiStatusPill"),btn=$("aiStartBtn"),hint=$("aiSetupHint");
+ if(location.protocol==="file:"){pill.textContent="🔴 Requiere servidor";pill.className="pill bad";btn.disabled=true;hint.textContent="Abre Semantropic desde Render para usar la IA.";return}
+ try{
+  const s=await mpRequest("/api/ai/status");aiServerStatus=s;
+  $("aiGeneratedCount").textContent=Number(s.generated||0).toLocaleString("es-CL");
+  if(s.configured){pill.textContent=`🟢 IA online · ${s.model}`;pill.className="pill ok";btn.disabled=false;hint.textContent="Las claves de IA permanecen únicamente en el servidor."}
+  else{pill.textContent="🟡 IA sin configurar";pill.className="pill";btn.disabled=true;hint.textContent="Como creador: agrega OPENAI_API_KEY en Render → Environment."}
+ }catch(e){pill.textContent="🔴 IA no disponible";pill.className="pill bad";btn.disabled=true;hint.textContent=e.message}
+}
+function aiSelectedSource(){return document.querySelector('input[name="aiSource"]:checked')?.value||"evergreen"}
+async function startAITrivia(){
+ if(!accountLoggedIn||!onlineProfileToken)return toast("Inicia sesión para usar Trivia IA");
+ if(!aiServerStatus?.configured){await renderAITriviaPage();if(!aiServerStatus?.configured)return toast("La IA todavía no está configurada")}
+ const category=$("aiCategory")?.value||"Mixto",difficulty=$("aiDifficulty")?.value||"mixed",current=aiSelectedSource()==="current";
+ $("aiLoadingTitle").textContent=current?"Buscando actualidad y creando preguntas…":"Generando preguntas nuevas…";
+ $("aiLoadingText").textContent=current?"La IA consulta la web y transforma información reciente en trivia verificable.":"La IA compara con la memoria del servidor para evitar preguntas ya usadas.";
+ $("aiLoadingModal").classList.remove("hidden");
+ try{
+  const r=await mpRequest("/api/ai/questions",{playerId:mpPlayerId(),token:onlineProfileToken,count:10,category,difficulty,current});
+  if(!Array.isArray(r.questions)||r.questions.length<3)throw new Error("La IA no devolvió suficientes preguntas");
+  state=base("ai");state.aiCurrent=current;state.queue=r.questions.map(q=>({...q,a:[...(q.a||[])],ok:Number(q.ok)}));state.idx=0;state.target=state.queue.length;consumeInv();
+  $("aiLoadingModal").classList.add("hidden");page("game");$("modeLabel").textContent=current?"📰 ACTUALIDAD IA":"🤖 IA DINÁMICA";$("duelBox").classList.add("hidden");$("bossBox").classList.add("hidden");$("wheelBox").classList.add("hidden");$("qBox").classList.remove("hidden");renderQ();updateHUD();
+  aiServerStatus={...(aiServerStatus||{}),generated:r.generated};
+ }catch(e){$("aiLoadingModal").classList.add("hidden");toast(e.message);if(e.payload?.code==="AI_NOT_CONFIGURED")await renderAITriviaPage()}
+}
+function appendAIQuestionInfo(q){
+ if(!q?.ai)return;const f=$("feedback");if(!f)return;
+ if(q.explanation){const d=document.createElement("div");d.className="ai-explanation";d.textContent="🤖 "+q.explanation;f.appendChild(d)}
+ if(q.current&&q.sourceUrl){try{const u=new URL(q.sourceUrl);if(["http:","https:"].includes(u.protocol)){const a=document.createElement("a");a.className="ai-source-link";a.href=u.toString();a.target="_blank";a.rel="noopener noreferrer";a.textContent="📰 Fuente"+(q.sourceTitle?": "+q.sourceTitle:"");f.appendChild(a)}}catch(e){}}
+}
+
 function start(mode){ensureAudio();if(mode==="daily"){const today=new Date().toISOString().slice(0,10);if(save.daily===today)return toast("Ya jugaste el desafío diario de hoy")}if(mode==="bossrush"){startBossLadder(0);return}state=base(mode);const pool=filterBank();if(mode==="quick"){state.queue=buildGeneralQueue(10,"general:quick");state.idx=0;state.target=state.queue.length}else if(mode==="survival"){state.queue=buildGeneralQueue(Math.min(60,Math.max(30,pool.length)),"general:survival");state.idx=0;state.target=state.queue.length}else if(mode==="tournament"){Object.assign(state,{round:1,totalRounds:7,pr:0,cr:0,roundQ:[],ri:0,rps:0,rcs:0})}else if(mode==="daily"){state.queue=buildGeneralQueue(7,"general:daily");state.idx=0;state.target=state.queue.length}consumeInv();page("game");$("modeLabel").textContent=mode==="quick"?"⚡ RÁPIDA":mode==="survival"?"💀 SUPERVIVENCIA":mode==="tournament"?"🏆 TORNEO":"📅 DIARIO";$("duelBox").classList.toggle("hidden",mode!=="tournament");$("bossBox").classList.add("hidden");if(mode==="tournament")setupRound();else{$("wheelBox").classList.add("hidden");$("qBox").classList.remove("hidden");renderQ()}updateHUD()}
 function localSetup(){$("localModal").classList.remove("hidden")}
 function startLocal(){$("localModal").classList.add("hidden");state=base("local");state.p1=$("p1name").value||"Jugador 1";state.p2=$("p2name").value||"Jugador 2";state.turn=1;state.scores={1:0,2:0};state.corrects={1:0,2:0};state.queue=buildGeneralQueue(20,"general:local");state.idx=0;state.target=state.queue.length;page("game");$("modeLabel").textContent="👥 DUELO LOCAL";$("duelBox").classList.remove("hidden");$("bossBox").classList.add("hidden");$("wheelBox").classList.add("hidden");$("qBox").classList.remove("hidden");$("f1").textContent=state.p1;$("f2").textContent=state.p2;renderQ();updateHUD()}
@@ -3788,8 +3856,8 @@ function setupRound(){if(state.round>state.totalRounds)return finishTournament()
 function renderRoundDots(){const d=$("roundDots");d.innerHTML="";for(let i=1;i<=7;i++){const x=document.createElement("span");x.textContent=i;x.style.cssText=`width:31px;height:31px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:${i<state.round?"#35d39a":i===state.round?"#ffd166":"#223154"};color:${i<=state.round?"#101525":"#9eabd0"}`;d.appendChild(x)}$("f1s").textContent=state.pr+" rondas";$("f2s").textContent=state.cr+" rondas"}
 function spin(){ensureAudio();beep("wheel");const keys=Object.keys(CATS),cat=keys[Math.floor(Math.random()*keys.length)];$("wheel").style.transform=`rotate(${1440+Math.floor(Math.random()*360)}deg)`;$("wheelText").textContent="Girando...";setTimeout(()=>{$("wheelText").textContent=CATS[cat]+" "+cat;state.roundQ=buildGeneralQueue(state.round===7?5:3,`general:tournament:${cat}`,cat);setTimeout(()=>{$("wheelBox").classList.add("hidden");$("qBox").classList.remove("hidden");renderQ()},550)},1650)}
 function qcur(){if(state.mode==="tournament")return state.roundQ[state.ri];return state.queue[state.idx%state.queue.length]}
-function renderQ(){const q=qcur();if(!q){if(state.mode==="tournament")endRound();else if(state.mode==="boss"||state.mode==="bossrush")finishBoss(false);else endGame();return}state.locked=false;state.double=false;state.shield=!!state.freeShield;state.freeShield=false;const edu=state.mode==="education";$("qCat").textContent=edu?(EDU_SUBJECTS[q.subject]||"📚")+" "+q.subject:CATS[q.c]+" "+q.c;$("qDiff").textContent=edu?save.eduPrefs.level:(q.d===1?"🟢 Fácil":q.d===2?"🟡 Media":"🔴 Difícil");$("qText").textContent=q.q;$("feedback").textContent="";$("p50").disabled=(state.fiftyQuestion===(state.mode==="tournament"?state.ri:state.idx));$("p50").textContent=state.p50?"🌓 ELIMINAR 2 · 60 🪙":"🌓 50/50";$("pSkip").disabled=state.pSkip;$("pDouble").disabled=state.pDouble&&!state.freeDouble;$("pShield").disabled=state.pShield;const max=state.mode==="tournament"?state.roundQ.length:state.target,n=state.mode==="tournament"?state.ri:state.idx;$("qBar").style.width=Math.min(100,n/max*100)+"%";const box=$("answers");box.innerHTML="";q.a.forEach((txt,i)=>{const b=document.createElement("button");b.className="answer";b.dataset.i=i;b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span>${txt}`;b.onclick=()=>answer(i,b);box.appendChild(b)});updateHUD();startQuestionTimer()}
-function answer(choice,btn){if(state.locked)return;stopQuestionTimer();state.locked=true;const q=qcur(),bs=[...document.querySelectorAll(".answer")];bs.forEach(b=>b.disabled=true);const edu=state.mode==="education",qd=edu?(EDU_LEVELS.find(l=>l.id===save.eduPrefs.level)?.difficulty||2):q.d,base=qd<=1?10:qd===2?15:qd===3?20:25,gain=base*(state.double?2:1),ok=choice===q.ok;save.total++;state.totalAnswered++;if(edu)save.eduTotal++;else save.catStats[q.c].total++;if(ok){save.correct++;state.correct++;gainXp(3+qd*2,.75);if(edu)save.eduCorrect++;else save.catStats[q.c].correct++;state.streak++;save.bestStreak=Math.max(save.bestStreak,state.streak);btn.classList.add("good");beep("good");flash("good");if(state.mode==="local"){state.scores[state.turn]+=gain;state.corrects[state.turn]++}else{state.score+=gain;if(state.mode==="tournament")state.rps+=gain}if(state.mode==="boss"||state.mode==="bossrush"){const stage=(state.bossIndex||0)+1,dmg=26+(q.d-1)*5+Math.floor(stage/4);state.hp=Math.max(0,state.hp-dmg);updateBoss();$("feedback").textContent=`✅ -${dmg} HP al jefe`}else $("feedback").textContent=`✅ Correcto · +${gain}`;if(state.streak>0&&state.streak%5===0){if(state.mode!=="local")state.score+=10;toast("🔥 Racha x"+state.streak+" · +10")}}else{state.streak=0;btn.classList.add("bad");bs[q.ok].classList.add("good");beep("bad");flash("bad");if(state.shield){state.shield=false;$("feedback").textContent="🛡️ Escudo activado. Era: "+q.a[q.ok]}else if(state.mode==="boss"||state.mode==="bossrush"){state.php--;$("feedback").textContent="❌ El jefe contraataca. Era: "+q.a[q.ok]}else if(state.mode==="local")$("feedback").textContent="❌ Era: "+q.a[q.ok];else if(edu&&state.eduMode==="practice")$("feedback").textContent="❌ Era: "+q.a[q.ok];else{state.lives--;$("feedback").textContent="❌ Era: "+q.a[q.ok]}}if(state.mode==="tournament")cpuTurn(q.d);checkAch();updateHUD();setTimeout(nextQ,950)}
+function renderQ(){const q=qcur();if(!q){if(state.mode==="tournament")endRound();else if(state.mode==="boss"||state.mode==="bossrush")finishBoss(false);else endGame();return}state.locked=false;state.double=false;state.shield=!!state.freeShield;state.freeShield=false;const edu=state.mode==="education";$("qCat").textContent=edu?(EDU_SUBJECTS[q.subject]||"📚")+" "+q.subject:q.ai?`${q.current?"📰":"🤖"} ${q.c}`:(CATS[q.c]+" "+q.c);$("qDiff").textContent=edu?save.eduPrefs.level:((q.d===1?"🟢 Fácil":q.d===2?"🟡 Media":"🔴 Difícil")+(q.ai?" · IA":""));$("qText").textContent=q.q;$("feedback").textContent="";$("p50").disabled=(state.fiftyQuestion===(state.mode==="tournament"?state.ri:state.idx));$("p50").textContent=state.p50?"🌓 ELIMINAR 2 · 60 🪙":"🌓 50/50";$("pSkip").disabled=state.pSkip;$("pDouble").disabled=state.pDouble&&!state.freeDouble;$("pShield").disabled=state.pShield;const max=state.mode==="tournament"?state.roundQ.length:state.target,n=state.mode==="tournament"?state.ri:state.idx;$("qBar").style.width=Math.min(100,n/max*100)+"%";const box=$("answers");box.innerHTML="";q.a.forEach((txt,i)=>{const b=document.createElement("button");b.className="answer";b.dataset.i=i;b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span>${txt}`;b.onclick=()=>answer(i,b);box.appendChild(b)});updateHUD();startQuestionTimer()}
+function answer(choice,btn){if(state.locked)return;stopQuestionTimer();state.locked=true;const q=qcur(),bs=[...document.querySelectorAll(".answer")];bs.forEach(b=>b.disabled=true);const edu=state.mode==="education",qd=edu?(EDU_LEVELS.find(l=>l.id===save.eduPrefs.level)?.difficulty||2):q.d,base=qd<=1?10:qd===2?15:qd===3?20:25,gain=base*(state.double?2:1),ok=choice===q.ok;save.total++;state.totalAnswered++;if(edu)save.eduTotal++;else save.catStats[q.c].total++;if(ok){save.correct++;state.correct++;gainXp(3+qd*2,.75);if(edu)save.eduCorrect++;else save.catStats[q.c].correct++;state.streak++;save.bestStreak=Math.max(save.bestStreak,state.streak);btn.classList.add("good");beep("good");flash("good");if(state.mode==="local"){state.scores[state.turn]+=gain;state.corrects[state.turn]++}else{state.score+=gain;if(state.mode==="tournament")state.rps+=gain}if(state.mode==="boss"||state.mode==="bossrush"){const stage=(state.bossIndex||0)+1,dmg=26+(q.d-1)*5+Math.floor(stage/4);state.hp=Math.max(0,state.hp-dmg);updateBoss();$("feedback").textContent=`✅ -${dmg} HP al jefe`}else $("feedback").textContent=`✅ Correcto · +${gain}`;if(state.streak>0&&state.streak%5===0){if(state.mode!=="local")state.score+=10;toast("🔥 Racha x"+state.streak+" · +10")}}else{state.streak=0;btn.classList.add("bad");bs[q.ok].classList.add("good");beep("bad");flash("bad");if(state.shield){state.shield=false;$("feedback").textContent="🛡️ Escudo activado. Era: "+q.a[q.ok]}else if(state.mode==="boss"||state.mode==="bossrush"){state.php--;$("feedback").textContent="❌ El jefe contraataca. Era: "+q.a[q.ok]}else if(state.mode==="local")$("feedback").textContent="❌ Era: "+q.a[q.ok];else if(edu&&state.eduMode==="practice")$("feedback").textContent="❌ Era: "+q.a[q.ok];else{state.lives--;$("feedback").textContent="❌ Era: "+q.a[q.ok]}}if(state.mode==="tournament")cpuTurn(q.d);appendAIQuestionInfo(q);checkAch();updateHUD();setTimeout(nextQ,q.ai?2200:950)}
 function cpuTurn(d){const p=d===1?.82:d===2?.68:.54;if(Math.random()<p){const pts=d===1?10:d===2?15:20;state.rcs+=pts;state.cpu+=pts}}
 function nextQ(){if(state.mode==="boss"||state.mode==="bossrush"){if(state.hp<=0)return finishBoss(true);if(state.php<=0)return showBossRevive();state.idx++;if(state.idx>=state.target){if(state.hp<=0)return finishBoss(true);const b=BOSS_LADDER[state.bossIndex||0];state.queue=state.queue.concat(buildGeneralQueue(Math.max(5,b.questions),`boss:extend:${state.bossIndex}:${Date.now()}`,b.cat,b.minD));state.target=state.queue.length}return renderQ()}if(state.mode==="local"){state.idx++;state.turn=state.turn===1?2:1;if(state.idx>=state.target)return endLocal();return renderQ()}if(state.mode==="tournament"){state.ri++;if(state.ri>=state.roundQ.length||state.lives<=0)return endRound();return renderQ()}state.idx++;if((state.mode!=="education"||state.eduMode!=="practice")&&state.lives<=0)return endGame();if(state.idx>=state.target)return endGame();renderQ()}
 function endRound(){stopQuestionTimer();$("qBox").classList.add("hidden");if(state.rps>state.rcs){state.pr++;toast("🟢 Ganaste la ronda")}else if(state.rps<state.rcs){state.cr++;toast("🔴 La CPU ganó la ronda")}else toast("🟡 Empate");state.round++;setTimeout(setupRound,700)}

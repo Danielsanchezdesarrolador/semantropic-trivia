@@ -1,0 +1,30 @@
+SEMANTROPIC TRIVIA — ALPHA 0.3.0
+CONFIGURACIÓN DE IA EN RENDER
+
+1. NO escribas una API key dentro de index.html, server.js ni GitHub.
+2. En Render abre el Web Service de Semantropic Trivia.
+3. Ve a Environment.
+4. Agrega:
+   OPENAI_API_KEY = tu clave de proyecto de OpenAI
+5. Opcionales:
+   OPENAI_MODEL = gpt-6-luna
+   OPENAI_WEB_MODEL = gpt-6-luna
+   AI_MAX_BATCHES_PER_HOUR = 12
+6. Guarda los cambios y deja que Render reinicie el servicio.
+7. En Semantropic entra a Trivia General → IA Dinámica.
+
+SEGURIDAD
+- La clave solo la lee server.js.
+- El navegador nunca recibe OPENAI_API_KEY.
+- /api/ai/questions exige una sesión Semantropic válida.
+- Hay límite de generación por jugador para controlar gastos.
+
+ANTI-REPETICIÓN
+- PostgreSQL guarda fingerprint y concept_key únicos.
+- Se rechazan preguntas/conceptos que ya existan.
+- Las últimas preguntas también se envían al generador como lista de exclusión.
+- Esto evita repeticiones exactas y reduce fuertemente las repeticiones semánticas.
+
+ACTUALIDAD
+- El modo Actualidad activa web_search del Responses API.
+- Las preguntas guardan fuente, URL y fecha de frescura cuando están disponibles.

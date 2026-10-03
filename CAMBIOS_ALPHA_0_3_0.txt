@@ -1,0 +1,33 @@
+SEMANTROPIC TRIVIA — ALPHA 0.3.0
+AI DYNAMIC TRIVIA
+
+NUEVO MOTOR IA
+- Nuevo modo IA Dinámica.
+- Generación de 10 preguntas nuevas por partida.
+- Categoría seleccionable y dificultad seleccionable.
+- Modo Conocimiento dinámico.
+- Modo Actualidad con búsqueda web.
+
+MEMORIA ANTI-REPETICIÓN
+- Nueva tabla PostgreSQL ai_questions.
+- fingerprint UNIQUE por pregunta/respuesta.
+- concept_key UNIQUE por concepto.
+- Lista reciente de exclusión enviada al generador.
+- Archivo fallback ai_questions.json cuando PostgreSQL no está disponible.
+
+CALIDAD Y SEGURIDAD
+- 4 alternativas distintas y una única correcta.
+- Explicación breve después de responder.
+- Actualidad puede mostrar fuente consultada.
+- Filtro de prompt apto para adolescentes.
+- Se evitan rumores, preguntas ambiguas y persuasión política.
+
+CONTROL DE COSTOS
+- La IA requiere cuenta Semantropic autenticada.
+- Rate limit configurable por jugador.
+- OPENAI_API_KEY solo existe en el backend.
+- OPENAI_MODEL y OPENAI_WEB_MODEL configurables por Environment.
+
+COMPATIBILIDAD
+- Toda la Alpha 0.2.9.5 permanece incluida.
+- Los modos clásicos siguen funcionando incluso si la IA no está configurada.
