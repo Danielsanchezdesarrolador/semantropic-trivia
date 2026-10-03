@@ -1,8 +1,8 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.3.0",
+  "version": "0.2.7",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.3.0 - AI Dynamic Trivia, current events web search and persistent anti-repeat memory",
+  "description": "Semantropic Trivia Alpha 0.2.7 - accounts, cross-device login and admin wheel configuration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

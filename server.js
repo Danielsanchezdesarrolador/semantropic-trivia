@@ -9,11 +9,6 @@ const ROOT=__dirname;
 const PORT=Number(process.env.PORT||8787);
 const DATABASE_URL=String(process.env.DATABASE_URL||"").trim();
 const ADMIN_KEY=String(process.env.ADMIN_KEY||"");
-const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||"").trim();
-const OPENAI_MODEL=String(process.env.OPENAI_MODEL||"gpt-6-luna").trim();
-const OPENAI_WEB_MODEL=String(process.env.OPENAI_WEB_MODEL||OPENAI_MODEL).trim();
-const OPENAI_BASE_URL=String(process.env.OPENAI_BASE_URL||"https://api.openai.com/v1").replace(/\/$/,"");
-const AI_MAX_BATCHES_PER_HOUR=Math.max(1,Math.min(60,Number(process.env.AI_MAX_BATCHES_PER_HOUR||12)));
 const QUESTIONS=JSON.parse(fs.readFileSync(path.join(ROOT,"general_questions.json"),"utf8"));
 const DATA_DIR=path.join(ROOT,"data");
 const RANK_FILE=path.join(DATA_DIR,"rankings.json");
@@ -21,7 +16,6 @@ const ACCOUNTS_FILE=path.join(DATA_DIR,"accounts.json");
 const SESSIONS_FILE=path.join(DATA_DIR,"account_sessions.json");
 const SETTINGS_FILE=path.join(DATA_DIR,"game_settings.json");
 const RESET_REQUESTS_FILE=path.join(DATA_DIR,"password_reset_requests.json");
-const AI_QUESTIONS_FILE=path.join(DATA_DIR,"ai_questions.json");
 if(!fs.existsSync(DATA_DIR))fs.mkdirSync(DATA_DIR,{recursive:true});
 
 let rankings={},accounts={},accountByPlayerId={},accountSessions=new Map(),passwordResetRequests={};
@@ -36,9 +30,6 @@ const rooms=new Map();
 const adminSessions=new Map();
 const adminFailures=new Map();
 const accountFailures=new Map();
-const aiRateBuckets=new Map();
-let aiQuestionMemory=[];
-try{aiQuestionMemory=JSON.parse(fs.readFileSync(AI_QUESTIONS_FILE,"utf8"))||[]}catch(e){aiQuestionMemory=[]}
 const MIME={".html":"text/html; charset=utf-8",".js":"application/javascript; charset=utf-8",".json":"application/json; charset=utf-8",".css":"text/css; charset=utf-8",".png":"image/png",".jpg":"image/jpeg",".jpeg":"image/jpeg",".svg":"image/svg+xml",".txt":"text/plain; charset=utf-8"};
 
 
@@ -115,72 +106,6 @@ function generateTemporaryPassword(){
 }
 function wheelMeta(type,amount){amount=clamp(amount,1,100000);if(type==="coins")return{type,amount,icon:"🪙",label:`${amount} Monedas`};if(type==="gems")return{type,amount,icon:"💎",label:`${amount} Diamante${amount===1?"":"s"}`};if(type==="keys")return{type,amount,icon:"🔑",label:`${amount} Llave${amount===1?"":"s"}`};if(type==="shield")return{type,amount,icon:"🛡️",label:amount===1?"Escudo":`${amount} Escudos`};if(type==="double")return{type,amount,icon:"⚡",label:amount===1?"Doble x2":`${amount} Dobles x2`};if(type==="life")return{type,amount,icon:"❤️",label:amount===1?"Vida extra":`${amount} Vidas extra`};return{type:"surprise",amount:1,icon:"🎁",label:"Sorpresa"}}
 function normalizeGameConfig(v={}){const allowed=new Set(["coins","gems","keys","shield","double","life","surprise"]),src=Array.isArray(v.wheelPrizes)?v.wheelPrizes:gameConfig.wheelPrizes,prizes=src.slice(0,8).map(p=>wheelMeta(allowed.has(p?.type)?p.type:"surprise",p?.amount||1));while(prizes.length<8)prizes.push(wheelMeta("coins",100));return{wheelCooldownMs:clamp(v.wheelCooldownMs??gameConfig.wheelCooldownMs,60000,7*24*60*60*1000),wheelPrizes:prizes}}
-
-
-const AI_CATEGORIES=["Historia","Ciencia","Cine","Gaming","Geografía","Deportes","Arte","Tecnología","Naturaleza","Música"];
-function aiNormalizeText(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
-function aiFingerprint(q){return crypto.createHash("sha256").update(aiNormalizeText(`${q.question||q.q}|${q.correct_answer||q.correctAnswer||q.answer||""}`)).digest("hex")}
-function aiConceptKey(v){const s=aiNormalizeText(v).replace(/\s+/g,"_").slice(0,160);return s||crypto.randomBytes(8).toString("hex")}
-function aiSafeUrl(v){try{const u=new URL(String(v||""));return ["http:","https:"].includes(u.protocol)?u.toString():""}catch(e){return""}}
-function aiRateAllowed(playerId){const now=Date.now(),hour=60*60*1000,key=String(playerId||"anon");const arr=(aiRateBuckets.get(key)||[]).filter(t=>now-t<hour);if(arr.length>=AI_MAX_BATCHES_PER_HOUR){aiRateBuckets.set(key,arr);return false}arr.push(now);aiRateBuckets.set(key,arr);return true}
-function aiExtractResponseText(data){for(const item of data?.output||[]){if(item?.type!=="message")continue;for(const c of item.content||[]){if(c?.type==="output_text"&&typeof c.text==="string")return c.text}}return typeof data?.output_text==="string"?data.output_text:""}
-function aiQuestionSchema(){return{type:"object",additionalProperties:false,required:["questions"],properties:{questions:{type:"array",minItems:1,maxItems:10,items:{type:"object",additionalProperties:false,required:["question","options","correct_index","category","difficulty","explanation","concept_key","source_title","source_url","freshness_date"],properties:{question:{type:"string"},options:{type:"array",minItems:4,maxItems:4,items:{type:"string"}},correct_index:{type:"integer",minimum:0,maximum:3},category:{type:"string",enum:AI_CATEGORIES},difficulty:{type:"integer",minimum:1,maximum:3},explanation:{type:"string"},concept_key:{type:"string"},source_title:{type:"string"},source_url:{type:"string"},freshness_date:{type:"string"}}}}}}}
-function aiValidateQuestion(raw,current=false){
- if(!raw||typeof raw.question!=="string"||raw.question.trim().length<8||raw.question.length>240)return null;
- if(!Array.isArray(raw.options)||raw.options.length!==4)return null;
- const options=raw.options.map(x=>String(x||"").trim().slice(0,140));if(options.some(x=>!x)||new Set(options.map(aiNormalizeText)).size!==4)return null;
- const correctIndex=Number(raw.correct_index);if(!Number.isInteger(correctIndex)||correctIndex<0||correctIndex>3)return null;
- const category=AI_CATEGORIES.includes(raw.category)?raw.category:"Ciencia";
- const difficulty=Math.max(1,Math.min(3,Number(raw.difficulty)||2));
- const question=String(raw.question).trim().slice(0,240),correctAnswer=options[correctIndex];
- const conceptKey=aiConceptKey(raw.concept_key||`${question}_${correctAnswer}`);
- const sourceUrl=current?aiSafeUrl(raw.source_url):"";
- const sourceTitle=current?String(raw.source_title||"").replace(/[<>]/g,"").trim().slice(0,120):"";
- return{question,options,correctIndex,correctAnswer,category,difficulty,explanation:String(raw.explanation||"").replace(/[<>]/g,"").trim().slice(0,260),conceptKey,sourceTitle,sourceUrl,freshnessDate:current?String(raw.freshness_date||"").slice(0,32):"",current:!!current}
-}
-async function aiRecentAvoidance(limit=90){
- if(storageMode==="postgres"&&pool){const {rows}=await pool.query('SELECT question,concept_key FROM ai_questions ORDER BY generated_at DESC LIMIT $1',[limit]);return rows.map(r=>({question:r.question,conceptKey:r.concept_key}))}
- return aiQuestionMemory.slice(-limit).reverse().map(x=>({question:x.question,conceptKey:x.conceptKey}))
-}
-async function aiQuestionKnown(fp,conceptKey){
- if(storageMode==="postgres"&&pool){const {rows}=await pool.query('SELECT 1 FROM ai_questions WHERE fingerprint=$1 OR concept_key=$2 LIMIT 1',[fp,conceptKey]);return !!rows.length}
- return aiQuestionMemory.some(x=>x.fingerprint===fp||x.conceptKey===conceptKey)
-}
-async function aiStoreQuestion(q,playerId){
- const fingerprint=aiFingerprint(q),id=`ai_${fingerprint.slice(0,16)}`;
- const row={id,fingerprint,conceptKey:q.conceptKey,question:q.question,options:q.options,correctIndex:q.correctIndex,correctAnswer:q.correctAnswer,category:q.category,difficulty:q.difficulty,explanation:q.explanation,current:q.current,sourceTitle:q.sourceTitle,sourceUrl:q.sourceUrl,freshnessDate:q.freshnessDate,playerId:String(playerId||""),generatedAt:new Date().toISOString()};
- if(storageMode==="postgres"&&pool){const result=await pool.query(`INSERT INTO ai_questions(id,fingerprint,concept_key,question,options,correct_index,correct_answer,category,difficulty,explanation,current_event,source_title,source_url,freshness_date,generated_for) VALUES($1,$2,$3,$4,$5::jsonb,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) ON CONFLICT DO NOTHING RETURNING id`,[id,fingerprint,q.conceptKey,q.question,JSON.stringify(q.options),q.correctIndex,q.correctAnswer,q.category,q.difficulty,q.explanation,!!q.current,q.sourceTitle||"",q.sourceUrl||"",q.freshnessDate||"",String(playerId||"")]);if(!result.rows.length)return null;}
- else{aiQuestionMemory.push(row);try{fs.writeFileSync(AI_QUESTIONS_FILE,JSON.stringify(aiQuestionMemory,null,2),"utf8")}catch(e){}}
- return row
-}
-async function aiGeneratedCount(){if(storageMode==="postgres"&&pool){const {rows}=await pool.query('SELECT COUNT(*)::int AS n FROM ai_questions');return Number(rows[0]?.n||0)}return aiQuestionMemory.length}
-async function aiOpenAIRequest({count,category,difficulty,current,avoid}){
- if(!OPENAI_API_KEY)throw Object.assign(new Error("La IA todavía no está configurada en el servidor"),{code:"AI_NOT_CONFIGURED"});
- const cat=AI_CATEGORIES.includes(category)?category:"Mixto",diff=[1,2,3].includes(Number(difficulty))?Number(difficulty):"Mixta";
- const avoided=avoid.slice(0,90).map((x,i)=>`${i+1}. ${x.conceptKey} :: ${x.question}`).join("\n");
- const now=new Date().toISOString().slice(0,10);
- const freshness=current?`Usa información de actualidad reciente y verificable, preferentemente de los últimos 30 días respecto de ${now}. DEBES usar búsqueda web. Cada pregunta debe corresponder a una fuente real y source_url debe ser la URL consultada.`:`Usa conocimiento estable y atemporal. source_title, source_url y freshness_date deben ser cadenas vacías.`;
- const prompt=`Genera ${count} preguntas NUEVAS para Semantropic Trivia, en español latinoamericano.\nCategoría: ${cat}. Dificultad: ${diff}.\n${freshness}\n\nReglas obligatorias:\n- Exactamente 4 alternativas distintas por pregunta y una sola correcta.\n- Preguntas claras, objetivas, comprobables y aptas para adolescentes.\n- No incluyas contenido sexual, drogas, apuestas, armas, autolesión ni violencia gráfica.\n- Evita rumores, clickbait y afirmaciones inciertas.\n- En política o elecciones, evita predicciones, persuasión y opiniones; si aparece política, usa solo hechos objetivos verificables.\n- No uses preguntas trampa ni alternativas ambiguas.\n- explanation debe explicar brevemente por qué la respuesta es correcta.\n- concept_key debe describir el hecho evaluado de forma canónica, corta y estable (ejemplo: capital_francia_paris).\n- NO repitas ni reformules ninguno de estos conceptos/preguntas ya usados:\n${avoided||"(sin historial todavía)"}\n- Devuelve contenido únicamente bajo el esquema solicitado.`;
- const body={model:current?OPENAI_WEB_MODEL:OPENAI_MODEL,input:prompt,max_output_tokens:6500,text:{format:{type:"json_schema",name:"semantropic_trivia_questions",strict:true,schema:aiQuestionSchema()}}};
- if(current){body.tools=[{type:"web_search",search_context_size:"low"}];body.tool_choice="required"}
- const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),45000);
- let resp;try{resp=await fetch(`${OPENAI_BASE_URL}/responses`,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${OPENAI_API_KEY}`},body:JSON.stringify(body),signal:ctrl.signal})}finally{clearTimeout(timer)}
- const data=await resp.json().catch(()=>({}));
- if(!resp.ok){const msg=data?.error?.message||`OpenAI API HTTP ${resp.status}`;throw Object.assign(new Error(msg),{code:"OPENAI_ERROR",status:resp.status})}
- const text=aiExtractResponseText(data);if(!text)throw Object.assign(new Error("La IA no devolvió preguntas utilizables"),{code:"AI_EMPTY"});
- let parsed;try{parsed=JSON.parse(text)}catch(e){throw Object.assign(new Error("La IA devolvió un formato inesperado"),{code:"AI_BAD_JSON"})}
- return Array.isArray(parsed?.questions)?parsed.questions:[]
-}
-async function generateAIQuestionBatch({playerId,count=10,category="Mixto",difficulty="mixed",current=false}){
- count=Math.max(3,Math.min(10,Number(count)||10));const accepted=[],localFp=new Set(),localConcept=new Set();
- for(let attempt=0;attempt<3&&accepted.length<count;attempt++){
-  const avoid=await aiRecentAvoidance(90);const raw=await aiOpenAIRequest({count:count-accepted.length,category,difficulty,current,avoid:[...avoid,...accepted.map(q=>({question:q.question,conceptKey:q.conceptKey}))]});
-  for(const item of raw){const q=aiValidateQuestion(item,current);if(!q)continue;const fp=aiFingerprint(q);if(localFp.has(fp)||localConcept.has(q.conceptKey))continue;if(await aiQuestionKnown(fp,q.conceptKey))continue;localFp.add(fp);localConcept.add(q.conceptKey);const stored=await aiStoreQuestion(q,playerId);if(!stored)continue;accepted.push({...q,id:stored.id});if(accepted.length>=count)break}
- }
- if(accepted.length<3)throw Object.assign(new Error("No fue posible crear suficientes preguntas nuevas sin repetir. Intenta otra categoría."),{code:"AI_DEDUP_EXHAUSTED"});
- return accepted
-}
-function aiPublicQuestion(q){return{id:q.id,q:q.question,a:q.options,ok:q.correctIndex,c:q.category,d:q.difficulty,ai:true,current:!!q.current,explanation:q.explanation||"",sourceTitle:q.sourceTitle||"",sourceUrl:q.sourceUrl||"",freshnessDate:q.freshnessDate||""}}
 
 function normalizeOnlineStats(s={}){return{
  battleGames:Number(s.battleGames||0),rankedGames:Number(s.rankedGames||0),competitionGames:Number(s.competitionGames||0),teamGames:Number(s.teamGames||0),
@@ -259,9 +184,6 @@ async function initStore(){
   await pool.query(`CREATE TABLE IF NOT EXISTS account_sessions(token_hash TEXT PRIMARY KEY,username_key TEXT NOT NULL,player_id TEXT NOT NULL,expires_at BIGINT NOT NULL,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   await pool.query(`CREATE TABLE IF NOT EXISTS game_settings(key TEXT PRIMARY KEY,value JSONB NOT NULL,updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
   await pool.query(`CREATE TABLE IF NOT EXISTS app_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL,updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
-  await pool.query(`CREATE TABLE IF NOT EXISTS ai_questions(
-   id TEXT PRIMARY KEY,fingerprint TEXT UNIQUE NOT NULL,concept_key TEXT UNIQUE NOT NULL,question TEXT NOT NULL,options JSONB NOT NULL,correct_index INTEGER NOT NULL,correct_answer TEXT NOT NULL,category TEXT NOT NULL,difficulty INTEGER NOT NULL,explanation TEXT NOT NULL DEFAULT '',current_event BOOLEAN NOT NULL DEFAULT FALSE,source_title TEXT NOT NULL DEFAULT '',source_url TEXT NOT NULL DEFAULT '',freshness_date TEXT NOT NULL DEFAULT '',generated_for TEXT NOT NULL DEFAULT '',generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`);
-  await pool.query(`CREATE INDEX IF NOT EXISTS idx_ai_questions_generated_at ON ai_questions(generated_at DESC)`);
 
   // Limpieza ÚNICA de las cuentas/perfiles de prueba existentes antes de este hotfix.
   // El marcador queda guardado en PostgreSQL y evita que futuros reinicios borren cuentas nuevas.
@@ -476,17 +398,7 @@ function accountFail(req,key){const id=clientIp(req)+"|"+String(key||""),v=accou
 
 
 const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://${req.headers.host||"localhost"}`),p=u.pathname;try{
- if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY,accounts:Object.keys(accounts).length,aiConfigured:!!OPENAI_API_KEY,aiModel:OPENAI_MODEL});
- if(req.method==="GET"&&p==="/api/ai/status")return json(res,200,{ok:true,configured:!!OPENAI_API_KEY,model:OPENAI_MODEL,webModel:OPENAI_WEB_MODEL,maxBatchesPerHour:AI_MAX_BATCHES_PER_HOUR,generated:await aiGeneratedCount(),webSearchAvailable:!!OPENAI_API_KEY});
- if(req.method==="POST"&&p==="/api/ai/questions"){
-  const b=await body(req),id=String(b.playerId||""),r=rankings[id];
-  if(!r||!verifyProfileAccess(r,b.token))return json(res,401,{error:"Inicia sesión para usar Trivia IA"});
-  if(!OPENAI_API_KEY)return json(res,503,{error:"La IA aún no está configurada. Agrega OPENAI_API_KEY en Render.",code:"AI_NOT_CONFIGURED"});
-  if(!aiRateAllowed(id))return json(res,429,{error:`Límite temporal de IA alcanzado (${AI_MAX_BATCHES_PER_HOUR} partidas por hora).`,code:"AI_RATE_LIMIT"});
-  const category=AI_CATEGORIES.includes(b.category)?b.category:"Mixto",difficulty=[1,2,3].includes(Number(b.difficulty))?Number(b.difficulty):"mixed",current=!!b.current,count=Math.max(3,Math.min(10,Number(b.count)||10));
-  try{const qs=await generateAIQuestionBatch({playerId:id,count,category,difficulty,current});return json(res,200,{ok:true,questions:qs.map(aiPublicQuestion),current,model:current?OPENAI_WEB_MODEL:OPENAI_MODEL,generated:await aiGeneratedCount()})}
-  catch(e){console.error("AI generation:",e.message);return json(res,e.status&&e.status>=400&&e.status<600?e.status:502,{error:e.message||"No se pudieron generar preguntas IA",code:e.code||"AI_ERROR"})}
- }
+ if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY,accounts:Object.keys(accounts).length});
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
  if(req.method==="GET"&&p==="/api/game/config")return json(res,200,gameConfig);
  if(req.method==="POST"&&p==="/api/account/register"){
@@ -646,5 +558,5 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="POST"&&p==="/api/multi/leave"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(room)leaveRoom(room,String(b.playerId||""));return json(res,200,{ok:true})}
  if(req.method==="GET")return staticFile(req,res,p);return json(res,404,{error:"Not found"})
  }catch(e){console.error(e);return json(res,500,{error:"Error interno del servidor"})}});
-setInterval(()=>{const now=Date.now();for(const [code,r] of [...rooms]){const online=[...r.streams.values()].reduce((n,set)=>n+(set?.size||0),0);if(r.status==="finished"&&now-(r.finishedAt||r.lastActivity||r.createdAt)>5*60*1000){closeRoom(r,"Sala finalizada y cerrada automáticamente");continue}if(r.status==="lobby"&&online===0&&now-(r.lastActivity||r.createdAt)>10*60*1000){closeRoom(r,"Sala inactiva cerrada automáticamente");continue}if(r.status!=="playing"&&now-r.createdAt>60*60*1000){closeRoom(r,"Sala expirada");continue}}for(const [t,exp] of adminSessions)if(exp<now)adminSessions.delete(t);for(const [h,s] of accountSessions)if(Number(s.expiresAt)<=now)accountSessions.delete(h);for(const [k,arr] of aiRateBuckets){const fresh=arr.filter(t=>now-t<60*60*1000);if(fresh.length)aiRateBuckets.set(k,fresh);else aiRateBuckets.delete(k)}},30000);
-initStore().finally(()=>server.listen(PORT,"0.0.0.0",()=>{console.log("\n==========================================");console.log("  SEMANTROPIC TRIVIA — ALPHA 0.3.0 AI DYNAMIC");console.log("  AI QUESTIONS + CURRENT EVENTS + SOCIAL ONLINE");console.log("==========================================");console.log(`Almacenamiento: ${storageMode}`);console.log(`Admin configurado: ${ADMIN_KEY?'sí':'no'}`);console.log(`PC anfitrión: http://localhost:${PORT}`);const nets=os.networkInterfaces();for(const list of Object.values(nets))for(const n of(list||[]))if(n.family==="IPv4"&&!n.internal)console.log(`Red local:    http://${n.address}:${PORT}`);console.log("\n")}));
+setInterval(()=>{const now=Date.now();for(const [code,r] of [...rooms]){const online=[...r.streams.values()].reduce((n,set)=>n+(set?.size||0),0);if(r.status==="finished"&&now-(r.finishedAt||r.lastActivity||r.createdAt)>5*60*1000){closeRoom(r,"Sala finalizada y cerrada automáticamente");continue}if(r.status==="lobby"&&online===0&&now-(r.lastActivity||r.createdAt)>10*60*1000){closeRoom(r,"Sala inactiva cerrada automáticamente");continue}if(r.status!=="playing"&&now-r.createdAt>60*60*1000){closeRoom(r,"Sala expirada");continue}}for(const [t,exp] of adminSessions)if(exp<now)adminSessions.delete(t);for(const [h,s] of accountSessions)if(Number(s.expiresAt)<=now)accountSessions.delete(h)},30000);
+initStore().finally(()=>server.listen(PORT,"0.0.0.0",()=>{console.log("\n==========================================");console.log("  SEMANTROPIC TRIVIA — ONLINE ALPHA 0.2.7");console.log("  ACCOUNTS + WHEEL ADMIN + SOCIAL ONLINE");console.log("==========================================");console.log(`Almacenamiento: ${storageMode}`);console.log(`Admin configurado: ${ADMIN_KEY?'sí':'no'}`);console.log(`PC anfitrión: http://localhost:${PORT}`);const nets=os.networkInterfaces();for(const list of Object.values(nets))for(const n of(list||[]))if(n.family==="IPv4"&&!n.internal)console.log(`Red local:    http://${n.address}:${PORT}`);console.log("\n")}));
