@@ -1,0 +1,28 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9.5
+PROFILE AVATAR PICKER REBUILD
+
+BUG PRINCIPAL CORREGIDO
+- Los avatares desbloqueados aparecían correctamente, pero al hacer clic el editor
+  volvía inmediatamente al avatar guardado.
+- La causa era que el click volvía a ejecutar openProfileEditor(), y esa función
+  reiniciaba profileDraftAvatar.
+
+NUEVO COMPORTAMIENTO
+- Seleccionar un avatar cambia la selección en vivo.
+- La vista previa cambia inmediatamente.
+- No se guarda definitivamente hasta pulsar GUARDAR.
+- Los bloqueados muestran candado y no se pueden seleccionar.
+- Estados visuales:
+  • USANDO / Seleccionado
+  • Disponible
+  • Bloqueado + precio o nivel requerido
+- Contador de avatares disponibles.
+
+PULIDO VISUAL
+- Grid más limpio y consistente.
+- Avatares más grandes y centrados.
+- Cards con estados visuales claros.
+- Mejor preview del perfil.
+- Headset de Nico rediseñado para no tapar su rostro.
+
+No requiere migración de PostgreSQL ni altera cuentas/progreso.
