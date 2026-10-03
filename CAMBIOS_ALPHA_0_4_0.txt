@@ -1,0 +1,50 @@
+SEMANTROPIC TRIVIA — ALPHA 0.4.0
+ECONOMY & COLLECTION REVOLUTION
+
+Esta actualización rediseña la economía y la colección para que cada recurso tenga una función clara.
+
+ECONOMÍA
+- Monedas: ayudas de partida, utilidades y personalización cotidiana.
+- Diamantes: recurso raro para premium, animaciones y rescates importantes.
+- Llaves Plata / Oro / Diamante: ya no son una compra cotidiana; se ganan jugando.
+- Cofres Común / Épico / Mundial / Legendario: ahora forman parte de un inventario.
+- Fragmentos por objeto con progreso 0/100 y desbloqueo específico.
+- Los cosméticos repetidos de cofres se convierten en fragmentos.
+
+BÓVEDA SEMANTROPIC
+- 10 niveles paralelos alimentados por respuestas correctas y partidas.
+- Recompensas: monedas, cofres, llaves, diamantes, fragmentos y una skin exclusiva.
+
+ÁLBUM DE COLECCIONES
+- Chile, Japón, Gaming, Cine, Ciencia, Exploradores, Bosses y Logros.
+- Cada álbum entrega un premio grande al completarlo.
+
+PRESTIGIO
+- Explorador de Sudamérica.
+- Maestro de Japón.
+- Vencedor de los 10 Bosses.
+- Sabio Supremo (10.000 aciertos).
+- Oráculo de la Bóveda.
+Estas skins no se pueden comprar.
+
+PERFIL / AVATAR 2.0 FOUNDATION
+- Títulos equipables.
+- Animaciones de perfil equipables.
+- Colección visible como progreso de cuenta.
+- Se mantienen personajes + ropa + auras + marcos + logros.
+
+AYUDAS
+- Cambiar pregunta: inventario o 90 monedas.
+- Protección: inventario o 110 monedas.
+- Tiempo extra +8 s: inventario o 80 monedas.
+- 50/50 y x2 siguen integrados al sistema de partida.
+
+RECOMPENSAS DE JUEGO
+- Cada 5 partidas: Cofre Común.
+- Hitos de Bosses: Llaves Oro y Cofres Épicos.
+- Torre completa: Llave Diamante + Cofre Legendario.
+- Boss de país completado por primera vez: Cofre Mundial + Llave Oro.
+
+MIGRACIÓN
+- Las llaves antiguas pasan a ser Llaves Plata.
+- No se elimina progreso, cuentas, World Tour, temporada ni cosméticos existentes.

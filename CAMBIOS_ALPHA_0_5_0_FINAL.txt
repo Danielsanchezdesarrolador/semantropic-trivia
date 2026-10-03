@@ -1,0 +1,115 @@
+SEMANTROPIC TRIVIA — ALPHA 0.5.0 FINAL
+
+ACTUALIZACIÓN: IDENTITY SYSTEM
+
+OBJETIVO
+La 0.5.0 deja atrás el concepto de “comprar un avatar completo” como única forma de personalización. El jugador ahora construye su identidad combinando piezas, expresión, perfil y colecciones.
+
+1. AVATAR MODULAR
+- Avatar base humano, animal o especial.
+- Cabello/cabeza y headwear.
+- Detalles de cara.
+- Parte superior.
+- Parte inferior.
+- Accesorio.
+- Aura.
+- Marco de perfil.
+- Fondo de perfil.
+- Título.
+- Efecto de respuesta.
+- Compatibilidad con los avatares y cosméticos anteriores.
+
+2. EXPRESIÓN
+- 15 emotes coleccionables.
+- Hasta 6 emotes equipados simultáneamente.
+- 9 sprays coleccionables.
+- Hasta 3 sprays equipados simultáneamente.
+- Animaciones de entrada.
+- Animaciones de victoria.
+- Animaciones de derrota.
+- Efectos cosméticos al acertar.
+- Algunos emotes destacados reproducen una señal de sonido corta durante partidas online.
+
+3. EMOTES Y SPRAYS ONLINE REALES
+- Nuevo endpoint /api/multi/reaction.
+- Las reacciones se transmiten por SSE a todos los jugadores de la sala.
+- Emotes muestran jugador + reacción.
+- Sprays aparecen sobre la arena.
+- Servidor valida que el emote/spray esté desbloqueado y equipado.
+- Cooldown de 1,5 s en servidor para evitar spam.
+- Cooldown adicional en cliente.
+
+4. PERSONAJE PRESENTE DURANTE EL JUEGO
+- El avatar aparece dentro de la interfaz de preguntas.
+- Reacción “concentrado” al comenzar.
+- Se pone nervioso al quedar 3 segundos.
+- Reacciona al acertar y fallar.
+- Presentación de victoria/derrota en pantalla de resultados.
+- El personaje aparece también al abrir recompensas/cofres.
+- En multijugador aparece en lobby, partida, ranking y resultados.
+
+5. PERFIL
+- Fondo visual persistente.
+- Título equipable.
+- Carga visual del personaje modular.
+- Perfil público muestra piezas principales del loadout.
+- Perfil público muestra emotes y sprays equipados.
+- World Tour, colección y Prestigio siguen visibles.
+
+6. CATÁLOGO SEMANTROPIC
+Categorías:
+- Países
+- Boss
+- Ciencia
+- Gaming
+- Cine
+- Animales
+- Exploradores
+- Eventos
+- Prestigio
+- Básicos
+
+Cada categoría muestra objetos obtenidos / total y porcentaje de colección.
+
+7. SETS Y COLECCIONES
+- Colección Japón
+- Colección Laboratorio
+- Colección Explorador Mundial
+- Colección Boss Slayer
+- Colección Arcade
+- Colección Premiere
+- Colección Reino Animal
+- Colección Festival
+
+Completar un set permite reclamar una recompensa extra: monedas, diamantes, cofres, llaves, fondos, piezas exclusivas y/o títulos.
+
+8. RAREZAS CON DIFERENCIA VISUAL
+- Común
+- Raro
+- Épico
+- Legendario
+- Mítico
+- Prestigio
+
+Las rarezas altas agregan tratamiento visual especial en las tarjetas: partículas, brillo, presentación animada o sello de Prestigio. Prestigio no se compra.
+
+9. PRESTIGIO
+Se mantiene y expande el concepto de recompensas que representan logros, no compras. Ejemplos: completar Sudamérica, Japón a 3 estrellas, Bosses, 10.000 aciertos o hitos de logros.
+
+10. MIGRACIÓN Y SERVIDOR
+- Mantiene cuentas y progreso previo.
+- El nuevo objeto identity vive dentro de profileMeta y se sincroniza con PostgreSQL.
+- El servidor normaliza el inventario de identidad.
+- El ADMIN “desbloquear todo” incluye el nuevo catálogo para pruebas.
+- No requiere nuevas variables de entorno.
+- Compatible con DATABASE_URL y ADMIN_KEY actuales.
+
+VALIDACIONES REALIZADAS
+- JavaScript del cliente: sintaxis OK.
+- server.js: sintaxis OK.
+- world_tour_data.js: sintaxis OK.
+- Smoke test de renderizado en Chromium: Avatar, Expresión, Perfil, Catálogo, Tienda, Colección y partida sin errores de runtime.
+- Test responsive móvil: sin overflow horizontal en 390 px.
+- Test del servidor en modo archivo: status OK.
+- Test real del endpoint de reacciones: emote válido OK, cooldown OK, emote no equipado rechazado, spray válido OK.
+- Test SSE: reacción recibida por otro jugador conectado.

@@ -1,0 +1,16 @@
+SEMANTROPIC TRIVIA — ALPHA 0.3.1.1
+WORLD TOUR: FLAGS + QUESTION BANK OVERHAUL
+
+- Banderas mucho más visibles en cada nodo del mapa y en el panel del país seleccionado.
+- Eliminadas por completo las preguntas tipo “¿Con qué país se relaciona este dato?” que hacían obvia la respuesta.
+- Todas las preguntas World Tour ahora evalúan conocimiento DEL país seleccionado; el país ya no aparece como respuesta correcta entre otros países.
+- Cada etapa pasa de 2 hechos base a 5 hechos base por categoría.
+- Cada hecho genera hasta 4 formatos diferentes: pregunta directa, pista, descripción inversa y afirmación correcta.
+- Resultado aproximado: 20 preguntas/formulaciones por etapa, 100 por país y más de 1.600 variantes en toda la campaña.
+- Cada etapa ahora juega 5 preguntas.
+- Boss mantiene 10 preguntas mezcladas de las cinco áreas.
+- Nuevo mazo anti-repetición persistente por país y etapa: no repite la misma formulación constantemente al reintentar.
+- Los distractores filtran nombres de otros países y priorizan opciones relacionadas con el mismo contenido.
+- El historial de preguntas World Tour se sincroniza dentro del perfil para mantener variedad entre sesiones/dispositivos.
+
+No requiere nueva base de datos ni variables de entorno.
