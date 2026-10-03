@@ -1,0 +1,10 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9.3
+
+MEJORAS
+- Ahora los avatares bloqueados muestran un candado visible.
+- Los avatares bloqueados también indican que deben desbloquearse primero.
+- El selector de avatar del perfil online ahora muestra todos los avatares, pero los bloqueados no se pueden equipar.
+- Se mejoró el render del accesorio de audífonos/headset de Nico Gamer.
+
+NOTA
+Después de actualizar en Render, usa Ctrl+F5 o una ventana incógnita para evitar caché vieja.
