@@ -1,0 +1,16 @@
+SEMANTROPIC TRIVIA — ALPHA 0.2.9.4
+PROFILE EDITOR HOTFIX
+
+BUG:
+- "PERSONALIZAR PERFIL" dejó de abrir en la 0.2.9.3.
+
+CAUSA:
+- El selector intentaba ejecutar renderCustomAvatarMarkup(), una función inexistente.
+
+CORREGIDO:
+- El avatar personalizado usa avatarMarkup(), que es el renderer real del juego.
+- La vista previa ahora recibe profileMeta completo.
+- Los avatares premium desbloqueados se previsualizan correctamente.
+- Se mantienen los candados y las restricciones de skins bloqueadas.
+
+No requiere cambios en PostgreSQL ni borra datos.
