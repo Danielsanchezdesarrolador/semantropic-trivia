@@ -1,0 +1,35 @@
+SEMANTROPIC TRIVIA — ALPHA 0.3.1 · WORLD TOUR
+
+CAMBIO ESTRUCTURAL
+- Modo Educativo eliminado del juego principal.
+- Sus 1.000 preguntas fueron extraídas a Semantropic Educación Base 0.1.0 para desarrollarlo como juego independiente.
+
+WORLD TOUR
+- Campaña completamente reformada como Viaje por el Mundo.
+- 16 países iniciales con rutas progresivas: Chile, Argentina, Perú, Brasil, Colombia, México, Estados Unidos, Canadá, España, Francia, Italia, Reino Unido, Marruecos, Egipto, Japón y Corea del Sur.
+- Mapa animado con avión, rutas desbloqueables y nodos de países.
+- 5 etapas por país: Geografía, Cultura, Historia, Deportes y personajes, Curiosidades.
+- Boss final de 10 preguntas: Maestro de cada país.
+- 3 estrellas por país: completar, >=80% de aciertos y boss sin perder vidas.
+- Porcentaje de conocimiento por país.
+- Pasaporte con sellos.
+- Hitos especiales del pasaporte a los 3, 6, 10 y 16 sellos, con monedas, gemas y llaves.
+- Vitrina de souvenirs nacionales.
+- Eventos semanales con país destacado y +50% monedas.
+- Marco exclusivo de evento.
+- Recompensas continentales con cosméticos no comprables.
+- Logros World Tour y premio final Maestro del Mundo.
+- Curiosidad/explicación después de cada respuesta.
+- World Tour visible en estadísticas y perfiles públicos.
+- Misiones educativas sustituidas por misiones World Tour.
+
+ADMIN
+- Botón para completar World Tour de una cuenta de prueba.
+- Botón para reiniciar solo World Tour.
+
+COMPATIBILIDAD
+- Conserva cuentas, temporada, nivel, tienda, Boss Rush, online, PostgreSQL y progreso existente.
+- No requiere nuevas variables de entorno.
+
+SEGURIDAD DE COSMÉTICOS
+- Los marcos, outfits y auras exclusivos de World Tour no pueden comprarse desde la tienda.

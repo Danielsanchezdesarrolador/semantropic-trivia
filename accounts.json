@@ -1,1 +1,9 @@
-{}
+{
+  "final030test": {
+    "username": "final030test",
+    "playerId": "p_6825b1e0bcea360e41ca86b0",
+    "passwordSalt": "fc3cade44d6fc472bb972cb1348c4f01",
+    "passwordHash": "1f17f5f7e446c8e4518fb225fea0d258be3a3a9e63a4ccab4fbc4b0b77a201364332c07501d059de053e675677470d370f268df994fe045663960aeaf1081a50",
+    "forcePasswordChange": false
+  }
+}

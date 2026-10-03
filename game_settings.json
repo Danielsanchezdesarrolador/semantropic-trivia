@@ -1,1 +1,53 @@
-{"wheelCooldownMs":7200000,"wheelPrizes":[{"type":"coins","amount":100},{"type":"coins","amount":250},{"type":"gems","amount":1},{"type":"gems","amount":2},{"type":"keys","amount":1},{"type":"shield","amount":1},{"type":"double","amount":1},{"type":"surprise","amount":1}]}
+{
+  "wheelCooldownMs": 7200000,
+  "wheelPrizes": [
+    {
+      "type": "coins",
+      "amount": 100,
+      "icon": "🪙",
+      "label": "100 Monedas"
+    },
+    {
+      "type": "coins",
+      "amount": 250,
+      "icon": "🪙",
+      "label": "250 Monedas"
+    },
+    {
+      "type": "gems",
+      "amount": 1,
+      "icon": "💎",
+      "label": "1 Diamante"
+    },
+    {
+      "type": "gems",
+      "amount": 2,
+      "icon": "💎",
+      "label": "2 Diamantes"
+    },
+    {
+      "type": "keys",
+      "amount": 1,
+      "icon": "🔑",
+      "label": "1 Llave"
+    },
+    {
+      "type": "shield",
+      "amount": 1,
+      "icon": "🛡️",
+      "label": "Escudo"
+    },
+    {
+      "type": "double",
+      "amount": 1,
+      "icon": "⚡",
+      "label": "Doble x2"
+    },
+    {
+      "type": "surprise",
+      "amount": 1,
+      "icon": "🎁",
+      "label": "Sorpresa"
+    }
+  ]
+}

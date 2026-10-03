@@ -1,33 +1,35 @@
 SEMANTROPIC TRIVIA — ALPHA 0.3.0
-AI DYNAMIC TRIVIA
+LA ACTUALIZACIÓN DE PROGRESIÓN Y TEMPORADA
 
-NUEVO MOTOR IA
-- Nuevo modo IA Dinámica.
-- Generación de 10 preguntas nuevas por partida.
-- Categoría seleccionable y dificultad seleccionable.
-- Modo Conocimiento dinámico.
-- Modo Actualidad con búsqueda web.
+CONTENIDO PRINCIPAL
+- Sistema de misiones diarias: 3 objetivos rotativos por día.
+- Sistema de misiones semanales: 4 objetivos rotativos por semana.
+- Bonus por completar todas las misiones diarias/semanales.
+- Evento semanal de categoría con recompensa grande.
+- Racha diaria de acceso validada por el servidor.
+- Temporadas mensuales con puntos SP, 20 niveles y recompensas.
+- Ranking de temporada guardado en el servidor.
+- Nivel máximo aumentado de 30 a 50.
+- Nuevos títulos de jugador desde Aprendiz hasta Ascendente.
+- Nuevos outfits: Velocity Pro, Royal Scholar, Neon Champion y Ascendente.
+- Nuevas auras: Tormenta, Prisma, Mítica y Corona de Temporada.
+- Nuevos marcos: Esmeralda Élite, Ascendente y Vanguardia de Temporada.
+- Sistema de cofres mejorado con contador y garantía progresiva en legendarios.
+- Estadísticas ampliadas: temporada, misiones, cofres y rango.
+- Perfil público muestra título de nivel y rango de temporada.
+- Multijugador agrega Blitz (8 segundos) y Maratón (25 preguntas).
+- Nuevos logros de nivel, constancia, temporada, misiones y cofres.
+- Banco general ampliado de 1105 a 1410 preguntas estáticas (+305).
+- El sistema procedural y cooldown anti-repetición existente se mantiene.
 
-MEMORIA ANTI-REPETICIÓN
-- Nueva tabla PostgreSQL ai_questions.
-- fingerprint UNIQUE por pregunta/respuesta.
-- concept_key UNIQUE por concepto.
-- Lista reciente de exclusión enviada al generador.
-- Archivo fallback ai_questions.json cuando PostgreSQL no está disponible.
+SERVIDOR
+- No requiere una nueva base de datos.
+- PostgreSQL utiliza profile_meta para los nuevos sistemas.
+- Se agrega /api/season-ranking.
+- Se agrega /api/progression/checkin para racha diaria idempotente.
+- Los modos online nuevos funcionan dentro del mismo Web Service.
 
-CALIDAD Y SEGURIDAD
-- 4 alternativas distintas y una única correcta.
-- Explicación breve después de responder.
-- Actualidad puede mostrar fuente consultada.
-- Filtro de prompt apto para adolescentes.
-- Se evitan rumores, preguntas ambiguas y persuasión política.
-
-CONTROL DE COSTOS
-- La IA requiere cuenta Semantropic autenticada.
-- Rate limit configurable por jugador.
-- OPENAI_API_KEY solo existe en el backend.
-- OPENAI_MODEL y OPENAI_WEB_MODEL configurables por Environment.
-
-COMPATIBILIDAD
-- Toda la Alpha 0.2.9.5 permanece incluida.
-- Los modos clásicos siguen funcionando incluso si la IA no está configurada.
+IMPORTANTE
+- Esta 0.3.0 NO usa IA ni APIs de pago.
+- No requiere OPENAI_API_KEY.
+- Se puede desplegar sobre el mismo GitHub + Render + PostgreSQL.

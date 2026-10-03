@@ -1,1 +1,101 @@
-{}
+{
+  "p_6825b1e0bcea360e41ca86b0": {
+    "id": "p_6825b1e0bcea360e41ca86b0",
+    "name": "final030test",
+    "rating": 1000,
+    "wins": 0,
+    "losses": 0,
+    "games": 0,
+    "totalScore": 0,
+    "coins": 250,
+    "gems": 0,
+    "keys": 1,
+    "lastWheelSpin": 0,
+    "recent": [],
+    "revision": 1,
+    "authHash": null,
+    "avatarId": "starter_m",
+    "gender": "neutral",
+    "frameId": "none",
+    "featuredAchievement": "",
+    "bio": "",
+    "achievements": [],
+    "onlineStats": {
+      "battleGames": 0,
+      "rankedGames": 0,
+      "competitionGames": 0,
+      "teamGames": 0,
+      "blitzGames": 0,
+      "marathonGames": 0,
+      "battleWins": 0,
+      "rankedWins": 0,
+      "competitionWins": 0,
+      "teamWins": 0,
+      "blitzWins": 0,
+      "marathonWins": 0,
+      "correct": 0,
+      "answers": 0,
+      "perfectGames": 0,
+      "bestScore": 0
+    },
+    "level": 1,
+    "xp": 25,
+    "profileMeta": {
+      "level": 1,
+      "xp": 25,
+      "totalXp": 25,
+      "customAvatar": {
+        "presentation": "male",
+        "skin": "warm",
+        "hairStyle": "short",
+        "hairColor": "brown",
+        "expression": "smile",
+        "accessory": "none",
+        "bg": "violet"
+      },
+      "wardrobeOwned": [
+        "hoodie"
+      ],
+      "equippedOutfit": "hoodie",
+      "outfitXp": {
+        "hoodie": 0
+      },
+      "aurasOwned": [
+        "none"
+      ],
+      "selectedAura": "none",
+      "ownedAvatars": [
+        "starter_m",
+        "starter_f",
+        "brain"
+      ],
+      "ownedFrames": [
+        "none"
+      ],
+      "creatorUnlockAll": false,
+      "season": {
+        "key": "2026-10",
+        "points": 10,
+        "claimed": []
+      },
+      "missionState": {},
+      "loginStreak": {
+        "lastDate": "2026-10-03",
+        "count": 1,
+        "best": 1,
+        "totalDays": 1
+      },
+      "chestStats": {
+        "opened": 0,
+        "common": 0,
+        "rare": 0,
+        "legendary": 0,
+        "legendaryPity": 0
+      },
+      "lifetime": {
+        "missionsClaimed": 0,
+        "seasonClaims": 0
+      }
+    }
+  }
+}

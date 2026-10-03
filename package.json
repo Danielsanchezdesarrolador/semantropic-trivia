@@ -1,8 +1,8 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.2.7 - accounts, cross-device login and admin wheel configuration",
+  "description": "Semantropic Trivia Alpha 0.3.0 - seasons, missions, events, level 50, expanded content and online modes",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

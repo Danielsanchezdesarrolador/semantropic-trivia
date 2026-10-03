@@ -33,11 +33,11 @@ const accountFailures=new Map();
 const MIME={".html":"text/html; charset=utf-8",".js":"application/javascript; charset=utf-8",".json":"application/json; charset=utf-8",".css":"text/css; charset=utf-8",".png":"image/png",".jpg":"image/jpeg",".jpeg":"image/jpeg",".svg":"image/svg+xml",".txt":"text/plain; charset=utf-8"};
 
 
-const MAX_LEVEL=30;
-function xpThreshold(level){level=clamp(level,1,MAX_LEVEL);return Math.min(260,80+Math.max(0,level-1)*12)}
+const MAX_LEVEL=50;
+function xpThreshold(level){level=clamp(level,1,MAX_LEVEL);return Math.min(500,80+Math.max(0,level-1)*12)}
 function cleanStringArray(v,allowedDefault=[]){return [...new Set((Array.isArray(v)?v:allowedDefault).map(x=>String(x||"").trim()).filter(Boolean))]}
 function normalizeProfileMeta(meta={}){
- const defaults={level:1,xp:0,totalXp:0,customAvatar:{presentation:"male",skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",ownedAvatars:["starter_m","starter_f","brain"],ownedFrames:["none"],creatorUnlockAll:false};
+ const defaults={level:1,xp:0,totalXp:0,customAvatar:{presentation:"male",skin:"warm",hairStyle:"short",hairColor:"brown",expression:"smile",accessory:"none",bg:"violet"},wardrobeOwned:["hoodie"],equippedOutfit:"hoodie",outfitXp:{hoodie:0},aurasOwned:["none"],selectedAura:"none",ownedAvatars:["starter_m","starter_f","brain"],ownedFrames:["none"],creatorUnlockAll:false,season:{key:"",points:0,claimed:[]},missionState:{},loginStreak:{lastDate:"",count:0,best:0,totalDays:0},chestStats:{opened:0,common:0,rare:0,legendary:0,legendaryPity:0},lifetime:{missionsClaimed:0,seasonClaims:0},worldTour:{selected:"chile",planeAt:"chile",countries:{},continentsClaimed:[],passportClaimed:[],eventWeek:"",eventCountry:"",eventClaimed:false}};
  const out={...defaults,...(meta||{})};
  out.level=clamp(out.level,1,MAX_LEVEL);
  out.xp=Math.max(0,Number(out.xp||0));
@@ -50,6 +50,12 @@ function normalizeProfileMeta(meta={}){
  out.equippedOutfit=String(out.equippedOutfit||"hoodie");if(!out.wardrobeOwned.includes(out.equippedOutfit))out.equippedOutfit=out.wardrobeOwned[0]||"hoodie";
  out.selectedAura=String(out.selectedAura||"none");if(!out.aurasOwned.includes(out.selectedAura))out.selectedAura=out.aurasOwned[0]||"none";
  out.creatorUnlockAll=!!out.creatorUnlockAll;
+ out.season={key:String(out.season?.key||""),points:Math.max(0,Number(out.season?.points||0)),claimed:[...new Set((Array.isArray(out.season?.claimed)?out.season.claimed:[]).map(Number).filter(x=>x>=1&&x<=20))]};
+ out.missionState=(out.missionState&&typeof out.missionState==="object")?out.missionState:{};
+ out.loginStreak={lastDate:String(out.loginStreak?.lastDate||""),count:Math.max(0,Number(out.loginStreak?.count||0)),best:Math.max(0,Number(out.loginStreak?.best||0)),totalDays:Math.max(0,Number(out.loginStreak?.totalDays||0))};
+ out.chestStats={opened:Math.max(0,Number(out.chestStats?.opened||0)),common:Math.max(0,Number(out.chestStats?.common||0)),rare:Math.max(0,Number(out.chestStats?.rare||0)),legendary:Math.max(0,Number(out.chestStats?.legendary||0)),legendaryPity:Math.max(0,Number(out.chestStats?.legendaryPity||0))};
+ out.lifetime={missionsClaimed:Math.max(0,Number(out.lifetime?.missionsClaimed||0)),seasonClaims:Math.max(0,Number(out.lifetime?.seasonClaims||0))};
+ out.worldTour={selected:String(out.worldTour?.selected||"chile"),planeAt:String(out.worldTour?.planeAt||"chile"),countries:(out.worldTour?.countries&&typeof out.worldTour.countries==="object")?out.worldTour.countries:{},continentsClaimed:cleanStringArray(out.worldTour?.continentsClaimed,[]),passportClaimed:cleanStringArray(out.worldTour?.passportClaimed,[]),eventWeek:String(out.worldTour?.eventWeek||""),eventCountry:String(out.worldTour?.eventCountry||""),eventClaimed:!!out.worldTour?.eventClaimed};
  const ox={hoodie:0};for(const [k,v] of Object.entries(out.outfitXp||{}))ox[String(k)]=Math.max(0,Number(v||0));out.outfitXp=ox;
  return out
 }
@@ -84,7 +90,9 @@ const ONLINE_ACH_RULES=[
  ["online_team_play",r=>r.onlineStats.teamGames>=1],
  ["online_team_win",r=>r.onlineStats.teamWins>=1],
  ["online_team3",r=>r.onlineStats.teamWins>=3],
- ["online_perfect",r=>r.onlineStats.perfectGames>=1]
+ ["online_perfect",r=>r.onlineStats.perfectGames>=1],
+ ["online_blitz_win",r=>r.onlineStats.blitzWins>=1],
+ ["online_marathon",r=>r.onlineStats.marathonGames>=1]
 ];
 
 function cleanName(v){return String(v||"Jugador").replace(/[<>]/g,"").trim().slice(0,18)||"Jugador"}
@@ -108,8 +116,8 @@ function wheelMeta(type,amount){amount=clamp(amount,1,100000);if(type==="coins")
 function normalizeGameConfig(v={}){const allowed=new Set(["coins","gems","keys","shield","double","life","surprise"]),src=Array.isArray(v.wheelPrizes)?v.wheelPrizes:gameConfig.wheelPrizes,prizes=src.slice(0,8).map(p=>wheelMeta(allowed.has(p?.type)?p.type:"surprise",p?.amount||1));while(prizes.length<8)prizes.push(wheelMeta("coins",100));return{wheelCooldownMs:clamp(v.wheelCooldownMs??gameConfig.wheelCooldownMs,60000,7*24*60*60*1000),wheelPrizes:prizes}}
 
 function normalizeOnlineStats(s={}){return{
- battleGames:Number(s.battleGames||0),rankedGames:Number(s.rankedGames||0),competitionGames:Number(s.competitionGames||0),teamGames:Number(s.teamGames||0),
- battleWins:Number(s.battleWins||0),rankedWins:Number(s.rankedWins||0),competitionWins:Number(s.competitionWins||0),teamWins:Number(s.teamWins||0),
+ battleGames:Number(s.battleGames||0),rankedGames:Number(s.rankedGames||0),competitionGames:Number(s.competitionGames||0),teamGames:Number(s.teamGames||0),blitzGames:Number(s.blitzGames||0),marathonGames:Number(s.marathonGames||0),
+ battleWins:Number(s.battleWins||0),rankedWins:Number(s.rankedWins||0),competitionWins:Number(s.competitionWins||0),teamWins:Number(s.teamWins||0),blitzWins:Number(s.blitzWins||0),marathonWins:Number(s.marathonWins||0),
  correct:Number(s.correct||0),answers:Number(s.answers||0),perfectGames:Number(s.perfectGames||0),bestScore:Number(s.bestScore||0)
 }}
 function normalizeRank(id,r={}){
@@ -318,6 +326,10 @@ function getRank(id,name){id=String(id);if(!rankings[id])rankings[id]=normalizeR
 function publicView(r){return{id:r.id,name:r.name,rating:r.rating,wins:r.wins,losses:r.losses,games:r.games,totalScore:r.totalScore,avatarId:r.avatarId,gender:r.gender,frameId:r.frameId,featuredAchievement:r.featuredAchievement||"",bio:r.bio||"",achievements:r.achievements||[],achievementCount:(r.achievements||[]).length,onlineStats:r.onlineStats||{},level:r.level||1,xp:r.xp||0,profileMeta:normalizeProfileMeta(r.profileMeta||{level:r.level||1,xp:r.xp||0})}}
 function publicProfile(r){return{...publicView(r),coins:r.coins,gems:r.gems,keys:r.keys,lastWheelSpin:r.lastWheelSpin,revision:r.revision||0,storage:storageMode,accountUsername:adminAccountUsername(r.id)}}
 function topRanking(){return Object.values(rankings).sort((a,b)=>b.rating-a.rating||b.wins-a.wins||b.totalScore-a.totalScore).slice(0,50).map(publicView)}
+function currentSeasonKey(){const d=new Date();return`${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,"0")}`}
+function ensureServerSeason(r){const meta=normalizeProfileMeta(r.profileMeta||{}),key=currentSeasonKey();if(meta.season.key!==key)meta.season={key,points:0,claimed:[]};r.profileMeta=meta;return meta.season}
+function addSeasonPoints(r,n){const s=ensureServerSeason(r);s.points=Math.max(0,Number(s.points||0)+Math.max(0,Math.round(Number(n)||0)));r.profileMeta.season=s}
+function topSeasonRanking(){const key=currentSeasonKey();return Object.values(rankings).map(r=>{ensureServerSeason(r);return r}).filter(r=>r.profileMeta?.season?.key===key&&Number(r.profileMeta?.season?.points||0)>0).sort((a,b)=>Number(b.profileMeta.season.points||0)-Number(a.profileMeta.season.points||0)||b.wins-a.wins).slice(0,50).map(publicView)}
 function verifyProfileToken(r,token){return !!(r&&r.authHash&&token&&secureEqual(r.authHash,hashToken(token)))}
 function profileSummary(id){
  const r=rankings[id];
@@ -357,14 +369,14 @@ function closeRoom(room,message="La sala fue cerrada"){if(!room)return;clearTime
 function kickRoomPlayer(room,targetId,message="Fuiste expulsado de la sala"){const target=room.players.get(targetId);if(!target)return false;const sets=room.streams.get(targetId);if(sets)for(const res of sets){sendSSE(res,{type:"kicked",message});try{res.end()}catch(e){}}room.streams.delete(targetId);room.players.delete(targetId);room.lastActivity=Date.now();if(room.players.size===0){closeRoom(room,"Sala vacía");return true}if(room.hostId===targetId)room.hostId=room.players.keys().next().value;if(room.status==="lobby")lobby(room);else broadcast(room,{type:"players",players:publicPlayers(room)});return true}
 function teamCounts(room){const c={A:0,B:0};for(const p of room.players.values())if(p.team&&c[p.team]!==undefined)c[p.team]++;return c}
 function nextTeam(room){const c=teamCounts(room);return c.A<=c.B?"A":"B"}
-function createRoom(playerId,name,mode){const code=roomCode(),p={id:playerId,name:cleanName(name),score:0,lives:3,answered:null,eliminated:false,team:mode==="teams"?"A":null,correctCount:0,answerCount:0};const maxRounds=mode==="ranked"?10:(mode==="competition"||mode==="teams")?12:15;const r={code,mode,hostId:playerId,status:"lobby",players:new Map([[playerId,p]]),streams:new Map(),createdAt:Date.now(),lastActivity:Date.now(),round:0,maxRounds,current:null,timer:null,finishing:false,questions:[],used:[]};rooms.set(code,r);return r}
+function createRoom(playerId,name,mode){const code=roomCode(),p={id:playerId,name:cleanName(name),score:0,lives:3,answered:null,eliminated:false,team:mode==="teams"?"A":null,correctCount:0,answerCount:0};const maxRounds=mode==="ranked"||mode==="blitz"?10:mode==="marathon"?25:(mode==="competition"||mode==="teams")?12:15,durationMs=mode==="blitz"?8000:15000;const r={code,mode,hostId:playerId,status:"lobby",players:new Map([[playerId,p]]),streams:new Map(),createdAt:Date.now(),lastActivity:Date.now(),round:0,maxRounds,durationMs,current:null,timer:null,finishing:false,questions:[],used:[]};rooms.set(code,r);return r}
 function roomQuestionSet(room,count){const recent=new Set();for(const p of room.players.values()){const r=getRank(p.id,p.name);for(const q of(r.recent||[]).slice(-180))recent.add(q)}let pool=QUESTIONS.filter(q=>!recent.has(q.id));if(pool.length<count*2)pool=[...QUESTIONS];const by={};for(const q of shuffle(pool))(by[q.category]??=[]).push(q);const cats=shuffle(Object.keys(by)),out=[];let idx=0,guard=0;while(out.length<count&&guard++<10000){const c=cats[idx++%cats.length],arr=by[c];if(arr?.length)out.push(arr.pop())}if(out.length<count){const used=new Set(out.map(q=>q.id));out.push(...shuffle(pool.filter(q=>!used.has(q.id))).slice(0,count-out.length))}return out}
 function prepareQuestion(q){const opts=q.answers.map((text,i)=>({text,correct:i===q.correct})),mixed=shuffle(opts);return{id:q.id,category:q.category,difficulty:q.difficulty,question:q.question,answers:mixed.map(x=>x.text),correct:mixed.findIndex(x=>x.correct)}}
 function startMatch(room){room.status="playing";room.round=0;room.used=[];room.questions=roomQuestionSet(room,room.maxRounds);for(const p of room.players.values()){p.score=0;p.lives=3;p.answered=null;p.eliminated=false;p.correctCount=0;p.answerCount=0}nextQuestion(room)}
-function nextQuestion(room){if(room.status!=="playing")return;room.round++;if(room.round>room.maxRounds)return finishMatch(room);const raw=room.questions[room.round-1];if(!raw)return finishMatch(room);const q=prepareQuestion(raw),endsAt=Date.now()+15000;room.current={...q,seq:room.round,endsAt};room.finishing=false;room.used.push(q.id);for(const p of room.players.values())p.answered=null;broadcast(room,{type:"question",seq:room.round,round:room.round,totalRounds:room.maxRounds,mode:room.mode,category:q.category,question:q.question,answers:q.answers,endsAt,players:publicPlayers(room)});clearTimeout(room.timer);room.timer=setTimeout(()=>finishRound(room),15100)}
+function nextQuestion(room){if(room.status!=="playing")return;room.round++;if(room.round>room.maxRounds)return finishMatch(room);const raw=room.questions[room.round-1];if(!raw)return finishMatch(room);const q=prepareQuestion(raw),durationMs=room.durationMs||15000,endsAt=Date.now()+durationMs;room.current={...q,seq:room.round,endsAt};room.finishing=false;room.used.push(q.id);for(const p of room.players.values())p.answered=null;broadcast(room,{type:"question",seq:room.round,round:room.round,totalRounds:room.maxRounds,mode:room.mode,category:q.category,question:q.question,answers:q.answers,endsAt,durationMs,players:publicPlayers(room)});clearTimeout(room.timer);room.timer=setTimeout(()=>finishRound(room),durationMs+100)}
 function activePlayers(room){return[...room.players.values()].filter(p=>!p.eliminated)}
 function allAnswered(room){const active=activePlayers(room);return active.length>0&&active.every(p=>p.answered)}
-function answer(room,playerId,seq,index){room.lastActivity=Date.now();if(room.status!=="playing"||!room.current||room.current.seq!==seq)return{ok:false,error:"La pregunta ya cambió."};const p=room.players.get(playerId);if(!p||p.eliminated)return{ok:false,error:"Jugador no activo."};if(p.answered)return{ok:false,error:"Ya respondiste."};const correct=index===room.current.correct,remaining=Math.max(0,room.current.endsAt-Date.now()),points=correct?100+Math.floor(50*(remaining/15000)):0;p.score+=points;p.answerCount++;if(correct)p.correctCount++;if(room.mode==="battle"&&!correct){p.lives--;if(p.lives<=0)p.eliminated=true}p.answered={index,correct,points};broadcast(room,{type:"players",players:publicPlayers(room)});if(allAnswered(room))setTimeout(()=>finishRound(room),450);return{ok:true}}
+function answer(room,playerId,seq,index){room.lastActivity=Date.now();if(room.status!=="playing"||!room.current||room.current.seq!==seq)return{ok:false,error:"La pregunta ya cambió."};const p=room.players.get(playerId);if(!p||p.eliminated)return{ok:false,error:"Jugador no activo."};if(p.answered)return{ok:false,error:"Ya respondiste."};const correct=index===room.current.correct,remaining=Math.max(0,room.current.endsAt-Date.now()),points=correct?100+Math.floor(50*(remaining/Math.max(1000,room.durationMs||15000))):0;p.score+=points;p.answerCount++;if(correct)p.correctCount++;if(room.mode==="battle"&&!correct){p.lives--;if(p.lives<=0)p.eliminated=true}p.answered={index,correct,points};broadcast(room,{type:"players",players:publicPlayers(room)});if(allAnswered(room))setTimeout(()=>finishRound(room),450);return{ok:true}}
 function finishRound(room){if(room.status!=="playing"||!room.current||room.finishing)return;room.finishing=true;clearTimeout(room.timer);for(const p of activePlayers(room)){if(!p.answered){p.answerCount++;p.answered={index:null,correct:false,points:0};if(room.mode==="battle"){p.lives--;if(p.lives<=0)p.eliminated=true}}}const q=room.current;broadcast(room,{type:"reveal",correctIndex:q.correct,players:publicPlayers(room)});const alive=activePlayers(room),shouldEnd=(room.mode==="battle"&&alive.length<=1&&room.players.size>=2)||room.round>=room.maxRounds;room.current=null;setTimeout(()=>shouldEnd?finishMatch(room):nextQuestion(room),1500)}
 function rankingDeltas(n){if(n<=2)return[20,-12];if(n===3)return[25,5,-10];return[30,10,-5,-15]}
 function teamResult(room){const scores={A:0,B:0},correct={A:0,B:0};for(const p of room.players.values()){if(p.team){scores[p.team]+=p.score;correct[p.team]+=p.correctCount||0}}let winner=null;if(scores.A!==scores.B)winner=scores.A>scores.B?"A":"B";else if(correct.A!==correct.B)winner=correct.A>correct.B?"A":"B";return{scores,correct,winner}}
@@ -375,13 +387,13 @@ async function finishMatch(room){
  const deltas=rankingDeltas(results.length);
  for(let i=0;i<results.length;i++){
   const p=results[i],r=getRank(p.id,p.name),s=r.onlineStats=normalizeOnlineStats(r.onlineStats);r.games++;r.totalScore+=p.score;s.correct+=p.correctCount||0;s.answers+=p.answerCount||0;s.bestScore=Math.max(s.bestScore||0,p.score||0);
-  const modeKey=room.mode==="teams"?"team":room.mode;if(modeKey==="battle")s.battleGames++;else if(modeKey==="ranked")s.rankedGames++;else if(modeKey==="competition")s.competitionGames++;else if(modeKey==="team")s.teamGames++;
+  const modeKey=room.mode==="teams"?"team":room.mode;if(modeKey==="battle")s.battleGames++;else if(modeKey==="ranked")s.rankedGames++;else if(modeKey==="competition")s.competitionGames++;else if(modeKey==="team")s.teamGames++;else if(modeKey==="blitz")s.blitzGames++;else if(modeKey==="marathon")s.marathonGames++;
   let won=false,lost=false;if(room.mode==="teams"){won=!!teamData.winner&&p.team===teamData.winner;lost=!!teamData.winner&&p.team!==teamData.winner}else{won=i===0;lost=i!==0}
-  if(won){r.wins++;if(modeKey==="battle")s.battleWins++;else if(modeKey==="ranked")s.rankedWins++;else if(modeKey==="competition")s.competitionWins++;else if(modeKey==="team")s.teamWins++}else if(lost)r.losses++;
+  if(won){r.wins++;if(modeKey==="battle")s.battleWins++;else if(modeKey==="ranked")s.rankedWins++;else if(modeKey==="competition")s.competitionWins++;else if(modeKey==="team")s.teamWins++;else if(modeKey==="blitz")s.blitzWins++;else if(modeKey==="marathon")s.marathonWins++}else if(lost)r.losses++;
   if((p.answerCount||0)>=5&&(p.correctCount||0)===(p.answerCount||0))s.perfectGames++;
   let delta=0;if(room.mode==="ranked"){delta=deltas[i]||0;r.rating=Math.max(100,r.rating+delta)}
   const xpBase=12+Math.max(0,Math.round((p.correctCount||0)*4))+Math.max(0,Math.round((p.score||0)/45))+(won?20:6);
-  gainRankXp(r,xpBase);
+  gainRankXp(r,xpBase);addSeasonPoints(r,15+Math.round((p.correctCount||0)*3)+(won?25:8));
   r.recent=[...(r.recent||[]),...room.used].slice(-250);const newAchievements=unlockOnlineAchievements(r);r.revision=(r.revision||0)+1;p.finalRating=r.rating;p.delta=delta;p.newAchievements=newAchievements;await persistRank(r)
  }
  broadcast(room,{type:"matchEnd",mode:room.mode,teamScores:teamData?.scores||null,winningTeam:teamData?.winner||null,results:results.map((p,i)=>({id:p.id,name:p.name,place:i+1,score:p.score,lives:p.lives,rating:p.finalRating,delta:p.delta,team:p.team||null,newAchievements:p.newAchievements||[],...profileSummary(p.id)})),ranking:topRanking()})
@@ -400,6 +412,7 @@ function accountFail(req,key){const id=clientIp(req)+"|"+String(key||""),v=accou
 const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://${req.headers.host||"localhost"}`),p=u.pathname;try{
  if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY,accounts:Object.keys(accounts).length});
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
+ if(req.method==="GET"&&p==="/api/season-ranking")return json(res,200,{season:currentSeasonKey(),ranking:topSeasonRanking(),storage:storageMode});
  if(req.method==="GET"&&p==="/api/game/config")return json(res,200,gameConfig);
  if(req.method==="POST"&&p==="/api/account/register"){
   const b=await body(req),username=cleanUsername(b.username),key=usernameKey(b.username),password=String(b.password||"");
@@ -426,6 +439,13 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   return json(res,200,{ok:true,message:"Si la cuenta existe, la solicitud de recuperación quedó registrada."})
  }
  if(req.method==="POST"&&p==="/api/account/me"){const b=await body(req),s=sessionForToken(b.token);if(!s)return json(res,401,{error:"La sesión venció. Inicia sesión nuevamente."});const a=accounts[s.usernameKey],r=rankings[s.playerId];if(!a||!r)return json(res,404,{error:"Cuenta no encontrada"});return json(res,200,{username:a.username,playerId:s.playerId,mustChangePassword:!!a.forcePasswordChange,profile:publicProfile(r)})}
+ 
+ if(req.method==="POST"&&p==="/api/progression/checkin"){
+  const b=await body(req),s=sessionForToken(String(b.token||""));if(!s)return json(res,401,{error:"La sesión venció"});const r=rankings[s.playerId];if(!r)return json(res,404,{error:"Perfil no encontrado"});
+  const meta=normalizeProfileMeta(r.profileMeta||{}),now=new Date(),today=now.toISOString().slice(0,10),yesterday=new Date(now.getTime()-86400000).toISOString().slice(0,10);let reward=null;
+  if(meta.loginStreak.lastDate!==today){const count=meta.loginStreak.lastDate===yesterday?Number(meta.loginStreak.count||0)+1:1;meta.loginStreak={lastDate:today,count,best:Math.max(Number(meta.loginStreak.best||0),count),totalDays:Number(meta.loginStreak.totalDays||0)+1};reward={coins:40+Math.min(count,7)*10,xp:25,gems:count%7===0?1:0,keys:count%7===0?1:0};r.profileMeta=meta;r.coins+=reward.coins;r.gems+=reward.gems;r.keys+=reward.keys;gainRankXp(r,reward.xp);addSeasonPoints(r,10);r.revision=(r.revision||0)+1;await persistRank(r)}
+  return json(res,200,{ok:true,streak:r.profileMeta?.loginStreak?.count||0,reward,profile:publicProfile(r)})
+ }
  if(req.method==="POST"&&p==="/api/account/logout"){const b=await body(req);if(b.token)await deleteAccountSession(b.token);return json(res,200,{ok:true})}
  if(req.method==="POST"&&p==="/api/account/change-password"){
   const b=await body(req),token=String(b.token||""),s=sessionForToken(token);
@@ -484,6 +504,20 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="POST"&&p==="/api/admin/room/kick"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(!room)return json(res,404,{error:"Sala no encontrada"});const target=String(b.targetId||"");if(!room.players.has(target))return json(res,404,{error:"Jugador no encontrado en la sala"});kickRoomPlayer(room,target,"Fuiste expulsado por el administrador");return json(res,200,{ok:true})}
  if(req.method==="POST"&&p==="/api/admin/player/grant"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.coins=Math.max(0,r.coins+clamp(b.coins,-1000000,1000000));r.gems=Math.max(0,r.gems+clamp(b.gems,-100000,100000));r.keys=Math.max(0,r.keys+clamp(b.keys,-100000,100000));r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
  if(req.method==="POST"&&p==="/api/admin/player/rating"){const b=await body(req),r=rankings[String(b.playerId||'')];if(!r)return json(res,404,{error:'Jugador no encontrado'});r.rating=clamp(b.rating,100,5000);unlockOnlineAchievements(r);r.revision++;await persistRank(r);return json(res,200,{profile:publicProfile(r)})}
+ if(req.method==="POST"&&p==="/api/admin/player/world-tour"){
+  const b=await body(req),r=rankings[String(b.playerId||"")];
+  if(!r)return json(res,404,{error:"Jugador no encontrado"});
+  r.profileMeta=normalizeProfileMeta(r.profileMeta||{});
+  if(String(b.action||"")==="reset"){
+   r.profileMeta.worldTour={selected:"chile",planeAt:"chile",countries:{},continentsClaimed:[],passportClaimed:[],eventWeek:"",eventCountry:"",eventClaimed:false}
+  }else if(String(b.action||"")==="complete"){
+   const ids=["chile","argentina","peru","brazil","colombia","mexico","usa","canada","spain","france","italy","uk","morocco","egypt","japan","south_korea"],countries={};
+   for(const id of ids)countries[id]={completed:true,stars:3,knowledge:100,runs:1,stages:{geo:{completed:true,bestPct:100},culture:{completed:true,bestPct:100},history:{completed:true,bestPct:100},people:{completed:true,bestPct:100},curious:{completed:true,bestPct:100}},boss:{completed:true,bestPct:100,bestLives:0}};
+   r.profileMeta.worldTour={selected:"south_korea",planeAt:"south_korea",countries,continentsClaimed:["south_america","north_america","europe","africa","asia"],passportClaimed:["3","6","10","16"],eventWeek:"",eventCountry:"",eventClaimed:true}
+  }else return json(res,400,{error:"Acción World Tour inválida"});
+  r.revision=(r.revision||0)+1;await persistRank(r);
+  return json(res,200,{ok:true,profile:publicProfile(r)})
+ }
  if(req.method==="POST"&&p==="/api/admin/player/level"){
   const b=await body(req),r=rankings[String(b.playerId||"")];
   if(!r)return json(res,404,{error:"Jugador no encontrado"});
@@ -506,11 +540,11 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   if(!r)return json(res,404,{error:"Jugador no encontrado"});
   r.profileMeta=normalizeProfileMeta(r.profileMeta||{});
   r.profileMeta.creatorUnlockAll=true;
-  r.profileMeta.wardrobeOwned=["hoodie","academy","shadow","cosmic"];
-  r.profileMeta.aurasOwned=["none","spark","butterflies","firefeet","cosmic"];
+  r.profileMeta.wardrobeOwned=["hoodie","academy","shadow","cosmic","velocity","royal","neonchamp","ascendant","world_explorer"];
+  r.profileMeta.aurasOwned=["none","spark","butterflies","firefeet","cosmic","storm","prism","mythic","season_crown","desert_sun","sakura_trail"];
   r.profileMeta.ownedAvatars=["starter_m","starter_f","brain","premium_alma","premium_nico","premium_nara","premium_max","premium_nova","premium_sol","premium_vega","premium_kai","premium_mia","premium_orion","premium_reina","premium_maestro"];
-  r.profileMeta.ownedFrames=["none","solar_ring","golden_square","amethyst_royal","ruby_solar","sapphire_imperial","golden_wings","celestial_crown","semantropic_throne"];
-  r.profileMeta.outfitXp={hoodie:400,academy:400,shadow:400,cosmic:400};
+  r.profileMeta.ownedFrames=["none","solar_ring","golden_square","amethyst_royal","ruby_solar","sapphire_imperial","golden_wings","celestial_crown","semantropic_throne","emerald_elite","ascendant_frame","season_vanguard","world_route_frame","world_crown_frame","world_master_frame","world_event_frame"];
+  r.profileMeta.outfitXp={hoodie:400,academy:400,shadow:400,cosmic:400,velocity:400,royal:400,neonchamp:400,ascendant:400};
   r.level=MAX_LEVEL;r.xp=xpThreshold(MAX_LEVEL);
   r.profileMeta.level=MAX_LEVEL;r.profileMeta.xp=r.xp;
   r.profileMeta.totalXp=Math.max(Number(r.profileMeta.totalXp||0),5000);
@@ -548,7 +582,7 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   return json(res,200,{ok:true,playerId,username,name})
  }
  if(req.method==="GET"&&p==="/api/multi/stream"){const code=(u.searchParams.get("code")||"").toUpperCase(),id=u.searchParams.get("playerId")||"",room=rooms.get(code);if(!room||!room.players.has(id))return json(res,404,{error:"Sala o jugador no encontrado"});res.writeHead(200,{"Content-Type":"text/event-stream","Cache-Control":"no-cache","Connection":"keep-alive","X-Accel-Buffering":"no"});res.write(": connected\n\n");if(!room.streams.has(id))room.streams.set(id,new Set());room.streams.get(id).add(res);const hb=setInterval(()=>{try{res.write(": ping\n\n")}catch(e){}},20000);req.on("close",()=>{clearInterval(hb);room.streams.get(id)?.delete(res);if(room.status==="lobby")lobby(room)});if(room.status==="lobby")sendSSE(res,{type:"lobby",code:room.code,mode:room.mode,hostId:room.hostId,players:publicPlayers(room)});return}
- if(req.method==="POST"&&p==="/api/multi/create"){const b=await body(req),mode=["battle","ranked","competition","teams"].includes(b.mode)?b.mode:"competition",id=String(b.playerId||'');if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileAccess(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});const accKey=accountByPlayerId[id],acc=accKey&&accounts[accKey];if(acc?.forcePasswordChange)return json(res,403,{error:"Debes cambiar tu contraseña temporal antes de jugar online",mustChangePassword:true});const room=createRoom(id,b.name,mode);await persistRank(r);return json(res,200,{code:room.code,mode,hostId:room.hostId})}
+ if(req.method==="POST"&&p==="/api/multi/create"){const b=await body(req),mode=["battle","ranked","competition","teams","blitz","marathon"].includes(b.mode)?b.mode:"competition",id=String(b.playerId||'');if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileAccess(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});const accKey=accountByPlayerId[id],acc=accKey&&accounts[accKey];if(acc?.forcePasswordChange)return json(res,403,{error:"Debes cambiar tu contraseña temporal antes de jugar online",mustChangePassword:true});const room=createRoom(id,b.name,mode);await persistRank(r);return json(res,200,{code:room.code,mode,hostId:room.hostId})}
  if(req.method==="POST"&&p==="/api/multi/join"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(!room)return json(res,404,{error:"La sala no existe"});if(room.status!=="lobby")return json(res,409,{error:"La partida ya comenzó"});if(room.players.size>=4&&!room.players.has(b.playerId))return json(res,409,{error:"La sala ya tiene 4 jugadores"});const id=String(b.playerId||"");if(!id)return json(res,400,{error:"Jugador inválido"});const r=getRank(id,b.name);if(r.authHash&&!verifyProfileAccess(r,b.profileToken))return json(res,401,{error:'Perfil online no verificado'});const accKey=accountByPlayerId[id],acc=accKey&&accounts[accKey];if(acc?.forcePasswordChange)return json(res,403,{error:"Debes cambiar tu contraseña temporal antes de jugar online",mustChangePassword:true});room.players.set(id,{id,name:cleanName(b.name),score:0,lives:3,answered:null,eliminated:false,team:room.mode==="teams"?nextTeam(room):null,correctCount:0,answerCount:0});await persistRank(r);lobby(room);return json(res,200,{ok:true,mode:room.mode,hostId:room.hostId})}
  if(req.method==="POST"&&p==="/api/multi/team"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase()),id=String(b.playerId||""),team=String(b.team||"").toUpperCase();if(!room)return json(res,404,{error:"Sala no encontrada"});if(room.mode!=="teams"||room.status!=="lobby")return json(res,409,{error:"No puedes cambiar equipo ahora"});if(!["A","B"].includes(team))return json(res,400,{error:"Equipo inválido"});const player=room.players.get(id);if(!player)return json(res,404,{error:"Jugador no encontrado"});const counts=teamCounts(room);if(player.team!==team&&counts[team]>=2){const oldTeam=player.team,swap=[...room.players.values()].find(x=>x.id!==id&&x.team===team);if(!oldTeam||!swap)return json(res,409,{error:"Ese equipo ya tiene 2 jugadores"});swap.team=oldTeam}player.team=team;lobby(room);return json(res,200,{ok:true})}
  if(req.method==="POST"&&p==="/api/multi/start"){const b=await body(req),room=rooms.get(String(b.code||"").toUpperCase());if(!room)return json(res,404,{error:"Sala no encontrada"});if(room.hostId!==b.playerId)return json(res,403,{error:"Solo el anfitrión puede comenzar"});if(room.mode==="teams"){const c=teamCounts(room);if(room.players.size!==4||c.A!==2||c.B!==2)return json(res,409,{error:"2 vs 2 necesita exactamente 4 jugadores: 2 en cada equipo"})}else{if(room.players.size<2)return json(res,409,{error:"Se necesitan al menos 2 jugadores"});if(room.players.size>4)return json(res,409,{error:"Máximo 4 jugadores"})}startMatch(room);return json(res,200,{ok:true})}
@@ -559,4 +593,4 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
  if(req.method==="GET")return staticFile(req,res,p);return json(res,404,{error:"Not found"})
  }catch(e){console.error(e);return json(res,500,{error:"Error interno del servidor"})}});
 setInterval(()=>{const now=Date.now();for(const [code,r] of [...rooms]){const online=[...r.streams.values()].reduce((n,set)=>n+(set?.size||0),0);if(r.status==="finished"&&now-(r.finishedAt||r.lastActivity||r.createdAt)>5*60*1000){closeRoom(r,"Sala finalizada y cerrada automáticamente");continue}if(r.status==="lobby"&&online===0&&now-(r.lastActivity||r.createdAt)>10*60*1000){closeRoom(r,"Sala inactiva cerrada automáticamente");continue}if(r.status!=="playing"&&now-r.createdAt>60*60*1000){closeRoom(r,"Sala expirada");continue}}for(const [t,exp] of adminSessions)if(exp<now)adminSessions.delete(t);for(const [h,s] of accountSessions)if(Number(s.expiresAt)<=now)accountSessions.delete(h)},30000);
-initStore().finally(()=>server.listen(PORT,"0.0.0.0",()=>{console.log("\n==========================================");console.log("  SEMANTROPIC TRIVIA — ONLINE ALPHA 0.2.7");console.log("  ACCOUNTS + WHEEL ADMIN + SOCIAL ONLINE");console.log("==========================================");console.log(`Almacenamiento: ${storageMode}`);console.log(`Admin configurado: ${ADMIN_KEY?'sí':'no'}`);console.log(`PC anfitrión: http://localhost:${PORT}`);const nets=os.networkInterfaces();for(const list of Object.values(nets))for(const n of(list||[]))if(n.family==="IPv4"&&!n.internal)console.log(`Red local:    http://${n.address}:${PORT}`);console.log("\n")}));
+initStore().finally(()=>server.listen(PORT,"0.0.0.0",()=>{console.log("\n==========================================");console.log("  SEMANTROPIC TRIVIA — ONLINE ALPHA 0.3.0");console.log("  SEASONS + MISSIONS + ONLINE MODES + PROGRESSION");console.log("==========================================");console.log(`Almacenamiento: ${storageMode}`);console.log(`Admin configurado: ${ADMIN_KEY?'sí':'no'}`);console.log(`PC anfitrión: http://localhost:${PORT}`);const nets=os.networkInterfaces();for(const list of Object.values(nets))for(const n of(list||[]))if(n.family==="IPv4"&&!n.internal)console.log(`Red local:    http://${n.address}:${PORT}`);console.log("\n")}));
