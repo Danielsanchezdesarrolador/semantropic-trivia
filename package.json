@@ -2,7 +2,7 @@
   "name": "semantropic-trivia",
   "version": "0.5.1",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.5.1 - unified avatar editor, live preview and single-profile customization flow",
+  "description": "Semantropic Trivia Alpha 0.5.1.1 - editor de avatar unificado y hotfix visual",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

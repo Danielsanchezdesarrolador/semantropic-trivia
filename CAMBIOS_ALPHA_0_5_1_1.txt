@@ -1,0 +1,16 @@
+SEMANTROPIC TRIVIA — ALPHA 0.5.1.1
+
+Hotfix completo del editor de avatar unificado.
+
+CORRECCIONES
+- Se eliminaron los iconos flotantes sin sentido sobre el avatar (pantalón/relámpago).
+- La parte superior e inferior ahora se integran visualmente al cuerpo.
+- Los avatares prediseñados y premium quedan centrados dentro de la vista previa.
+- Se eliminaron las mini etiquetas de ropa que aparecían pegadas a las esquinas.
+- El emote equipado ahora se refleja en la vista previa del personaje.
+- Se mejoraron escalas y alineación en vista grande, perfil y miniaturas.
+- Se conserva el editor unificado introducido en la 0.5.1.
+
+ESTE ZIP ES EL PROYECTO COMPLETO
+Incluye servidor, package.json, preguntas, World Tour, datos y todos los archivos necesarios
+para reemplazar la versión anterior en GitHub/Render.
