@@ -1,0 +1,84 @@
+SEMANTROPIC TRIVIA — QA AVATAR 0.5.1.2
+
+OBJETIVO
+Reducir el sistema modular a un núcleo pequeño y verificable antes de volver a ampliar el catálogo.
+
+RESULTADO GENERAL: PASS
+
+VALIDACIONES DE PROYECTO
+[PASS] JavaScript inline de index.html: sintaxis válida con node --check.
+[PASS] server.js: sintaxis válida con node --check.
+[PASS] world_tour_data.js: sintaxis válida con node --check.
+[PASS] general_questions.json: 1.410 preguntas cargan correctamente.
+
+PRUEBAS 1 X 1 — PIEZAS MODULARES (22 casos)
+Cabeza:
+[PASS] Sin headwear
+[PASS] Gorra explorador
+[PASS] Máscara kitsune
+[PASS] Corona real
+
+Cara:
+[PASS] Sin detalle
+[PASS] Lentes clásicos
+[PASS] Visor cyber
+
+Parte superior:
+[PASS] Hoodie Pulse
+[PASS] Kimono Sakura
+[PASS] Bata científica
+[PASS] Chaqueta explorador
+[PASS] Armadura cyber
+
+Parte inferior:
+[PASS] Jeans core
+[PASS] Falda Sakura
+[PASS] Cargo explorador
+[PASS] Pantalón cyber
+
+Accesorio:
+[PASS] Sin accesorio
+[PASS] Libro azul
+[PASS] Abanico Sakura
+[PASS] Cámara de viaje
+[PASS] Gamepad portátil
+[PASS] Cetro trofeo
+
+Para cada caso se validó:
+- existencia del objeto;
+- cambio de estado al equipar;
+- cambio automático a Avatar Personalizado;
+- clase/elemento de render correspondiente generado por el personaje.
+
+EMOTES ESTABLES (6 casos)
+[PASS] Risa
+[PASS] Pensando
+[PASS] Buen juego
+[PASS] En llamas
+[PASS] Corona
+[PASS] Me destruyó
+
+Para cada emote se validó que:
+- quede equipado;
+- pase a ser el emote principal;
+- el renderer genere la burbuja con el emoji correcto.
+
+SPRAYS ESTABLES (3 casos)
+[PASS] Brain Burst
+[PASS] GG Stamp
+[PASS] Pixel Boom
+
+AVATARES BASE / SKINS
+[PASS] 65/65 avatares del catálogo generan un renderer válido.
+[PASS] Los premium generan premium-portrait.
+[PASS] Los avatares clásicos generan su icono correspondiente.
+[PASS] Guerrero Diamante genera su renderer especial.
+[PASS] Los presets no reciben encima piezas modulares de ropa/accesorio.
+
+MIGRACIÓN / COMPATIBILIDAD
+[PASS] Objetos antiguos siguen guardados en el inventario.
+[PASS] Si una pieza experimental estaba equipada, el cliente vuelve a una pieza estable equivalente.
+[PASS] Emotes/sprays experimentales dejan de estar equipados sin ser borrados del inventario.
+
+NOTA DE QA
+Las pruebas anteriores son automatizadas a nivel de lógica de estado y generación del renderer, además de validación de sintaxis. La revisión visual final en el navegador real después del deploy sigue siendo importante antes de volver a ampliar el catálogo con nuevas piezas.

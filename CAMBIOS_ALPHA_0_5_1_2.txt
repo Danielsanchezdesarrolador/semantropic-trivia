@@ -1,0 +1,28 @@
+SEMANTROPIC TRIVIA — ALPHA 0.5.1.2
+
+AVATAR CORE REBUILD
+
+Objetivo: menos piezas, pero todas funcionales y verificadas.
+
+- Eliminado del editor el sistema de Conjunto evolutivo porque se superponía con la ropa modular.
+- Avatares prediseñados/premium vuelven a ser skins cerradas y centradas. No se les dibuja ropa modular encima.
+- Al equipar cabeza, cara, parte superior, parte inferior o accesorio se activa automáticamente el avatar Personalizado.
+- Catálogo modular visible reducido a un núcleo estable.
+- Cabeza estable: Sin headwear, Gorra explorador, Máscara kitsune, Corona real.
+- Cara estable: Sin detalle, Lentes clásicos, Visor cyber.
+- Tops estables: Hoodie Pulse, Kimono Sakura, Bata científica, Chaqueta explorador, Armadura cyber.
+- Bottoms estables: Jeans core, Falda Sakura, Cargo explorador, Pantalón cyber.
+- Accesorios estables: Sin accesorio, Libro azul, Abanico Sakura, Cámara de viaje, Gamepad portátil, Cetro trofeo.
+- Emotes visibles reducidos a 6 estables. Al tocar un emote queda como emote principal y aparece inmediatamente en la previsualización.
+- Eliminadas visualmente las barras y pictogramas flotantes que tapaban la ropa.
+- Rehecho el render de torso y parte inferior del avatar personalizado.
+- Los sets visibles se reducen temporalmente a Japón, Laboratorio, Explorador Mundial y Arcade.
+- Se mantiene compatibilidad con inventarios antiguos; las piezas experimentales no se borran, solo dejan de mostrarse hasta ser revisadas.
+
+QA DE ESTA BUILD
+- 22 piezas modulares probadas individualmente.
+- 6 emotes probados individualmente.
+- 3 sprays probados individualmente.
+- 65 avatares base/premium/prestigio validados por el renderer.
+- Migración de piezas experimentales a defaults estables validada.
+- JavaScript, server.js y world_tour_data.js validados por sintaxis.

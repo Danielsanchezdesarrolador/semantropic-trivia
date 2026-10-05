@@ -1,0 +1,17 @@
+SEMANTROPIC TRIVIA — BUILD MANIFEST 0.5.1.2
+
+Total archivos: 53
+Preguntas generales: 1410
+Avatares renderer QA: 65
+Piezas estables renderer QA: 31
+Casos modulares de equipamiento: 22
+Emotes probados: 6
+Sprays probados: 3
+
+ARCHIVOS CRÍTICOS:
+- index.html | 758782 bytes | sha256 da33d56de0132db92da5250b95036acc23ed41711c5522a8870b58d50e9e0abc
+- server.js | 77865 bytes | sha256 9204b1c21f76cf00ae07671b01bdeb00c71cb33488bba0bed521bd98f415eba5
+- package.json | 333 bytes | sha256 c9e511149d6e2879d0c1d03102413805ff92c9e1db68983258b88d4688088cc8
+- render.yaml | 306 bytes | sha256 c206fc8a061470bf63ba2e7e360b5244576343cacec516273f86a497e39448ed
+- general_questions.json | 422364 bytes | sha256 92c54f83a622044b30ba3aa6cea787000110c398eb2989116df396c7f1fd5d69
+- world_tour_data.js | 125034 bytes | sha256 7930f4cdeee874d3f12a53c367e5f54a59a784a501dcc329975510e54dad4b42

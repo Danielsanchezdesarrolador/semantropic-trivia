@@ -1,0 +1,15 @@
+SEMANTROPIC TRIVIA — ALPHA 0.6.0
+
+ARCHITECTURE & FX REFACTOR
+
+- `index.html` ya no contiene todo el CSS y JavaScript del juego.
+- CSS separado en 5 archivos manteniendo exactamente el orden de cascada original.
+- JavaScript separado en 7 archivos por áreas funcionales y cargado en el orden original.
+- Nuevo Semantropic FX Engine con Web Animations API para feedback visual de respuestas.
+- Sin frameworks o dependencias nuevas: se conserva una arquitectura ligera apropiada para web/móvil.
+- Cache busting `?v=0.6.0` y política `no-cache` para HTML/JS/CSS/JSON durante Alpha.
+- Se conserva el Avatar Core estable 0.5.1.2 y el progreso existente.
+- Continúan Node.js, PostgreSQL, World Tour, economía, cuentas, perfiles y multijugador.
+
+OBJETIVO
+Que las próximas versiones puedan modificar avatar, preguntas, World Tour, online o economía de forma mucho más aislada, con menos riesgo de regresiones.

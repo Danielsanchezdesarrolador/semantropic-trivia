@@ -1,0 +1,50 @@
+SEMANTROPIC TRIVIA — QA ALPHA 0.6.0
+
+RESULTADO GENERAL: PASS
+
+REFRACTOR
+- CSS original preservado por equivalencia de contenido: True
+- JavaScript original preservado salvo el hook intencional del nuevo FX Engine: True
+- index.html sin bloques <style>: PASS
+- index.html sin JavaScript inline: PASS
+- Banco general: 1410 preguntas
+
+SINTAXIS
+- server.js: PASS
+- world_tour_data.js: PASS
+- 00-fx-engine.js: PASS
+- 01-core.js: PASS
+- 02-question-engine.js: PASS
+- 03-profile-cloud.js: PASS
+- 04-multiplayer.js: PASS
+- 05-world-tour.js: PASS
+- 06-economy-bootstrap.js: PASS
+
+SMOKE JS
+- Ejecución secuencial de world_tour_data.js + los 7 scripts en un contexto browser-like: PASS
+- No se detectaron ReferenceError por orden de carga durante el smoke test.
+
+SERVIDOR LOCAL (modo archivo con módulo pg simulado únicamente para QA)
+- Arranque Node: PASS
+- /api/status: PASS
+- 1410 preguntas reportadas: PASS
+- GET /: 200
+- GET /assets/css/04-identity.css: 200
+- GET /assets/js/04-multiplayer.js: 200
+- Content-Type CSS/JS: correcto
+- Cache-Control HTML/JS/CSS/JSON: no-cache
+
+NOTA DEL ENTORNO
+- El navegador Chromium de este entorno bloquea páginas localhost por política de la organización, por lo que no se contó ese intento como una prueba visual E2E. La validación visual final debe hacerse en el despliegue de Render, igual que en el flujo normal del proyecto.
+
+ARCHIVOS CLAVE / SHA256
+- index.html | 59426 bytes | 509be1e83179e14eedf2f832d64c7647ba09a7741e106bd58ac88f867e02142a
+- server.js | 77886 bytes | 91af6acdfc3b283561c7302de3a14f27a0fc44a432fa08753658759697667a5d
+- package.json | 372 bytes | e4797c869117a25b562b02fcae371bb58ff55459dc28bae0447ad3b59cd628cc
+- render.yaml | 306 bytes | c206fc8a061470bf63ba2e7e360b5244576343cacec516273f86a497e39448ed
+- general_questions.json | 422364 bytes | 92c54f83a622044b30ba3aa6cea787000110c398eb2989116df396c7f1fd5d69
+- world_tour_data.js | 125034 bytes | 7930f4cdeee874d3f12a53c367e5f54a59a784a501dcc329975510e54dad4b42
+- assets/js/00-fx-engine.js | 1989 bytes | 97d44f5fbb4b3697f0308e165dd24fa2f7c77c84d5b150051d67065713414979
+- assets/js/01-core.js | 293754 bytes | 8a997308bd5d00d3e8297f6817277473801b30581fab4b12a629c1c7ca28cc00
+- assets/js/04-multiplayer.js | 94723 bytes | 1d82b479a876e5e485dd4849cf1c8d37ad459ea6d203766072ca3d31341cb514
+- assets/css/04-identity.css | 46072 bytes | f20d7915ceecb7b620292abe293ba687ce4a8e38d42e5d3b54fae9b25a75052f

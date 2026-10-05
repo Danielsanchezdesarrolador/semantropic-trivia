@@ -1,0 +1,6 @@
+/* Semantropic FX Engine 0.6.0 */
+.sem-fx-layer{position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden}
+.sem-fx-particle{position:absolute;left:50%;top:50%;width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 12px currentColor;will-change:transform,opacity}
+.sem-fx-particle.good{color:#67efad}.sem-fx-particle.bad{color:#ff6f87}.sem-fx-particle.coin{color:#ffd166}.sem-fx-particle.power{color:#6fe4ff}.sem-fx-particle.win{color:#ffe486}
+.sem-fx-ring{position:fixed;left:50%;top:50%;width:70px;height:70px;border-radius:50%;border:3px solid currentColor;transform:translate(-50%,-50%);pointer-events:none;z-index:9997;opacity:0;will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){.sem-fx-layer,.sem-fx-ring{display:none!important}}

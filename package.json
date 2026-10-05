@@ -1,11 +1,13 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.5.1",
+  "version": "0.7.0",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.5.1.1 - editor de avatar unificado y hotfix visual",
+  "description": "Semantropic Trivia Alpha 0.7.0 - Unity Phase 1 compatible backend + web fallback",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node tools/qa-structure.js",
+    "test:unity": "node tools/qa-unity-phase1.js"
   },
   "engines": {
     "node": ">=20"
