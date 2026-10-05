@@ -1,0 +1,24 @@
+SEMANTROPIC TRIVIA — ALPHA 0.5.1
+
+EDITOR ÚNICO DE AVATAR
+
+- Se eliminó la navegación interna por múltiples pestañas dentro de Avatar.
+- Toda la personalización queda en una sola pantalla: avatar base, rostro, cabello, ropa, accesorios, aura, marco, fondo, emotes, sprays, animaciones, efecto de respuesta, título y perfil público.
+- El editor usa secciones desplegables numeradas para mantener la pantalla ordenada sin separar la identidad en menús distintos.
+- Se añadió una vista previa grande y persistente que refleja el aspecto real usado en perfil, ranking y multijugador.
+- Los cambios de cabello, rostro o piezas modulares activan automáticamente el avatar personalizado para que siempre sean visibles.
+- Los cambios se guardan automáticamente mediante el sistema de persistencia existente y se sincronizan con el perfil online cuando la cuenta está conectada.
+- Multijugador ya no abre un segundo editor de perfil: el botón “Editar avatar y perfil” envía al mismo editor único.
+- Se eliminó el antiguo modal duplicado “Personalizar perfil online”.
+- El Catálogo y los sets permanecen en Colección; ya no ocupan espacio dentro del editor.
+- Colección deja de ser un segundo lugar para cambiar avatar, marco o Prestigio: dirige al editor único.
+- El editor muestra principalmente los cosméticos ya obtenidos; la Tienda y Colección siguen siendo los lugares para adquirir/desbloquear contenido.
+- Nombre visible, bio pública, logro destacado y título se editan desde la misma pantalla de Avatar.
+- Se mantiene el sistema de emotes, sprays, animaciones online, rarezas, prestigio, economía, World Tour y progreso de la Alpha 0.5.0.
+- Diseño responsive revisado a 390 px sin desbordamiento horizontal.
+
+COMPATIBILIDAD
+
+- Compatible con perfiles y PostgreSQL de la 0.5.0.
+- No requiere cambiar DATABASE_URL ni ADMIN_KEY.
+- No requiere reiniciar la base de datos.

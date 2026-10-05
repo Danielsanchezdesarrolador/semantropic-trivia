@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<title>Semantropic Trivia — Alpha 0.5.0</title>
+<title>Semantropic Trivia — Alpha 0.5.1</title>
 <style>
 :root{
  --bg:#070b14;--bg2:#0d1427;--panel:#131d37;--panel2:#1a294e;--text:#f7f9ff;--muted:#9eabd0;
@@ -1431,6 +1431,32 @@ body.auth-locked .app{display:none!important}
 .mp-mini-avatar .identity-preset-render .ipr-head{font-size:1rem;top:-4px}.mp-mini-avatar .identity-preset-render .ipr-accessory{font-size:.9rem}.mp-mini-avatar .identity-preset-render .ipr-top,.mp-mini-avatar .identity-preset-render .ipr-bottom{display:none}
 
 .mp-mini-avatar.mood-good{animation:avatarGood .42s ease}.mp-mini-avatar.mood-bad{animation:avatarBad .42s ease}
+
+/* ===== ALPHA 0.5.1 — EDITOR ÚNICO DE AVATAR ===== */
+.unified-avatar-top{align-items:flex-start}.unified-save-pill{border-color:rgba(69,225,154,.35);color:#92f4bd;background:rgba(69,225,154,.08)}
+.unified-progress-card{grid-template-columns:minmax(0,1fr) minmax(260px,.65fr)}
+.unified-avatar-help{padding:14px 16px;border-radius:16px;background:rgba(7,16,31,.5);border:1px solid #263b61}
+.unified-avatar-layout{display:grid;grid-template-columns:minmax(260px,330px) minmax(0,1fr);gap:18px;align-items:start}
+.unified-avatar-preview-column{position:sticky;top:10px;display:grid;gap:12px}
+.unified-avatar-preview-card{text-align:center;overflow:visible;background:linear-gradient(180deg,#111f3b,#0b152b)}
+.unified-avatar-preview{width:210px;height:210px;margin:4px auto 0;font-size:3rem;position:relative;overflow:hidden}
+.unified-avatar-preview>.avatar-render{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.72);transform-origin:center}
+.unified-avatar-preview>.premium-portrait{position:absolute;inset:10px;width:auto;height:auto;margin:0;border-radius:50%}
+.unified-avatar-preview>.pixel-warrior-icon{transform:scale(1.7)}
+.unified-preview-summary{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:12px}
+.unified-preview-summary span{font-size:.74rem;font-weight:800;padding:6px 9px;border-radius:999px;background:#0c1830;border:1px solid #2d456f;color:#dce9ff}
+.unified-preview-note{font-size:.78rem;color:#91a6cc;margin-top:12px;line-height:1.35}
+.unified-avatar-shortcuts{display:grid;gap:7px}.unified-avatar-shortcuts b{margin-bottom:2px}.unified-avatar-shortcuts .btn{text-align:left}
+.unified-avatar-editor-column{display:grid;gap:12px}
+.avatar-editor-section{padding:0;overflow:hidden}.avatar-editor-section>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 18px;background:linear-gradient(180deg,#13213d,#101b33);user-select:none}.avatar-editor-section>summary::-webkit-details-marker{display:none}.avatar-editor-section>summary>span{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#6f67ff,#42cfee);font-weight:950;color:white;box-shadow:0 6px 18px rgba(71,127,255,.22)}.avatar-editor-section>summary>div{display:grid;gap:3px}.avatar-editor-section>summary b{font-size:1rem}.avatar-editor-section>summary small{color:#94a8cc;font-size:.78rem}.avatar-editor-section>summary:after{content:'＋';margin-left:auto;color:#88a2d0;font-size:1.2rem;font-weight:900}.avatar-editor-section[open]>summary:after{content:'−'}.avatar-editor-content{padding:16px 18px 18px;border-top:1px solid #26385d}.unified-editor-group+.unified-editor-group{margin-top:18px}.unified-editor-group h3{margin:0 0 9px}.unified-editor-note{padding:10px 12px;border-radius:13px;background:rgba(82,217,255,.07);border:1px solid rgba(82,217,255,.2);color:#b9daf1;font-size:.82rem;margin-bottom:14px}.unified-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.mini-link{border:0;background:transparent;color:#69ddff;font-weight:850;cursor:pointer;padding:6px}.avatar-editor-search{width:100%;padding:11px 13px;border-radius:12px;background:#0c1730;color:white;border:1px solid #30466f;margin-bottom:12px}
+.unified-picker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:9px}
+.unified-picker-item{min-height:104px;padding:11px;border-radius:15px;border:1px solid #2e446e;background:linear-gradient(180deg,#111e39,#0d1830);display:grid;align-content:center;justify-items:center;gap:6px;text-align:center;cursor:pointer;position:relative;transition:transform .13s ease,border-color .13s ease,box-shadow .13s ease}.unified-picker-item:hover{transform:translateY(-2px);border-color:#4dd6f5}.unified-picker-item.sel{border:2px solid #55ddff;background:linear-gradient(180deg,#183052,#10203d);box-shadow:0 0 0 2px rgba(85,221,255,.1)}.unified-picker-item .upi-icon{font-size:1.75rem;line-height:1}.unified-picker-item b{font-size:.79rem;line-height:1.08}.unified-picker-item small{font-size:.65rem;color:#90a4c8;line-height:1.08}.unified-picker-item .upi-check{position:absolute;right:7px;top:7px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#39d995;color:#071623;font-size:.7rem;font-weight:950}.unified-picker-item .upi-stage{position:absolute;left:6px;top:6px;padding:3px 6px;border-radius:999px;background:#0a1429;border:1px solid #344f7a;color:#cfe1ff;font-size:.58rem;font-weight:850}.unified-picker-item.bg-item{min-height:88px}.unified-picker-item .upi-swatch{width:100%;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.1)}
+.identity-base-picker{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px}.identity-base-option{min-height:118px;padding:10px}.identity-base-visual{width:62px;height:62px}.identity-base-visual>.avatar-render{transform:translate(-50%,-50%) scale(.24)}
+.unified-profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.unified-profile-fields label{display:grid;gap:6px;color:#cddbf1;font-size:.82rem;font-weight:800}.unified-profile-fields label:nth-child(2){grid-column:1/-1}.unified-profile-fields input,.unified-profile-fields textarea,.unified-profile-fields select{width:100%;padding:11px 12px;border-radius:11px;border:1px solid #30466f;background:#0b1730;color:white}.unified-profile-fields textarea{min-height:78px;resize:vertical}
+.unified-catalog-link{display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(135deg,rgba(114,93,255,.12),rgba(52,203,225,.08))}
+@media(max-width:980px){.unified-avatar-layout{grid-template-columns:1fr}.unified-avatar-preview-column{position:static}.unified-avatar-preview-column{grid-template-columns:1fr}.unified-avatar-shortcuts{display:none}.unified-progress-card{grid-template-columns:1fr}}
+@media(max-width:620px){.unified-avatar-preview{width:180px;height:180px}.unified-avatar-preview>.avatar-render{transform:translate(-50%,-50%) scale(.6)}.avatar-editor-section>summary{padding:14px}.avatar-editor-content{padding:13px}.unified-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.unified-profile-fields{grid-template-columns:1fr}.unified-profile-fields label:nth-child(2){grid-column:auto}.unified-catalog-link{align-items:stretch;flex-direction:column}.unified-avatar-top{gap:10px;flex-direction:column}}
+
 </style>
 </head>
 <body class="auth-locked">
@@ -1460,12 +1486,12 @@ body.auth-locked .app{display:none!important}
    <button id="authBackBtn" class="auth-link hidden" onclick="authSetMode('login')">← Volver a iniciar sesión</button>
    <div id="authMessage" class="auth-message"></div>
   </div>
-  <div class="auth-version">Alpha 0.5.0 · Identity System</div>
+  <div class="auth-version">Alpha 0.5.1 · Unified Avatar Editor</div>
  </div>
 </div>
 <div class="app"><div class="shell">
 <aside>
-  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.5.0</div>
+  <div class="logo">SEMANTROPIC <b>TRIVIA</b> · ALPHA 0.5.1</div>
   <div class="sidebar-account-row">
    <span class="sidebar-account-name">@<span id="sidebarAccountUsername">usuario</span></span>
    <button class="sidebar-logout" onclick="accountLogout()" title="Cerrar sesión">⎋ Salir</button>
@@ -1515,7 +1541,7 @@ body.auth-locked .app{display:none!important}
 
  <div class="section"><h2>🎡 Ruleta de Premios</h2><span class="muted">Una vuelta cada 2 horas</span></div>
  <div class="card economy-home-card mode" onclick="page('economy')"><div class="tag">ECONOMÍA 0.4.0</div><h2>🔐 Bóveda & Colecciones</h2><p>Llaves por rareza, cofres, fragmentos, álbumes y una progresión paralela que recompensa todo lo que juegas.</p><button class="btn primary">VER ECONOMÍA</button></div>
- <div class="card economy-home-card mode" onclick="page('avatarStudio')"><div class="tag">IDENTIDAD 0.5.0</div><h2>🧬 Construye tu identidad</h2><p>Personaje modular, emotes, sprays, animaciones, perfil, rarezas y Catálogo Semantropic.</p><button class="btn primary">ABRIR ESTUDIO</button></div>
+ <div class="card economy-home-card mode" onclick="page('avatarStudio')"><div class="tag">EDITOR 0.5.1</div><h2>🎨 Mi Avatar</h2><p>Una sola pantalla para personaje, ropa, efectos, emotes, animaciones y perfil.</p><button class="btn primary">EDITAR MI AVATAR</button></div>
  <div class="card reward-home" onclick="page('rewards')"><div class="reward-home-icon">🎡</div><div><h3 style="margin:0 0 6px">Tu próxima recompensa te espera</h3><div class="muted" id="homeRewardStatus">Comprueba si tu giro está disponible.</div></div><button class="btn primary">IR A LA RULETA</button></div>
 </section>
 
@@ -1611,8 +1637,8 @@ body.auth-locked .app{display:none!important}
   </div>
   <div id="onlineProfileCard" class="card online-profile-card">
    <div class="online-profile-identity">
-    <div id="opAvatar" class="public-avatar" onclick="openProfileEditor()">👨</div>
-    <div><div class="tag">PERFIL ONLINE</div><h2 id="opName">Jugador</h2><div id="opRankTitle" class="online-rank-title">🌱 Aprendiz</div><div id="opFeatured" class="profile-title">🏆 Sin logro exhibido</div><div id="opStorage" class="muted">Sincronizando con el servidor…</div><button class="btn secondary" style="margin-top:9px" onclick="openProfileEditor()">✏️ PERSONALIZAR PERFIL</button></div>
+    <div id="opAvatar" class="public-avatar">👨</div>
+    <div><div class="tag">PERFIL ONLINE</div><h2 id="opName">Jugador</h2><div id="opRankTitle" class="online-rank-title">🌱 Aprendiz</div><div id="opFeatured" class="profile-title">🏆 Sin logro exhibido</div><div id="opStorage" class="muted">Sincronizando con el servidor…</div><button class="btn secondary" style="margin-top:9px" onclick="openUnifiedAvatarEditor('profile')">🎨 EDITAR AVATAR Y PERFIL</button></div>
    </div>
    <div class="online-profile-stats">
     <div><span>Rating</span><b id="opRating">1000</b></div>
@@ -1768,122 +1794,106 @@ body.auth-locked .app{display:none!important}
 </section>
 
 <section id="avatarStudio" class="page hidden">
- <div class="top"><h1>🧑 Estudio de Avatar</h1><div class="pill">Personalizable</div></div>
- <div class="card avatar-progress-card avatar-progress-top">
+ <div class="top unified-avatar-top"><div><h1>🎨 Mi Avatar</h1><div class="muted">Todo tu personaje y perfil se edita aquí. Los cambios se guardan automáticamente.</div></div><div class="pill unified-save-pill">☁️ AUTO-GUARDADO</div></div>
+
+ <div class="card avatar-progress-card avatar-progress-top unified-progress-card">
   <div>
-   <div class="tag">IDENTIDAD 0.5.0</div>
+   <div class="tag">EDITOR ÚNICO · 0.5.1</div>
    <h2 style="margin:10px 0 8px">⭐ Nivel <span id="avatarStudioLevel">1</span> / 50</h2>
    <div class="avatar-small-progress"><div id="avatarStudioXpBar" style="width:0%"></div></div>
    <div class="muted" id="avatarStudioXpText" style="margin-top:8px">0 / 100 XP</div>
-   <div class="avatar-progress-meta">
-    <div class="pill">🎯 XP por aciertos y partidas</div>
-    <div class="pill">🌐 XP por jugar online</div>
-    <div class="pill">👕 Maestría para la ropa equipada</div>
+  </div>
+  <div class="unified-avatar-help"><b>¿Cómo funciona?</b><div class="muted">Primero elige tu avatar base. Si cambias cabello, ropa o accesorios, Semantropic activa automáticamente tu avatar personalizado para que el cambio se vea de inmediato.</div></div>
+ </div>
+
+ <div class="unified-avatar-layout">
+  <aside class="unified-avatar-preview-column">
+   <div class="card unified-avatar-preview-card">
+    <div id="customPreview" class="public-avatar unified-avatar-preview"></div>
+    <h2 id="unifiedPreviewName" style="margin:14px 0 3px">Jugador</h2>
+    <div id="unifiedPreviewTitle" class="profile-title">🌱 Aprendiz</div>
+    <div id="unifiedPreviewSummary" class="unified-preview-summary"></div>
+    <div class="unified-preview-note">👁️ Esta es la misma apariencia que usarás en perfil, ranking y multijugador.</div>
    </div>
-  </div>
-  <div class="card" style="margin:0;background:rgba(7,16,31,.5)">
-   <b>Recompensas</b>
-   <div class="muted" style="margin-top:6px">Cada 5 niveles recibes 50 🪙 + 1 💎 + 1 🔑, además de una celebración especial en pantalla.</div>
-   <div class="muted" id="avatarLevelRewardHint" style="margin-top:12px">Próximo hito: nivel 5</div>
-  </div>
- </div>
+   <div class="card unified-avatar-shortcuts">
+    <b>Accesos rápidos</b>
+    <button class="btn secondary" onclick="scrollAvatarEditorTo('avatarBaseSection')">🧬 Avatar base</button>
+    <button class="btn secondary" onclick="scrollAvatarEditorTo('avatarClothesSection')">👕 Ropa</button>
+    <button class="btn secondary" onclick="scrollAvatarEditorTo('avatarEffectsSection')">✨ Efectos</button>
+    <button class="btn secondary" onclick="scrollAvatarEditorTo('avatarProfileSection')">🖼️ Perfil</button>
+   </div>
+  </aside>
 
- <div class="avatar-studio-tabs">
-  <button id="avatarTabCharacter" class="avatar-studio-tab active" onclick="setAvatarStudioTab('character')">🧑 AVATAR</button>
-  <button id="avatarTabOutfits" class="avatar-studio-tab" onclick="setAvatarStudioTab('outfits')">👕 CONJUNTOS</button>
-  <button id="avatarTabAuras" class="avatar-studio-tab" onclick="setAvatarStudioTab('auras')">✨ AURAS</button>
-  <button id="avatarTabExpression" class="avatar-studio-tab" onclick="setAvatarStudioTab('expression')">😄 EXPRESIÓN</button>
-  <button id="avatarTabProfile" class="avatar-studio-tab" onclick="setAvatarStudioTab('profile')">🖼️ PERFIL</button>
-  <button id="avatarTabCatalog" class="avatar-studio-tab" onclick="setAvatarStudioTab('catalog')">📚 CATÁLOGO</button>
- </div>
-
- <div id="avatarPanelCharacter">
-  <div class="section"><h2>Personaje</h2><span class="muted">Edita rostro, cabello, expresión y accesorios. Guarda el personaje para usarlo en tu perfil.</span></div>
-  <div class="starter-avatar-row">
-   <div id="starterMaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_m','male')"><div class="bigico">👨</div><h3>Masculino</h3><div class="muted">Avatar masculino predeterminado</div></div>
-   <div id="starterFemaleCard" class="card starter-avatar-card" onclick="selectStarterAvatar('starter_f','female')"><div class="bigico">👩</div><h3>Femenino</h3><div class="muted">Avatar femenino predeterminado</div></div>
-  </div>
-  <div class="card avatar-builder">
-   <div class="avatar-preview-wrap">
-    <div id="customPreview" class="avatar-preview avatar-preview-v2"></div>
-    <div class="avatar-equipped-summary">
-     <span id="avatarEquippedOutfit">👕 Hoodie Pulse</span>
-     <span id="avatarEquippedAura">✨ Sin aura</span>
+  <div class="unified-avatar-editor-column">
+   <details id="avatarBaseSection" class="card avatar-editor-section" open>
+    <summary><span>1</span><div><b>🧬 Avatar base</b><small>Elige humano, animal, personaje premium o tu avatar personalizado.</small></div></summary>
+    <div class="avatar-editor-content">
+     <input id="avatarBaseSearch" class="avatar-editor-search" maxlength="24" placeholder="Buscar entre tus avatares..." oninput="renderUnifiedBasePicker()">
+     <div id="identityBasePicker" class="identity-base-picker"></div>
     </div>
-    <div class="muted" style="margin-top:8px;text-align:center">Vista previa en tiempo real</div>
-   </div>
-   <div>
-    <h3>Presentación del personaje</h3><div id="presentationOptions" class="option-row"></div>
-    <h3>Tono de piel</h3><div id="skinOptions" class="option-row"></div>
-    <h3>Estilo de cabello</h3><div id="hairOptions" class="option-row"></div>
-    <h3>Color de cabello</h3><div id="hairColorOptions" class="option-row"></div>
-    <h3>Expresión</h3><div id="expressionOptions" class="option-row"></div>
-    <h3>Accesorio</h3><div id="accOptions" class="option-row"></div>
-    <h3>Fondo</h3><div id="bgOptions" class="option-row"></div>
-    <div style="margin-top:16px"><button class="btn primary" onclick="saveCustomAvatar()">GUARDAR Y USAR PERSONAJE</button></div>
-   </div>
+   </details>
+
+   <details id="avatarAppearanceSection" class="card avatar-editor-section" open>
+    <summary><span>2</span><div><b>🙂 Rostro y cabello</b><small>Estos controles editan el avatar personalizado y se reflejan al instante.</small></div></summary>
+    <div class="avatar-editor-content">
+     <div class="unified-editor-note">💡 Al tocar una opción de esta sección se activará automáticamente <b>Personalizado</b>.</div>
+     <div class="unified-editor-group"><h3>Presentación</h3><div id="presentationOptions" class="option-row"></div></div>
+     <div class="unified-editor-group"><h3>Tono de piel</h3><div id="skinOptions" class="option-row"></div></div>
+     <div class="unified-editor-group"><h3>Cabello</h3><div id="hairOptions" class="option-row"></div></div>
+     <div class="unified-editor-group"><h3>Color de cabello</h3><div id="hairColorOptions" class="option-row"></div></div>
+     <div class="unified-editor-group"><h3>Expresión facial</h3><div id="expressionOptions" class="option-row"></div></div>
+    </div>
+   </details>
+
+   <details id="avatarClothesSection" class="card avatar-editor-section" open>
+    <summary><span>3</span><div><b>👕 Ropa y accesorios</b><small>Combina tu conjunto base con piezas modulares. Solo aparecen las piezas que ya tienes.</small></div></summary>
+    <div class="avatar-editor-content">
+     <div class="unified-editor-group"><div class="unified-group-head"><h3>Conjunto evolutivo</h3><button class="mini-link" onclick="event.preventDefault();page('shop')">Ir a tienda</button></div><div id="avatarOutfitGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🎩 Cabeza</h3><div id="unifiedHeadwearGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>👓 Cara</h3><div id="unifiedFaceGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🧥 Parte superior</h3><div id="unifiedTopGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>👖 Parte inferior</h3><div id="unifiedBottomGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🎒 Accesorio</h3><div id="unifiedAccessoryGrid" class="unified-picker-grid"></div></div>
+    </div>
+   </details>
+
+   <details id="avatarEffectsSection" class="card avatar-editor-section">
+    <summary><span>4</span><div><b>✨ Aura, marco y fondo</b><small>Personaliza cómo se presenta tu avatar en toda la interfaz.</small></div></summary>
+    <div class="avatar-editor-content">
+     <div class="unified-editor-group"><h3>✨ Aura</h3><div id="avatarAuraGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🖼️ Marco</h3><div id="unifiedFrameGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🌌 Fondo del perfil</h3><div id="identityProfileBgGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>💥 Efecto al acertar</h3><div id="identityResponseGrid" class="unified-picker-grid"></div></div>
+    </div>
+   </details>
+
+   <details id="avatarExpressionSection" class="card avatar-editor-section">
+    <summary><span>5</span><div><b>😄 Emotes, sprays y animaciones</b><small>Define cómo se expresa tu personaje dentro de las partidas.</small></div></summary>
+    <div class="avatar-editor-content">
+     <div class="unified-editor-group"><h3>🎭 Emotes equipados · máximo 6</h3><div id="equippedEmoteSlots" class="emote-slots"></div><div id="identityEmoteGrid" class="unified-picker-grid" style="margin-top:10px"></div></div>
+     <div class="unified-editor-group"><h3>🎨 Sprays online · máximo 3</h3><div id="equippedSpraySlots" class="spray-slots"></div><div id="identitySprayGrid" class="unified-picker-grid" style="margin-top:10px"></div></div>
+     <div class="unified-editor-group"><h3>🎬 Entrada</h3><div id="identityEntryGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>🏆 Victoria</h3><div id="identityVictoryGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>😵 Derrota</h3><div id="identityDefeatGrid" class="unified-picker-grid"></div></div>
+     <div class="unified-editor-group"><h3>💫 Animación permanente del perfil</h3><div id="unifiedProfileAnimationGrid" class="unified-picker-grid"></div></div>
+    </div>
+   </details>
+
+   <details id="avatarProfileSection" class="card avatar-editor-section">
+    <summary><span>6</span><div><b>🖼️ Perfil público</b><small>Nombre, descripción, título y logro destacado. Es el mismo perfil que aparece en multijugador.</small></div></summary>
+    <div class="avatar-editor-content">
+     <div class="unified-profile-fields">
+      <label>Nombre visible<input id="unifiedProfileName" maxlength="18" placeholder="Jugador"></label>
+      <label>Bio pública<textarea id="unifiedProfileBio" maxlength="90" placeholder="Tu lema o estilo de juego (evita datos personales)"></textarea></label>
+      <label>Logro destacado<select id="unifiedFeaturedAchievement"></select></label>
+     </div>
+     <div class="unified-editor-group"><h3>🏷️ Título</h3><div id="identityTitleGrid" class="unified-picker-grid"></div></div>
+     <button class="btn primary" onclick="saveUnifiedProfileFields(true)">☁️ GUARDAR PERFIL AHORA</button>
+    </div>
+   </details>
+
+   <div class="card unified-catalog-link"><div><div class="tag">COLECCIÓN</div><h3 style="margin:7px 0">¿Quieres ver lo que te falta?</h3><div class="muted">El Catálogo, sets y objetos bloqueados viven en Colección para que este editor se mantenga limpio.</div></div><button class="btn secondary" onclick="page('collection')">📚 ABRIR CATÁLOGO</button></div>
   </div>
-  <div class="section"><h2>Avatares prediseñados</h2><div class="muted">Si prefieres, también puedes usar uno de los personajes completos.</div></div>
-  <div id="avatarGridStudio" class="avatargrid"></div>
- </div>
-
- <div id="avatarPanelOutfits" class="hidden">
-  <div class="card avatar-category-intro"><div class="bigico">👕</div><div><h2>Ropa evolutiva</h2><div class="muted">Al equipar una prenda, parte de la XP que ganes alimentará su maestría. Cada prenda tiene 3 etapas visuales.</div></div></div>
-  <div id="avatarOutfitGrid" class="wardrobe-grid"></div>
- </div>
-
- <div id="avatarPanelAuras" class="hidden">
-  <div class="card avatar-category-intro"><div class="bigico">✨</div><div><h2>Auras y partículas</h2><div class="muted">Se equipan por separado de la ropa. Algunas requieren nivel antes de poder comprarse.</div></div></div>
-  <div id="avatarAuraGrid" class="aura-grid"></div>
- </div>
-
- <div id="avatarPanelExpression" class="hidden">
-  <div class="section"><h2>Expresión del personaje</h2><span class="muted">Emotes, animaciones y efectos rápidos. Equipa hasta 6 emotes favoritos y define cómo reacciona tu personaje.</span></div>
-  <div class="card identity-preview-card">
-   <div id="identityExpressionPreview" class="identity-preview-stage profile-bg-nebula"></div>
-   <div class="identity-preview-meta">
-    <div><div class="tag">PILAR 2 · EXPRESIÓN</div><h2 style="margin:8px 0 6px">Tu personaje ya no es solo una foto de perfil</h2><div class="muted">Los emotes equipados aparecen como tu barra personal. Las animaciones y el efecto de respuesta se usan como cosméticos persistentes.</div></div>
-    <div class="card" style="margin:0;background:rgba(8,17,33,.55)"><b>🎭 Emotes equipados</b><div id="equippedEmoteSlots" class="emote-slots" style="margin-top:10px"></div></div>
-   </div>
-  </div>
-  <div class="section"><h2>Emotes favoritos</h2><span class="muted">Haz clic para equipar o quitar. Máximo 6.</span></div>
-  <div id="identityEmoteGrid" class="emote-grid"></div>
-  <div class="section"><h2>Animaciones</h2><span class="muted">Entrada, victoria y derrota. Cada una cambia la personalidad del avatar.</span></div>
-  <div class="grid g3">
-   <div class="card"><h3>Entrada</h3><div id="identityEntryGrid" class="anim-grid"></div></div>
-   <div class="card"><h3>Victoria</h3><div id="identityVictoryGrid" class="anim-grid"></div></div>
-   <div class="card"><h3>Derrota</h3><div id="identityDefeatGrid" class="anim-grid"></div></div>
-  </div>
-  <div class="section"><h2>Efecto de respuesta</h2><span class="muted">Decoración visual para tus aciertos.</span></div>
-  <div id="identityResponseGrid" class="response-grid"></div>
-  <div class="section"><h2>🎨 Sprays online</h2><span class="muted">Equipa hasta 3 sprays. Se muestran sobre la arena en partidas online.</span></div>
-  <div class="card"><b>Sprays equipados</b><div id="equippedSpraySlots" class="spray-slots" style="margin-top:10px"></div></div>
-  <div id="identitySprayGrid" class="spray-grid" style="margin-top:12px"></div>
- </div>
-
- <div id="avatarPanelProfile" class="hidden">
-  <div class="section"><h2>Perfil & presencia</h2><span class="muted">Fondo del perfil, título, base del avatar y presentación general.</span></div>
-  <div class="card identity-preview-card">
-   <div>
-    <div id="identityProfilePreview" class="identity-preview-stage profile-bg-nebula"></div>
-    <div class="identity-studio-note"><span class="identity-chip" id="identityTitleChip">🏷️ Título</span><span class="identity-chip" id="identityBackgroundChip">🖼️ Fondo</span><span class="identity-chip" id="identityReactionChip">💥 Efecto</span></div>
-   </div>
-   <div class="identity-preview-meta">
-    <div><div class="tag">PILAR 3 · PERFIL</div><h2 style="margin:8px 0 6px">Construye tu identidad Semantropic</h2><div class="muted">Puedes escoger qué avatar base mostrar, cuál es tu fondo favorito y qué título comunica mejor tu progresión.</div></div>
-    <div class="card" style="margin:0;background:rgba(7,16,31,.55)"><b>🧬 Avatar base</b><div id="identityBasePicker" class="identity-base-picker" style="margin-top:10px"></div></div>
-   </div>
-  </div>
-  <div class="section"><h2>Fondos del perfil</h2><span class="muted">Tokio, espacio, laboratorio, selva, biblioteca y más.</span></div>
-  <div id="identityProfileBgGrid" class="profile-bg-grid"></div>
-  <div class="section"><h2>Títulos equipables</h2><span class="muted">Se muestran bajo tu nombre en perfil, ranking y matchmaking.</span></div>
-  <div id="identityTitleGrid" class="identity-grid"></div>
- </div>
-
- <div id="avatarPanelCatalog" class="hidden">
-  <div class="section"><h2>Catálogo Semantropic</h2><span class="muted">Ve todo lo que existe y lo que te falta. Inspirado en la colección modular que propusiste para la 0.5.0.</span></div>
-  <div id="catalogSummaryGrid" class="catalog-summary-grid"></div>
-  <div class="section"><h2>Sets & colecciones</h2><span class="muted">Cada set agrupa ropa, accesorios, emotes, marcos o animaciones bajo una misma temática.</span></div>
-  <div id="catalogSetGrid" class="set-grid"></div>
  </div>
 </section>
 
@@ -1922,7 +1932,7 @@ body.auth-locked .app{display:none!important}
 </section>
 
 <section id="shop" class="page hidden">
- <div class="top"><h1>Tienda 0.5.0</h1><div class="currency"><div class="pill">🪙 <span class="coins">0</span></div><div class="pill">💎 <span class="gems">0</span></div></div></div>
+ <div class="top"><h1>Tienda 0.5.1</h1><div class="currency"><div class="pill">🪙 <span class="coins">0</span></div><div class="pill">💎 <span class="gems">0</span></div></div></div>
  <div class="card shop-hero-029"><div><div class="tag">NUEVA COLECCIÓN</div><h2 style="margin:8px 0">Avatares & Marcos Premium</h2><div class="muted">Elige tu personaje, combina un marco y crea una identidad visual reconocible en perfiles y online.</div></div><div class="shop-hero-icons">🧑‍🎨 💎 👑</div></div>
  <div class="section"><h2>Avatares Premium</h2><span class="muted">12 personajes de la primera colección oficial.</span></div><div id="premiumAvatarShopGrid" class="shopgrid premium-grid"></div>
  <div class="section"><h2>Marcos Premium</h2><span class="muted">8 marcos ornamentales inspirados en oro y gemas.</span></div><div id="premiumFrameShopGrid" class="shopgrid frame-grid-029"></div>
@@ -2018,7 +2028,6 @@ body.auth-locked .app{display:none!important}
  </div>
 </div><div id="bossContinueModal" class="modal hidden"><div class="modalbox"><div class="bigico">👹</div><h2 id="bossContinueTitle">Jefe derrotado</h2><p id="bossContinueText" class="muted"></p><div class="grid g2" style="margin-top:16px"><button class="btn primary" onclick="continueBossRun()">SIGUIENTE JEFE</button><button class="btn secondary" onclick="leaveBossRun()">SALIR CON RECOMPENSAS</button></div></div></div>
 <div id="bossReviveModal" class="modal hidden"><div class="modalbox"><div class="bigico">💀</div><h2>La torre aún no termina</h2><p id="bossReviveText" class="muted"></p><div class="grid g3" style="margin-top:16px"><button id="reviveGemBtn" class="btn primary" onclick="reviveBoss('gems')">💎 2 DIAMANTES</button><button id="reviveCoinBtn" class="btn secondary" onclick="reviveBoss('coins')">🪙 300 MONEDAS</button><button class="btn danger" onclick="abandonBossRun()">TERMINAR RUN</button></div></div></div>
-<div id="profileEditorModal" class="modal hidden"><div class="modalbox" style="max-width:820px"><div class="top" style="margin-bottom:12px"><h2 style="margin:0">✏️ Personalizar perfil online</h2><button class="btn secondary" onclick="closeProfileEditor()">CERRAR</button></div><div class="profile-edit-grid"><div class="profile-edit-preview"><div id="profileEditAvatar" class="public-avatar">👨</div><div id="profileEditTitle" class="profile-title">Sin logro exhibido</div></div><div class="profile-fields"><label>Nombre visible<input id="profileEditName" maxlength="18"></label><label>Bio pública<textarea id="profileEditBio" maxlength="90" placeholder="Tu lema o estilo de juego (evita datos personales)"></textarea></label><div><b>Avatar</b><div id="profileAvatarPicker" class="profile-avatar-picker" style="margin-top:7px"></div></div><label>Marco<select id="profileFrameSelect"></select></label><label>Logro para exhibir<select id="profileAchievementSelect"></select></label><button class="btn primary" onclick="saveProfileCustomization()">💾 GUARDAR PERFIL</button></div></div></div></div>
 <div id="passwordChangeModal" class="modal hidden"><div class="modalbox" style="max-width:520px">
  <div class="bigico">🔑</div><h2 id="passwordChangeTitle">Cambiar contraseña</h2>
  <p id="passwordChangeInfo" class="muted">Escribe tu contraseña actual y luego una nueva.</p>
@@ -2210,13 +2219,13 @@ function identityConfig(type){return{headwear:{ownedKey:"ownedHeadwear",equipKey
 function findIdentityItem(type,id){return(identityPools()[type]||[]).find(x=>x.id===id)}
 function identityOwns(type,id,target=save){const i=ensureIdentityState(target),cfg=identityConfig(type);return !!cfg&&i[cfg.ownedKey]?.includes(id)}
 function identityUnlock(type,id,target=save){const i=ensureIdentityState(target),cfg=identityConfig(type);if(!cfg)return;const arr=i[cfg.ownedKey]=uniqueStrings(i[cfg.ownedKey]||[],[]);if(!arr.includes(id))arr.push(id)}
-function identityEquip(type,id){const i=ensureIdentityState();const cfg=identityConfig(type);if(!cfg||!identityOwns(type,id))return; if(cfg.equipKey){i[cfg.equipKey]=id;persist();renderAvatarBuilder();renderSideAvatar();renderIdentity();renderCollectionCatalogSummary();toast(`✅ ${findIdentityItem(type,id)?.name||id} equipado`)}}
+function identityEquip(type,id){const i=ensureIdentityState();const cfg=identityConfig(type);if(!cfg||!identityOwns(type,id))return;if(cfg.equipKey){i[cfg.equipKey]=id;if(["headwear","face","top","bottom","accessory"].includes(type)){i.baseAvatar="custom";save.avatar="custom"}persist();renderAvatarBuilder();renderSideAvatar();renderIdentity();renderCollectionCatalogSummary();toast(`✅ ${findIdentityItem(type,id)?.name||id} equipado`)}}
 function identityCostLabel(item){if(item.currency==="gems")return `${item.cost} 💎`;if(item.currency==="coins")return `${item.cost} 🪙`;if(item.currency==="unlock")return `🔒 Set / Prestigio`;return item.cost?`${item.cost} 🪙`:`Gratis`}
 function buyIdentityItem(type,id){ensureEconomyState();const item=findIdentityItem(type,id);if(!item)return; if(identityOwns(type,id)){if(type==="emote")return toggleIdentityEmote(id);if(type==="spray")return toggleIdentitySpray(id);return identityEquip(type,id);} if(item.currency==="unlock")return toast("🔒 Este cosmético se consigue por set, evento o prestigio"); if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost;save.economyStats.gemsSpent+=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost;save.economyStats.coinsSpent+=item.cost} identityUnlock(type,id); if(type==="emote")toggleIdentityEmote(id);else if(type==="spray")toggleIdentitySpray(id);else identityEquip(type,id); beep("coin")}
 function identityEmoteEquipped(id){const i=ensureIdentityState();return i.equippedEmotes.includes(id)}
-function toggleIdentityEmote(id){const i=ensureIdentityState(); if(!identityOwns("emote",id))return; if(i.equippedEmotes.includes(id))i.equippedEmotes=i.equippedEmotes.filter(x=>x!==id); else{if(i.equippedEmotes.length>=6)return toast("Máximo 6 emotes equipados"); i.equippedEmotes.push(id)} persist();renderAvatarExpressionHub();renderGameAvatarWidget("ready");renderMpReactionToolbar()}
+function toggleIdentityEmote(id){const i=ensureIdentityState(); if(!identityOwns("emote",id))return; if(i.equippedEmotes.includes(id))i.equippedEmotes=i.equippedEmotes.filter(x=>x!==id); else{if(i.equippedEmotes.length>=6)return toast("Máximo 6 emotes equipados"); i.equippedEmotes.push(id)} persist();renderAvatarBuilder();renderGameAvatarWidget("ready");renderMpReactionToolbar()}
 function identitySprayEquipped(id){return ensureIdentityState().equippedSprays.includes(id)}
-function toggleIdentitySpray(id){const i=ensureIdentityState();if(!identityOwns("spray",id))return;if(i.equippedSprays.includes(id))i.equippedSprays=i.equippedSprays.filter(x=>x!==id);else{if(i.equippedSprays.length>=3)return toast("Máximo 3 sprays equipados");i.equippedSprays.push(id)}persist();renderAvatarExpressionHub();renderMpReactionToolbar()}
+function toggleIdentitySpray(id){const i=ensureIdentityState();if(!identityOwns("spray",id))return;if(i.equippedSprays.includes(id))i.equippedSprays=i.equippedSprays.filter(x=>x!==id);else{if(i.equippedSprays.length>=3)return toast("Máximo 3 sprays equipados");i.equippedSprays.push(id)}persist();renderAvatarBuilder();renderMpReactionToolbar()}
 function buyIdentitySpray(id){ensureEconomyState();const item=findIdentityItem("spray",id);if(!item)return;if(identityOwns("spray",id))return toggleIdentitySpray(id);if(item.currency==="unlock")return toast("🏆 Este spray es de Prestigio");if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost;save.economyStats.gemsSpent+=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost;save.economyStats.coinsSpent+=item.cost}identityUnlock("spray",id);toggleIdentitySpray(id);beep("coin")}
 function currentIdentityLabel(type){const i=ensureIdentityState();const cfg=identityConfig(type),item=cfg?findIdentityItem(type,i[cfg.equipKey]):null;return item?`${item.icon||item.emoji||"✨"} ${item.name}`:"—"}
 function identityOwnedCount(meta=null){const i=meta?{...defaultIdentityState(),...(meta.identity||{})}:ensureIdentityState();return new Set([...(i.ownedHeadwear||[]),...(i.ownedFaceItems||[]),...(i.ownedTopItems||[]),...(i.ownedBottomItems||[]),...(i.ownedAccessoryItems||[]),...(i.ownedProfileBackgrounds||[]),...(i.ownedEntryAnimations||[]),...(i.ownedVictoryAnimations||[]),...(i.ownedDefeatAnimations||[]),...(i.ownedEmotes||[]),...(i.ownedSprays||[]),...(i.ownedResponseEffects||[])]).size}
@@ -3042,71 +3051,9 @@ function renderProfileAvatarPicker(){
   picker.appendChild(d)
  })
 }
-function openProfileEditor(){
- if(!onlineProfileReady)return toast("Espera a que tu perfil online termine de sincronizar");
-
- const ownedIds=new Set(ownedAvatarIdsForProfile());
- if(save.avatar!=="custom"&&!ownedIds.has(save.avatar||"")){
-  save.avatar=save.profileGender==="female"&&ownedIds.has("starter_f")?"starter_f":"starter_m"
- }
- profileDraftAvatar=ensureIdentityState().baseAvatar||save.avatar||"starter_m";
-
- $("profileEditName").value=save.name;
- $("profileEditBio").value=save.profileBio||"";
-
- const fs=$("profileFrameSelect");fs.innerHTML="";
- (save.framesOwned||["none"]).forEach(id=>{
-  const f=FRAMES.find(x=>x.id===id);
-  if(f){
-   const o=document.createElement("option");
-   o.value=id;o.textContent=`${f.icon} ${f.name}`;fs.appendChild(o)
-  }
- });
- fs.value=save.selectedFrame||"none";
- fs.onchange=renderProfileEditPreview;
-
- const as=$("profileAchievementSelect");
- as.innerHTML='<option value="">🏆 Sin logro exhibido</option>';
- ACH.filter(a=>save.ach[a.id]).forEach(a=>{
-  const o=document.createElement("option");
-  o.value=a.id;o.textContent=`${a.icon} ${a.name}`;as.appendChild(o)
- });
- as.value=save.featuredAchievement||"";
- as.onchange=renderProfileEditPreview;
-
- renderProfileAvatarPicker();
- renderProfileEditPreview();
- $("profileEditorModal").classList.remove("hidden")
-}
-function closeProfileEditor(){$("profileEditorModal").classList.add("hidden")}
-async function saveProfileCustomization(){
- if(!onlineProfileToken)return toast("Perfil online no verificado");
-
- const ownedIds=new Set(ownedAvatarIdsForProfile());
- if(profileDraftAvatar!=="custom"&&!ownedIds.has(profileDraftAvatar)){
-  return toast("🔒 Ese avatar todavía no está desbloqueado")
- }
-
- save.name=($("profileEditName").value.trim()||"Jugador").slice(0,18);
- save.profileBio=$("profileEditBio").value.trim().slice(0,90);
- save.avatar=profileDraftAvatar;
- ensureIdentityState().baseAvatar=profileDraftAvatar;
- save.selectedFrame=$("profileFrameSelect").value||"none";
- save.featuredAchievement=$("profileAchievementSelect").value||"";
- persist();
-
- try{
-  const r=await mpRequest("/api/profile/customize",{
-   playerId:mpPlayerId(),
-   token:onlineProfileToken,
-   name:save.name,
-   ...profileSyncPayload()
-  });
-  applyOnlineProfile(r.profile,false);
-  closeProfileEditor();
-  toast("✅ Perfil online actualizado")
- }catch(e){toast(e.message)}
-}
+function openProfileEditor(){openUnifiedAvatarEditor("profile")}
+function closeProfileEditor(){}
+async function saveProfileCustomization(){return saveUnifiedProfileFields(true)}
 async function openPublicProfile(id){try{const r=await mpRequest(`/api/profile/public?id=${encodeURIComponent(id)}`),p=r.profile,m=p.profileMeta||{},ident={...defaultIdentityState(),...(m.identity||{})};const av=$('publicProfileAvatar');av.innerHTML=profileAvatarHTML(p);applyFrameToElement(av,p.frameId);applyIdentityBackground(av,m);applyEntryAnimation(av,m);$('publicProfileName').textContent=p.name;$('publicProfileFeatured').textContent=achievementLabel(p.featuredAchievement);const pr=selectedProfileTitleInfo(m,p.level||1),ps=seasonRank(m?.season?.points||0);$('publicProfileRank').textContent=`${pr.label} · ${ps.label} · ${m?.season?.points||0} SP`;$('publicProfileWorld').textContent=`✈️ World Tour · ${worldCompletedCountFromSave({worldTour:m?.worldTour||worldBlankState()})} países · ${worldTotalStarsFromSave({worldTour:m?.worldTour||worldBlankState()})}⭐ · ${worldAverageKnowledgeFromSave({worldTour:m?.worldTour||worldBlankState()})}%`;$('publicProfileCollection').textContent=`💎 Colección · ${profileCollectionCount(p)}/${collectionTotalCount()}`;$('publicProfilePrestige').textContent=`👑 Prestigio · ${(m?.ownedAvatars||[]).filter(x=>x.startsWith('prestige_')||x==='vault_oracle').length}`;$('publicProfileBio').textContent=p.bio||'Sin descripción pública.';const load=$('publicProfileLoadout');if(load){const pieces=[['🎩',findIdentityItem('headwear',ident.headwear)?.name||'Sin accesorio'],['👕',findIdentityItem('top',ident.topItem)?.name||'Ropa base'],['🎒',findIdentityItem('accessory',ident.accessoryItem)?.name||'Sin accesorio'],['✨',m.selectedAura||'none'],['🖼️',profileBackgroundInfo(ident.profileBackground).name],['💥',findIdentityItem('response',ident.responseEffect)?.name||'Destello']];load.innerHTML=pieces.map(x=>`<div class="public-loadout-chip">${x[0]} ${x[1]}</div>`).join('')}const pe=$('publicProfileEmotes');if(pe)pe.innerHTML=(ident.equippedEmotes||[]).map(eid=>{const e=EMOTES_COLLECTION.find(x=>x.id===eid);return e?`<span class="public-emote-chip">${e.emoji} ${e.name}</span>`:''}).join('');const pspr=$('publicProfileSprays');if(pspr)pspr.innerHTML=(ident.equippedSprays||[]).map(sid=>{const sp=SPRAYS_COLLECTION.find(x=>x.id===sid);return sp?`<span class="public-emote-chip">🎨 ${sp.emoji} ${sp.name}</span>`:''}).join('');$('ppRating').textContent=p.rating;$('ppWins').textContent=p.wins;$('ppLosses').textContent=p.losses;$('ppGames').textContent=p.games;const box=$('publicProfileAchievements');box.innerHTML='';(p.achievements||[]).slice(0,18).forEach(aid=>{const a=achievementInfo(aid);if(a){const s=document.createElement('span');s.className='profile-ach-chip';s.textContent=`${a.icon} ${a.name}`;box.appendChild(s)}});if(!box.children.length)box.innerHTML='<span class="muted">Aún no exhibe logros.</span>';$('publicProfileModal').classList.remove('hidden')}catch(e){toast(e.message)}}
 function selectStarterAvatar(id,gender){
  save.avatar=id;save.profileGender=gender;ensureIdentityState().baseAvatar=id;
@@ -3629,7 +3576,7 @@ function updateMusicIndicator(){const e=$("musicIndicator");if(e)e.textContent=s
 function toast(x){const t=$("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
 function flash(k){if(!save.settings.animations)return;const f=$("flash");f.className="flash "+k;setTimeout(()=>f.className="flash",450)}
 function av(){return AVATARS.find(a=>a.id===save.avatar)||AVATARS[0]}
-function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="missions")renderMissionsPage();if(id==="season")renderSeasonPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="avatarStudio"){setAvatarStudioTab("character");renderAvatarBuilder();renderAvatars("avatarGridStudio")}if(id==="collection"){renderPremiumCollection();renderFrames();renderAchievementAvatars();renderWorldCollection();renderPrestige("collectionPrestigeGrid");renderIdentity();renderMedals();renderCollectionCatalogSummary()}if(id==="economy")renderEconomyHub();if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
+function page(id,btn){if(id!=="game")stopQuestionTimer();beep("click");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));const target=$(id);if(!target)return;target.classList.remove("hidden");window.scrollTo({top:0,left:0,behavior:"auto"});document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");if(id==="campaign")renderMap();if(id==="rewards"){refreshAuthenticatedProfile().then(()=>renderRewards())}if(id==="multiplayer")renderMultiplayerPage();if(id==="missions")renderMissionsPage();if(id==="season")renderSeasonPage();if(id==="admin"){refreshAuthenticatedProfile().then(()=>renderAdminPage())}if(id==="avatarStudio"){renderAvatarBuilder()}if(id==="collection"){renderPremiumCollection();renderFrames();renderAchievementAvatars();renderWorldCollection();renderPrestige("collectionPrestigeGrid");renderIdentity();renderMedals();renderCollectionCatalogSummary()}if(id==="economy")renderEconomyHub();if(id==="shop")renderShop();if(id==="achievements")renderAch();if(id==="stats")renderStats();if(id==="settings"){renderSettings();renderAccountUI()}refresh()}
 function bgStyle(id){const x=BGS.find(b=>b[0]===id)||BGS[0];return x[1]}
 function optionValue(list,id,fallback){const x=list.find(v=>v[0]===id);return x?x[1]:fallback}
 function avatarMarkup(c,meta={}){
@@ -3705,7 +3652,7 @@ function renderFrames(){
   const ach=f.unlock?ACH.find(a=>a.id===f.unlock):null;
   const lockedText=f.levelReq?`Nivel ${f.levelReq}`:ach?`Logro: ${ach.name}`:f.source==="shop"?frameCostLabel(f):"Bloqueado";
   d.innerHTML=`${framePreviewHTML(f)}<div>${rarityBadge(f.rarity)}</div><h3>${f.name}</h3><div class="muted">${owned?(save.selectedFrame===f.id?"Seleccionado":"Disponible"):lockedText}</div>`;
-  if(owned)d.onclick=()=>{save.selectedFrame=f.id;persist();renderFrames();toast(`${f.icon} ${f.name} seleccionado`)};
+  if(owned)d.onclick=()=>{toast("🎨 Equípalo desde Mi Avatar");openUnifiedAvatarEditor("avatarEffectsSection")};
   else if(f.source==="shop"||f.source==="level")d.onclick=()=>buyFrame(f);
   g.appendChild(d)
  })
@@ -3782,47 +3729,24 @@ function renderEngagementHome(){ensureProgressionState();const pts=Number(save.s
 async function ensureDailyCheckin(){if(!accountLoggedIn||!onlineProfileToken||location.protocol==='file:')return;try{const r=await mpRequest('/api/progression/checkin',{token:onlineProfileToken});if(r.profile)applyOnlineProfile(r.profile,true);if(r.reward){toast(`🔥 Día ${r.streak} · ${rewardText(r.reward)}`);renderEngagementHome()}}catch(e){}}
 
 function refresh(){ensureProgressionState();ensureEconomyState();ensureIdentityState();unlockLevelCosmetics();renderSideAvatar();$("sideName").textContent=save.name;$("sideLevel").textContent=save.level;const sc=$("sideShowcase");if(sc)sc.textContent=achievementLabel(save.featuredAchievement);$("sideXp").style.width=levelProgressPercent()+"%";document.querySelectorAll(".coins").forEach(e=>e.textContent=save.coins);updateRewardTimer();applyGameFx();document.querySelectorAll(".gems").forEach(e=>e.textContent=save.gems);document.querySelectorAll(".keys").forEach(e=>e.textContent=save.keyring?.silver||0);$("hLevel").textContent=save.level;$("hGames").textContent=save.games;$("hBosses").textContent=worldCompletedCountFromSave(save)+"/"+WORLD_TOUR_COUNTRIES.length;$("hAch").textContent=Object.keys(save.ach).length;const rt=selectedProfileTitleInfo();const srTitle=$("sideRankTitle");if(srTitle)srTitle.textContent=rt.label;const op=$("opRankTitle");if(op)op.textContent=rt.label;const co=$("chestOpenedCount");if(co)co.textContent=save.chestStats.opened||0;const cp=$("chestPityText");if(cp)cp.textContent=`${Math.min(5,save.chestStats.legendaryPity||0)}/5`;updateMusicIndicator();renderAvatarProgressUI();renderEngagementHome()}
-let avatarStudioActiveTab="character";
-function setAvatarStudioTab(tab){
- avatarStudioActiveTab=tab;
- ["character","outfits","auras","expression","profile","catalog"].forEach(x=>{
-  const panel=$("avatarPanel"+x.charAt(0).toUpperCase()+x.slice(1));
-  if(panel)panel.classList.toggle("hidden",x!==tab);
-  const btn=$("avatarTab"+x.charAt(0).toUpperCase()+x.slice(1));
-  if(btn)btn.classList.toggle("active",x===tab)
- });
- if(tab==="outfits")renderAvatarOutfits();
- if(tab==="auras")renderAvatarAuras();
- if(tab==="expression")renderAvatarExpressionHub();
- if(tab==="profile")renderAvatarProfileHub();
- if(tab==="catalog")renderSemantropicCatalog();
- window.scrollTo({top:0,left:0,behavior:"smooth"})
-}
-function renderAvatarBuilder(){
- const p=$("customPreview");p.innerHTML=avatarMarkup(save.customAvatar,{equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura});p.style.background=bgStyle(save.customAvatar.bg);
- const presentationBox=$("presentationOptions");
- if(presentationBox){
-  presentationBox.innerHTML="";
-  [["male","👨 Masculino"],["female","👩 Femenino"]].forEach(([id,label])=>{
-   const b=document.createElement("button");
-   b.className="opt "+(save.customAvatar.presentation===id?"active":"");
-   b.textContent=label;
-   b.onclick=()=>{save.customAvatar.presentation=id;save.profileGender=id;renderAvatarBuilder()};
-   presentationBox.appendChild(b)
-  })
- }
- const outfitText=$("avatarEquippedOutfit"),auraText=$("avatarEquippedAura");
- if(outfitText){const o=currentOutfit();outfitText.textContent=`${o.icon} ${o.name} · Etapa ${outfitStage(o.id)}/3`}
- if(auraText){const a=currentAura();auraText.textContent=`${a.icon} ${a.name}`}
- const makeText=(id,list,key)=>{const box=$(id);box.innerHTML="";list.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar[key]===v[0]?"active":"");b.textContent=v[1];b.onclick=()=>{save.customAvatar[key]=v[0];renderAvatarBuilder()};box.appendChild(b)})};
- makeText("skinOptions",SKINS.map(v=>[v[0],v[2]]),"skin");
- makeText("hairOptions",HAIR_STYLES,"hairStyle");
- const hc=$("hairColorOptions");hc.innerHTML="";HAIR_COLORS.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar.hairColor===v[0]?"active":"");b.innerHTML=`<span class="color-dot" style="background:${v[1]}"></span>${v[2]}`;b.onclick=()=>{save.customAvatar.hairColor=v[0];renderAvatarBuilder()};hc.appendChild(b)});
- makeText("expressionOptions",EXPRESSIONS,"expression");makeText("accOptions",ACCESSORIES,"accessory");
- const bg=$("bgOptions");bg.innerHTML="";BGS.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar.bg===v[0]?"active":"");b.textContent=v[0];b.style.background=v[1];b.onclick=()=>{save.customAvatar.bg=v[0];renderAvatarBuilder()};bg.appendChild(b)});
- const m=$("starterMaleCard"),f=$("starterFemaleCard");if(m)m.classList.toggle("sel",save.avatar==="starter_m");if(f)f.classList.toggle("sel",save.avatar==="starter_f");
- renderAvatarProgressUI();renderAvatarOutfits();renderAvatarAuras();renderAvatarExpressionHub();renderAvatarProfileHub();renderSemantropicCatalog();renderGameAvatarWidget("ready")
-}
+function scrollAvatarEditorTo(id){const el=$(id);if(!el)return;el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"})}
+function openUnifiedAvatarEditor(section=""){page("avatarStudio");renderAvatarBuilder();if(section)setTimeout(()=>scrollAvatarEditorTo(section==="profile"?"avatarProfileSection":section),80)}
+function setAvatarStudioTab(){renderAvatarBuilder()}
+function activateCustomAvatarForEdit(){const i=ensureIdentityState();i.baseAvatar="custom";save.avatar="custom"}
+function updateCustomAvatarField(key,value){activateCustomAvatarForEdit();save.customAvatar[key]=value;if(key==="presentation")save.profileGender=value;persist();renderAvatarBuilder()}
+function renderUnifiedAvatarPreview(){ensureIdentityState();const p=$("customPreview");if(!p)return;p.className="public-avatar unified-avatar-preview";p.innerHTML=identityAvatarMarkup(save.identity.baseAvatar||save.avatar,{identity:save.identity,customAvatar:save.customAvatar,equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura});p.style.background=profileBackgroundInfo(save.identity.profileBackground).style;applyFrameToElement(p,save.selectedFrame||"none");applyProfileAnimation(p);applyEntryAnimation(p,{identity:save.identity});const n=$("unifiedPreviewName"),t=$("unifiedPreviewTitle"),s=$("unifiedPreviewSummary");if(n)n.textContent=save.name||"Jugador";if(t)t.textContent=selectedProfileTitleInfo().label;if(s)s.innerHTML=[`🧬 ${identityBaseLabel(save.identity.baseAvatar)}`,currentIdentityLabel("headwear"),currentIdentityLabel("top"),`${currentAura().icon} ${currentAura().name}`,`🖼️ ${(FRAMES.find(f=>f.id===save.selectedFrame)||FRAMES[0]).name}`,`🌌 ${profileBackgroundInfo(save.identity.profileBackground).name}`].map(x=>`<span>${x}</span>`).join("")}
+function identityBaseLabel(id){if(id==="custom")return"Personalizado";return AVATARS.find(a=>a.id===id)?.name||"Avatar"}
+function renderUnifiedBasePicker(){ensureIdentityState();const picker=$("identityBasePicker");if(!picker)return;const q=($("avatarBaseSearch")?.value||"").trim().toLowerCase();const owned=new Set(ownedAvatarIdsForProfile());const ids=["custom",...AVATARS.map(a=>a.id)].filter((id,i,a)=>a.indexOf(id)===i).filter(id=>id==="custom"||owned.has(id));picker.innerHTML="";ids.map(id=>id==="custom"?{id:"custom",name:"Personalizado",icon:"🎨"}:AVATARS.find(a=>a.id===id)).filter(Boolean).filter(a=>!q||String(a.name||"").toLowerCase().includes(q)).forEach(a=>{const id=a.id,sel=(save.identity.baseAvatar||"custom")===id,d=document.createElement("div");d.className="identity-base-option "+(sel?"sel":"");let visual=id==="custom"?avatarMarkup(save.customAvatar,{equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura,identity:save.identity}):avatarVisual(a);d.innerHTML=`<div class="identity-base-visual">${visual}</div><b>${a.name}</b><div class="muted">${id==="custom"?"Editable":profileAvatarGenderForId(id,a)==="animal"?"Animal":"Prediseñado"}</div>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>selectIdentityBase(id);picker.appendChild(d)});if(!picker.children.length)picker.innerHTML='<div class="muted">No encontramos avatares con esa búsqueda.</div>'}
+function renderUnifiedPicker(targetId,type){const box=$(targetId);if(!box)return;ensureIdentityState();const cfg=identityConfig(type),items=(identityPools()[type]||[]).filter(item=>identityOwns(type,item.id));box.innerHTML="";items.forEach(item=>{const sel=cfg?.equipKey?save.identity[cfg.equipKey]===item.id:type==="emote"?identityEmoteEquipped(item.id):type==="spray"?identitySprayEquipped(item.id):false,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"")+(type==="profilebg"?" bg-item":"");const icon=type==="profilebg"?`<div class="upi-swatch" style="background:${item.style}"></div>`:`<div class="upi-icon">${item.emoji||item.icon||"✨"}</div>`;d.innerHTML=`${icon}<b>${item.name}</b><small>${rarityLabel(item.rarity||"common")}</small>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>{if(type==="emote")toggleIdentityEmote(item.id);else if(type==="spray")toggleIdentitySpray(item.id);else identityEquip(type,item.id)};box.appendChild(d)});if(!items.length)box.innerHTML='<div class="muted">Todavía no tienes objetos de esta categoría.</div>'}
+function renderUnifiedOutfits(){const box=$("avatarOutfitGrid");if(!box)return;box.innerHTML="";(OUTFITS||[]).filter(item=>save.wardrobeOwned.includes(item.id)).forEach(item=>{const sel=save.equippedOutfit===item.id,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"");d.innerHTML=`<div class="upi-icon">${item.icon}</div><b>${item.name}</b><small>Maestría ${outfitStage(item.id)}/3</small>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>equipOutfit(item.id);box.appendChild(d)});if(!box.children.length)box.innerHTML='<div class="muted">No tienes conjuntos desbloqueados.</div>'}
+function renderUnifiedAuras(){const box=$("avatarAuraGrid");if(!box)return;box.innerHTML="";(AVATAR_AURAS||[]).filter(item=>save.aurasOwned.includes(item.id)).forEach(item=>{const sel=save.selectedAura===item.id,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"");d.innerHTML=`<div class="upi-icon">${item.icon}</div><b>${item.name}</b><small>${item.desc||"Aura"}</small>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>equipAura(item.id);box.appendChild(d)})}
+function renderUnifiedFrames(){const box=$("unifiedFrameGrid");if(!box)return;box.innerHTML="";(save.framesOwned||["none"]).map(id=>FRAMES.find(f=>f.id===id)).filter(Boolean).forEach(f=>{const sel=save.selectedFrame===f.id,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"");d.innerHTML=`<div class="upi-icon">${f.icon||"🖼️"}</div><b>${f.name}</b><small>${rarityLabel(f.rarity||"common")}</small>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>{save.selectedFrame=f.id;persist();renderAvatarBuilder()};box.appendChild(d)})}
+function renderUnifiedSlots(){const es=$("equippedEmoteSlots");if(es){const eq=ensureIdentityState().equippedEmotes;es.innerHTML="";for(let i=0;i<6;i++){const item=EMOTES_COLLECTION.find(x=>x.id===eq[i]),d=document.createElement("div");d.className="emote-slot "+(item?"":"empty");d.innerHTML=item?`${item.emoji}<div>${item.name}</div>`:`Slot ${i+1}`;es.appendChild(d)}}const ss=$("equippedSpraySlots");if(ss){const eq=ensureIdentityState().equippedSprays;ss.innerHTML="";for(let i=0;i<3;i++){const item=SPRAYS_COLLECTION.find(x=>x.id===eq[i]),d=document.createElement("div");d.className="spray-slot "+(item?"":"empty");d.innerHTML=item?`${item.emoji}<div>${item.name}</div>`:`Slot ${i+1}`;ss.appendChild(d)}}}
+function renderUnifiedProfileAnimations(){const box=$("unifiedProfileAnimationGrid");if(!box)return;box.innerHTML="";PROFILE_ANIMATIONS.forEach(a=>{const owned=save.animationsOwned.includes(a.id),sel=save.profileAnimation===a.id,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"")+(owned?"":" locked");d.innerHTML=`<div class="upi-icon">${a.icon}</div><b>${a.name}</b><small>${owned?"Disponible":a.source==="vault"?"Bóveda":a.currency==="gems"?a.cost+" 💎":a.cost+" 🪙"}</small>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>selectProfileAnimation(a.id);box.appendChild(d)})}
+function renderUnifiedTitles(){const box=$("identityTitleGrid");if(!box)return;box.innerHTML="";PROFILE_TITLES.filter(t=>t.check()).forEach(t=>{const sel=(save.selectedTitle||"")===t.id,d=document.createElement("div");d.className="unified-picker-item "+(sel?"sel":"");d.innerHTML=`<div class="upi-icon">${t.icon}</div><b>${t.name}</b>${sel?'<span class="upi-check">✓</span>':""}`;d.onclick=()=>{save.selectedTitle=t.id;persist();renderAvatarBuilder()};box.appendChild(d)})}
+function renderUnifiedProfileFields(){const n=$("unifiedProfileName"),b=$("unifiedProfileBio"),a=$("unifiedFeaturedAchievement");if(n&&document.activeElement!==n)n.value=save.name||"Jugador";if(b&&document.activeElement!==b)b.value=save.profileBio||"";if(a){const current=save.featuredAchievement||"";a.innerHTML='<option value="">🏆 Sin logro destacado</option>'+ACH.filter(x=>save.ach[x.id]).map(x=>`<option value="${x.id}">${x.icon} ${x.name}</option>`).join("");a.value=current;a.onchange=()=>saveUnifiedProfileFields(false)}if(n&&!n.dataset.bound){n.dataset.bound="1";n.addEventListener("change",()=>saveUnifiedProfileFields(false))}if(b&&!b.dataset.bound){b.dataset.bound="1";b.addEventListener("change",()=>saveUnifiedProfileFields(false))}}
+async function saveUnifiedProfileFields(notify=false){const n=$("unifiedProfileName"),b=$("unifiedProfileBio"),a=$("unifiedFeaturedAchievement");if(n)save.name=(n.value.trim()||"Jugador").slice(0,18);if(b)save.profileBio=b.value.trim().slice(0,90);if(a)save.featuredAchievement=a.value||"";persist();renderUnifiedAvatarPreview();if(notify){if(onlineProfileReady&&onlineProfileToken)await syncOnlineProfile();toast("☁️ Avatar y perfil guardados")}}
+function renderAvatarBuilder(){ensureIdentityState();renderUnifiedAvatarPreview();const makeText=(id,list,key)=>{const box=$(id);if(!box)return;box.innerHTML="";list.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar[key]===v[0]?"active":"");b.textContent=v[1];b.onclick=()=>updateCustomAvatarField(key,v[0]);box.appendChild(b)})};const pb=$("presentationOptions");if(pb){pb.innerHTML="";[["male","👨 Masculino"],["female","👩 Femenino"]].forEach(([id,label])=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar.presentation===id?"active":"");b.textContent=label;b.onclick=()=>updateCustomAvatarField("presentation",id);pb.appendChild(b)})}makeText("skinOptions",SKINS.map(v=>[v[0],v[2]]),"skin");makeText("hairOptions",HAIR_STYLES,"hairStyle");const hc=$("hairColorOptions");if(hc){hc.innerHTML="";HAIR_COLORS.forEach(v=>{const b=document.createElement("button");b.className="opt "+(save.customAvatar.hairColor===v[0]?"active":"");b.innerHTML=`<span class="color-dot" style="background:${v[1]}"></span>${v[2]}`;b.onclick=()=>updateCustomAvatarField("hairColor",v[0]);hc.appendChild(b)})}makeText("expressionOptions",EXPRESSIONS,"expression");renderUnifiedBasePicker();renderUnifiedOutfits();renderUnifiedPicker("unifiedHeadwearGrid","headwear");renderUnifiedPicker("unifiedFaceGrid","face");renderUnifiedPicker("unifiedTopGrid","top");renderUnifiedPicker("unifiedBottomGrid","bottom");renderUnifiedPicker("unifiedAccessoryGrid","accessory");renderUnifiedAuras();renderUnifiedFrames();renderUnifiedPicker("identityProfileBgGrid","profilebg");renderUnifiedPicker("identityResponseGrid","response");renderUnifiedPicker("identityEmoteGrid","emote");renderUnifiedPicker("identitySprayGrid","spray");renderUnifiedPicker("identityEntryGrid","entry");renderUnifiedPicker("identityVictoryGrid","victory");renderUnifiedPicker("identityDefeatGrid","defeat");renderUnifiedProfileAnimations();renderUnifiedSlots();renderUnifiedTitles();renderUnifiedProfileFields();renderAvatarProgressUI();renderGameAvatarWidget("ready")}
 function renderAvatarProgressUI(){
  const l=$("avatarStudioLevel"),bar=$("avatarStudioXpBar"),txt=$("avatarStudioXpText"),hint=$("avatarLevelRewardHint");
  if(l)l.textContent=save.level;
@@ -3836,9 +3760,9 @@ function buyOutfit(id){
  if(item.currency==="season")return toast("Este outfit se consigue en el camino de temporada");if(item.currency==="world")return toast("🗺️ Este outfit se consigue en World Tour");
  if(!canUseCosmetic(item))return toast(`Necesitas nivel ${item.levelReq}`);
  if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost}
- save.wardrobeOwned.push(item.id);save.outfitXp[item.id]=save.outfitXp[item.id]||0;save.equippedOutfit=item.id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueado y equipado`)
+ save.wardrobeOwned.push(item.id);save.outfitXp[item.id]=save.outfitXp[item.id]||0;save.equippedOutfit=item.id;save.avatar="custom";ensureIdentityState().baseAvatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueado y equipado`)
 }
-function equipOutfit(id){if(!save.wardrobeOwned.includes(id))return;save.equippedOutfit=id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`👕 ${OUTFITS.find(x=>x.id===id)?.name||id} equipado en tu personaje`)}
+function equipOutfit(id){if(!save.wardrobeOwned.includes(id))return;save.equippedOutfit=id;save.avatar="custom";ensureIdentityState().baseAvatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`👕 ${OUTFITS.find(x=>x.id===id)?.name||id} equipado en tu personaje`)}
 function renderAvatarOutfits(){
  const box=$("avatarOutfitGrid");if(!box)return;box.innerHTML="";
  OUTFITS.forEach(item=>{
@@ -3856,9 +3780,9 @@ function buyAura(id){
  if(item.currency==="season")return toast("Esta aura se consigue en el camino de temporada");if(item.currency==="world")return toast("🗺️ Esta aura se consigue en World Tour");
  if(!canUseCosmetic(item))return toast(`Necesitas nivel ${item.levelReq}`);
  if(item.currency==="gems"){if(save.gems<item.cost)return toast("No tienes suficientes diamantes");save.gems-=item.cost}else{if(save.coins<item.cost)return toast("No tienes suficientes monedas");save.coins-=item.cost}
- save.aurasOwned.push(item.id);save.selectedAura=item.id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueada y equipada`)
+ save.aurasOwned.push(item.id);save.selectedAura=item.id;save.avatar="custom";ensureIdentityState().baseAvatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${item.icon} ${item.name} desbloqueada y equipada`)
 }
-function equipAura(id){if(!save.aurasOwned.includes(id))return;save.selectedAura=id;save.avatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${AVATAR_AURAS.find(x=>x.id===id)?.icon||"✨"} Aura equipada en tu personaje`)}
+function equipAura(id){if(!save.aurasOwned.includes(id))return;save.selectedAura=id;save.avatar="custom";ensureIdentityState().baseAvatar="custom";persist();renderAvatarBuilder();renderSideAvatar();toast(`${AVATAR_AURAS.find(x=>x.id===id)?.icon||"✨"} Aura equipada en tu personaje`)}
 function renderAvatarAuras(){
  const box=$("avatarAuraGrid");if(!box)return;box.innerHTML="";
  AVATAR_AURAS.forEach(item=>{
@@ -3870,7 +3794,7 @@ function renderAvatarAuras(){
  })
 }
 
-function selectIdentityBase(id){ensureIdentityState();save.identity.baseAvatar=id;save.avatar=id==="custom"?"custom":id;persist();renderAvatarProfileHub();renderAvatarBuilder();renderSideAvatar();toast("🧬 Avatar base actualizado")}
+function selectIdentityBase(id){ensureIdentityState();save.identity.baseAvatar=id;save.avatar=id==="custom"?"custom":id;const a=AVATARS.find(x=>x.id===id);if(a)save.profileGender=profileAvatarGenderForId(id,a);persist();renderAvatarBuilder();renderSideAvatar();toast("🧬 Avatar base actualizado")}
 function identityPreviewHTML(){ensureIdentityState();const box=document.createElement("div");box.className="public-avatar profile-bg-"+(save.identity.profileBackground||"nebula");box.innerHTML=identityAvatarMarkup(save.identity.baseAvatar||save.avatar,{identity:save.identity,customAvatar:save.customAvatar,equippedOutfit:save.equippedOutfit,selectedAura:save.selectedAura});applyFrameToElement(box,save.selectedFrame||"none");applyProfileAnimation(box,save.profileAnimation||"none");applyEntryAnimation(box,{identity:save.identity});return box.outerHTML}
 function renderIdentityInventory(targetId,type,titleText,subtitleText){const box=$(targetId);if(!box)return;const items=identityPools()[type]||[];const cfg=identityConfig(type);box.innerHTML=items.map(item=>{const owned=identityOwns(type,item.id),equipped=cfg?.equipKey?ensureIdentityState()[cfg.equipKey]===item.id:type==="emote"?identityEmoteEquipped(item.id):type==="spray"?identitySprayEquipped(item.id):false;const canBuy=item.currency!=="unlock";const rarity=item.rarity||"common";const visual=type==="profilebg"?`<div class="bg-swatch" style="background:${item.style}"></div>`:type==="emote"?`<div class="emote-preview">${item.emoji}</div>`:type==="spray"?`<div class="spray-preview">${item.emoji}</div>`:`<div class="bigico">${item.emoji||item.icon||"✨"}</div>`;const action=type==="emote"?(owned?`toggleIdentityEmote('${item.id}')`:`buyIdentityItem('emote','${item.id}')`):type==="spray"?(owned?`toggleIdentitySpray('${item.id}')`:`buyIdentitySpray('${item.id}')`):(owned?`identityEquip('${type}','${item.id}')`:(canBuy?`buyIdentityItem('${type}','${item.id}')`:`toast('🏆 Se consigue jugando')`));const stateLabel=owned?(equipped?"✅ Equipado":"Disponible"):identityCostLabel(item);return `<div class="card rarity-shell r-${rarity} ${type==='emote'?'emote-card':type==='spray'?'spray-card':'identity-card'} ${owned?'':'locked'} ${equipped?'sel':''}">${rarity==='epic'?'<span class="rarity-feature">PARTÍCULAS</span>':rarity==='legendary'?'<span class="rarity-feature">ANIMADO</span>':rarity==='mythic'?'<span class="rarity-feature">PRESENTACIÓN+</span>':rarity==='prestige'?'<span class="rarity-feature">SOLO LOGRO</span>':''}${visual}<div class="slot-label">${titleText||item.theme||''}</div><h3>${item.name}</h3><div class="muted">${item.desc||subtitleText||''}</div><div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="rarity-badge rarity-${rarity}">${rarityLabel(rarity)}</span><span class="price-pill">${stateLabel}</span></div><button class="btn ${owned?'secondary':'primary'}" style="margin-top:10px" onclick="${action}">${owned?(equipped?'QUITAR / USANDO':'EQUIPAR'):(item.currency==='unlock'?'BLOQUEADO':'DESBLOQUEAR')}</button></div>`}).join('')}
 function renderAvatarExpressionHub(){ensureIdentityState();const prev=$("identityExpressionPreview");if(prev){prev.className='identity-preview-stage rarity-shell r-'+equippedIdentityRarity()+' profile-bg-'+(save.identity.profileBackground||'nebula');prev.innerHTML=identityPreviewHTML()+`<div class="identity-avatar-ambient"><span class="identity-ambient-badge">🎭 ${currentIdentityLabel('entry')}</span><span class="identity-ambient-badge">🏆 ${currentIdentityLabel('victory')}</span><span class="identity-ambient-badge">💥 ${currentIdentityLabel('response')}</span></div>`}const slots=$("equippedEmoteSlots");if(slots){const eq=ensureIdentityState().equippedEmotes;slots.innerHTML='';for(let i=0;i<6;i++){const id=eq[i],item=EMOTES_COLLECTION.find(x=>x.id===id);const d=document.createElement('div');d.className='emote-slot '+(item?'':'empty');d.innerHTML=item?`${item.emoji}<div>${item.name}</div>`:`Slot ${i+1}`;slots.appendChild(d)}}renderIdentityInventory('identityEmoteGrid','emote');renderIdentityInventory('identityEntryGrid','entry');renderIdentityInventory('identityVictoryGrid','victory');renderIdentityInventory('identityDefeatGrid','defeat');renderIdentityInventory('identityResponseGrid','response');const ss=$("equippedSpraySlots");if(ss){const eq=ensureIdentityState().equippedSprays;ss.innerHTML='';for(let j=0;j<3;j++){const id=eq[j],item=SPRAYS_COLLECTION.find(x=>x.id===id),d=document.createElement('div');d.className='spray-slot '+(item?'':'empty');d.innerHTML=item?`${item.emoji}<div>${item.name}</div>`:`Slot ${j+1}`;ss.appendChild(d)}}renderIdentityInventory('identitySprayGrid','spray')}
@@ -4051,7 +3975,7 @@ function renderAvatars(targetId="avatarGridStudio"){
 }
 function renderAchievementAvatars(){
  const g=$("achievementAvatarGrid");if(!g)return;g.innerHTML="";
- AVATARS.filter(a=>a.source==="unlock").forEach(a=>{const owned=save.avatars.includes(a.id),d=document.createElement("div");d.className="card avataritem";d.style.opacity=owned?1:.4;const ach=ACH.find(x=>x.id===a.unlock);d.innerHTML=`<div class="bigico">${owned?avatarVisual(a):"🔒"}</div><h3>${a.name}</h3><div class="muted">${owned?"Desbloqueado":ach?"Logro: "+ach.name:"Bloqueado"}</div>`;if(owned)d.onclick=()=>{save.avatar=a.id;persist();renderAchievementAvatars();toast(a.name+" seleccionado")};g.appendChild(d)})
+ AVATARS.filter(a=>a.source==="unlock").forEach(a=>{const owned=save.avatars.includes(a.id),d=document.createElement("div");d.className="card avataritem";d.style.opacity=owned?1:.4;const ach=ACH.find(x=>x.id===a.unlock);d.innerHTML=`<div class="bigico">${owned?avatarVisual(a):"🔒"}</div><h3>${a.name}</h3><div class="muted">${owned?"Desbloqueado":ach?"Logro: "+ach.name:"Bloqueado"}</div>`;if(owned)d.onclick=()=>{toast("🎨 Equípalo desde Mi Avatar");openUnifiedAvatarEditor("avatarBaseSection")};g.appendChild(d)})
 }
 function unlockAchievementAvatars(){AVATARS.filter(a=>a.source==="unlock"&&a.unlock).forEach(a=>{if(save.ach[a.unlock]&&!save.avatars.includes(a.id)){save.avatars.push(a.id);toast("🎁 Avatar desbloqueado: "+a.name)}})}
 async function loadGameConfig(force=false){
@@ -4083,7 +4007,7 @@ function renderPremiumCollection(){
  PREMIUM_AVATARS.forEach(a=>{
   const owned=save.avatars.includes(a.id),d=document.createElement("div");d.className="card premium-card "+(save.avatar===a.id?"sel":"");d.style.opacity=owned?1:.45;
   d.innerHTML=`<div class="bigico">${owned?avatarVisual(a):"🔒"}</div>${rarityBadge(a.rarity)}<h3>${a.name}</h3><div class="muted">${owned?(save.avatar===a.id?"Seleccionado":"En tu colección"):(a.levelReq?`Nivel ${a.levelReq}`:"No adquirido")}</div>`;
-  if(owned)d.onclick=()=>{save.avatar=a.id;save.profileGender=a.portrait?.gender||save.profileGender;persist();renderPremiumCollection();toast(`${a.name} equipado`)};
+  if(owned)d.onclick=()=>{toast("🎨 Equípalo desde Mi Avatar");openUnifiedAvatarEditor("avatarBaseSection")};
   g.appendChild(d)
  })
 }
@@ -4340,9 +4264,9 @@ function collectionOwnedCount(){ensureEconomyState();ensureIdentityState();retur
 function collectionTotalCount(){return AVATARS.length+FRAMES.length+OUTFITS.length+AVATAR_AURAS.length+VISUAL_FX.length+PROFILE_ANIMATIONS.length+identityTotalCount()}
 function selectedProfileTitleInfo(meta=null,level=null){const id=meta?.selectedTitle??save.selectedTitle;if(id){const t=PROFILE_TITLES.find(x=>x.id===id);if(t)return{label:`${t.icon} ${t.name}`,name:t.name}}return playerTitle(level||save.level)}
 function applyProfileAnimation(el,id=save.profileAnimation){if(!el)return;el.classList.remove("profile-anim-float","profile-anim-pulse","profile-anim-legend");if(id&&id!=="none")el.classList.add("profile-anim-"+id)}
-function renderPrestige(target="prestigeGrid"){const g=$(target);if(!g)return;unlockPrestigeSkins();g.innerHTML="";PRESTIGE_AVATARS.forEach(a=>{const owned=save.avatars.includes(a.id),d=document.createElement("div");d.className="card avataritem prestige-card "+(owned?"":"locked");d.innerHTML=`<div class="bigico">${owned?a.icon:"🔒"}</div><span class="rarity-badge rarity-prestige">Prestigio</span><h3>${a.name}</h3><div class="muted">${owned?"Desbloqueado":prestigeRequirement(a.id)}</div>`;if(owned)d.onclick=()=>{save.avatar=a.id;persist();renderPrestige(target);toast(`${a.name} equipado`)};g.appendChild(d)})}
-function renderIdentity(){const g=$("profileIdentityGrid");if(!g)return;g.innerHTML="";const titles=PROFILE_TITLES.filter(t=>t.check());const td=document.createElement("div");td.className="card";td.innerHTML=`<h3>🏷️ Título</h3><div class="muted">Elige qué logro representa tu identidad.</div><select id="identityTitleSelect" style="width:100%;margin-top:10px">${titles.map(t=>`<option value="${t.id}" ${save.selectedTitle===t.id?"selected":""}>${t.icon} ${t.name}</option>`).join("")}</select>`;td.querySelector("select").onchange=e=>{save.selectedTitle=e.target.value;persist();renderIdentity()};g.appendChild(td);const ad=document.createElement("div");ad.className="card";ad.innerHTML=`<h3>✨ Animación de perfil</h3><div class="muted">Efecto visible en tu avatar de perfil.</div><div style="margin-top:10px">${PROFILE_ANIMATIONS.map(a=>`<button class="btn secondary" style="margin:3px" onclick="selectProfileAnimation('${a.id}')">${a.icon} ${a.name}${save.profileAnimation===a.id?" ✓":""}</button>`).join("")}</div>`;g.appendChild(ad)}
-function selectProfileAnimation(id){ensureEconomyState();const a=PROFILE_ANIMATIONS.find(x=>x.id===id);if(!a)return;if(!save.animationsOwned.includes(id)){if(a.source==="vault")return toast("🔐 Se obtiene en la Bóveda");if(a.currency==="gems"){if(save.gems<a.cost)return toast("No tienes suficientes diamantes");save.gems-=a.cost;save.economyStats.gemsSpent+=a.cost}else{if(save.coins<a.cost)return toast("No tienes suficientes monedas");save.coins-=a.cost;save.economyStats.coinsSpent+=a.cost}save.animationsOwned.push(id)}save.profileAnimation=id;persist();renderIdentity();renderSideAvatar()}
+function renderPrestige(target="prestigeGrid"){const g=$(target);if(!g)return;unlockPrestigeSkins();g.innerHTML="";PRESTIGE_AVATARS.forEach(a=>{const owned=save.avatars.includes(a.id),d=document.createElement("div");d.className="card avataritem prestige-card "+(owned?"":"locked");d.innerHTML=`<div class="bigico">${owned?a.icon:"🔒"}</div><span class="rarity-badge rarity-prestige">Prestigio</span><h3>${a.name}</h3><div class="muted">${owned?"Desbloqueado":prestigeRequirement(a.id)}</div>`;if(owned)d.onclick=()=>{toast("🎨 Equípalo desde Mi Avatar");openUnifiedAvatarEditor("avatarBaseSection")};g.appendChild(d)})}
+function renderIdentity(){const g=$("profileIdentityGrid");if(!g)return;g.innerHTML=`<div class="card"><div class="bigico">🎨</div><h3>La personalización vive en Mi Avatar</h3><div class="muted">Para evitar configuraciones duplicadas, avatar, fondo, marco, título, emotes y animaciones se editan en un solo lugar.</div><button class="btn primary" style="margin-top:12px" onclick="openUnifiedAvatarEditor('profile')">EDITAR MI AVATAR</button></div><div class="card"><div class="bigico">${selectedProfileTitleInfo().label.split(' ')[0]||'🏷️'}</div><h3>${selectedProfileTitleInfo().name}</h3><div class="muted">Título actual · ${profileBackgroundInfo(ensureIdentityState().profileBackground).name} · ${PROFILE_ANIMATIONS.find(a=>a.id===save.profileAnimation)?.name||'Sin animación'}</div></div>`}
+function selectProfileAnimation(id){ensureEconomyState();const a=PROFILE_ANIMATIONS.find(x=>x.id===id);if(!a)return;if(!save.animationsOwned.includes(id)){if(a.source==="vault")return toast("🔐 Se obtiene en la Bóveda");if(a.currency==="gems"){if(save.gems<a.cost)return toast("No tienes suficientes diamantes");save.gems-=a.cost;save.economyStats.gemsSpent+=a.cost}else{if(save.coins<a.cost)return toast("No tienes suficientes monedas");save.coins-=a.cost;save.economyStats.coinsSpent+=a.cost}save.animationsOwned.push(id)}save.profileAnimation=id;persist();renderAvatarBuilder();renderIdentity();renderSideAvatar()}
 function renderEconomyHub(){ensureEconomyState();unlockPrestigeSkins();const ft=$("economyFragmentsTotal");if(ft)ft.textContent=totalFragments();const k=$("economyKeyring");if(k)k.innerHTML=Object.entries(KEY_TYPES).map(([id,x])=>`<div class="card key-card key-${id}"><div class="bigico">${x.icon}</div><h3>${x.name}</h3><div class="key-count">${save.keyring[id]||0}</div><div class="muted">${x.desc}</div></div>`).join("");const cg=$("economyChestGrid");if(cg)cg.innerHTML=Object.entries(CHEST_TYPES).map(([id,c])=>`<div class="card econ-chest ${id}"><div class="bigico">${c.icon}</div><h3>${c.name}</h3><div class="chest-count">${save.chestInventory[id]||0} disponibles</div><p class="muted">Requiere ${KEY_TYPES[c.key].icon} ${KEY_TYPES[c.key].name}</p><button class="btn primary" onclick="openEconomyChest('${id}')" ${(save.chestInventory[id]||0)<=0?"disabled":""}>ABRIR</button></div>`).join("");renderVault();renderAlbums();renderFragments();renderPrestige()}
 function renderVault(){const b=$("vaultPanel");if(!b)return;ensureEconomyState();const lvl=vaultLevel(),next=VAULT_REWARDS.find(r=>r.level===lvl+1),max=VAULT_REWARDS.at(-1).need,pct=Math.min(100,save.vault.points/max*100);b.innerHTML=`<div class="vault-head"><div><div class="muted">Puntos de conocimiento</div><div class="vault-level">🔐 Nivel ${lvl}/10</div></div><b>${save.vault.points} PK</b></div><div class="vault-bar"><div style="width:${pct}%"></div></div><div class="muted" style="margin-bottom:12px">${next?`Siguiente recompensa en ${Math.max(0,next.need-save.vault.points)} PK`:`Bóveda completada`}</div><div class="vault-rewards">${VAULT_REWARDS.map(r=>{const claimed=save.vault.claimed.includes(r.level),ready=save.vault.points>=r.need;return `<div class="vault-node ${claimed?"claimed":ready?"ready":""}" onclick="${ready&&!claimed?`claimVault(${r.level})`:""}"><div class="bigico">${claimed?"✅":r.icon}</div><b>Nivel ${r.level}</b><small>${r.label}</small><small>${claimed?"Reclamado":ready?"TOCA PARA RECLAMAR":r.need+" PK"}</small></div>`}).join("")}</div>`}
 function renderAlbums(){const g=$("albumGrid");if(!g)return;g.innerHTML=ALBUMS.map(a=>{const p=a.progress(),pct=Math.min(100,p/a.max*100),done=save.album.claimed.includes(a.id),ready=p>=a.max;return `<div class="card album-card ${ready?"complete":""}"><div class="bigico">${a.icon}</div><h3>${a.name}</h3><div class="album-progress">${p}/${a.max}</div><div class="album-bar"><div style="width:${pct}%"></div></div><div class="muted">Premio: ${rewardText(a.reward)}</div>${done?'<button class="btn secondary" disabled>✅ COMPLETADO</button>':ready?`<button class="btn primary" onclick="claimAlbum('${a.id}')">RECLAMAR PREMIO</button>`:'<button class="btn secondary" disabled>EN PROGRESO</button>'}</div>`}).join("")}

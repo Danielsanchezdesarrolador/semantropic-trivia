@@ -1,8 +1,8 @@
 {
   "name": "semantropic-trivia",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
-  "description": "Semantropic Trivia Alpha 0.5.0 - modular identity, catalog, prestige, emotes, sprays and animated player presence",
+  "description": "Semantropic Trivia Alpha 0.5.1 - unified avatar editor, live preview and single-profile customization flow",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
