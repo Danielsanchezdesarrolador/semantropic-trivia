@@ -429,7 +429,30 @@ function accountLoginAllowed(req,key){const id=clientIp(req)+"|"+String(key||"")
 function accountFail(req,key){const id=clientIp(req)+"|"+String(key||""),v=accountFailures.get(id);if(!v||Date.now()-v.start>15*60*1000)accountFailures.set(id,{count:1,start:Date.now()});else v.count++}
 
 
+const UNITY_WEB_ALLOWED_ORIGIN="https://semantropic-unity-web.onrender.com";
+function allowUnityWebCors(req,res,pathname){
+ if(!pathname.startsWith("/api/"))return false;
+ const origin=String(req.headers.origin||"");
+ res.setHeader("Vary","Origin");
+ if(origin===UNITY_WEB_ALLOWED_ORIGIN){
+  res.setHeader("Access-Control-Allow-Origin",UNITY_WEB_ALLOWED_ORIGIN);
+  if(req.method==="OPTIONS"){
+   res.setHeader("Access-Control-Allow-Methods","GET, POST, OPTIONS");
+   res.setHeader("Access-Control-Allow-Headers","Content-Type, X-Semantropic-Client, Authorization");
+   res.writeHead(204);
+   res.end();
+   return true;
+  }
+ }
+ if(req.method==="OPTIONS"){
+  json(res,403,{error:"Origen no autorizado"});
+  return true;
+ }
+ return false;
+}
+
 const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://${req.headers.host||"localhost"}`),p=u.pathname;try{
+ if(allowUnityWebCors(req,res,p))return;
  if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,version:"0.7.0",unityPhase1:true,unityQuizResult:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY,accounts:Object.keys(accounts).length});
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
  if(req.method==="GET"&&p==="/api/season-ranking")return json(res,200,{season:currentSeasonKey(),ranking:topSeasonRanking(),storage:storageMode});
