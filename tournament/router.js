@@ -7,6 +7,15 @@ const PREFIX='/api/unity/tournament/v1';
 const SECRET_ENV='TOURNAMENT020_SECRET';
 function fail(status,code){const e=new Error(code);e.status=status;throw e;}
 function requireId(x){if(typeof x!=='string'||!/^[a-zA-Z0-9_-]{12,100}$/.test(x))fail(400,'INVALID_ID');}
+
+function statusFor(error){
+ if(error.status)return error.status;
+ const invalid=new Set(['Invalid answer','Invalid actionId']);
+ const conflict=new Set(['Conflicting idempotency key','Question not accepting answers','Cannot advance','Wrong question ID','Clock before question start']);
+ if(invalid.has(error.message))return 400;
+ if(conflict.has(error.message))return 409;
+ return 503;
+}
 function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.now}){
  if(!Array.isArray(questions))throw Error('Tournament requires a question bank');
  const secret=process.env[SECRET_ENV];
@@ -98,7 +107,7 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
     });
    }
    json(res,200,result);
-  }catch(e){json(res,e.status||503,{ok:false,code:e.status?e.message:'TOURNAMENT_UNAVAILABLE',retryable:!e.status||e.status>=500});}
+  }catch(e){const status=statusFor(e);json(res,status,{ok:false,code:status<500?e.message:'TOURNAMENT_UNAVAILABLE',retryable:status>=500});}
   return true;
  };
 }
