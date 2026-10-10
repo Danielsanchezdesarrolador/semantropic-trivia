@@ -1,0 +1,9 @@
+{
+  "projectId": "late-dust-26777309",
+  "branchId": "br-dawn-dream-b8ol32eq",
+  "database": "survival019_staging",
+  "hosts": [
+    "ep-gentle-forest-b8em0vkk.c-14.us-east-1.aws.neon.tech",
+    "ep-gentle-forest-b8em0vkk-pooler.c-14.us-east-1.aws.neon.tech"
+  ]
+}

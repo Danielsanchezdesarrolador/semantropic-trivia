@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: semantropic-survival019-staging-api
+    branch: staging/survival019
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/status
+    autoDeployTrigger: off
+    envVars:
+      - key: SEMANTROPIC_ENV
+        value: staging
+      - key: SURVIVAL019_ENABLED
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: SURVIVAL019_ORIGINS
+        sync: false
