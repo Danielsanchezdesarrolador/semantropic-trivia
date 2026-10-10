@@ -435,6 +435,11 @@ const {FileStore,PgStore}=require('./survival/store');
 let survivalTestPool; if(process.env.SURVIVAL019_TEST_PG_URL){const testUrl=new URL(process.env.SURVIVAL019_TEST_PG_URL);if(process.env.SURVIVAL019_TEST!=='1'||testUrl.hostname!=='127.0.0.1'||testUrl.port!=='55439'||testUrl.pathname!=='/survival019_test')throw new Error('Unsafe test database target');survivalTestPool=new Pool({connectionString:testUrl.toString()});}
 const routeSurvival=require('./survival/service').createRouter({questions:QUESTIONS,authenticate:sessionForToken,readBody:body,json,getStore:()=>{if(survivalTestPool)return new PgStore(survivalTestPool);if(storageMode==='postgres'&&pool)return new PgStore(pool);if(process.env.SURVIVAL019_TEST==='1')return new FileStore(path.join(DATA_DIR,'survival019.json'));throw new Error('Durable Survival storage required');}});
 const survivalOrigins=new Set(String(process.env.SURVIVAL019_ORIGINS||'').split(',').filter(Boolean));
+const tournamentEnabled=Boolean(staging && process.env.SURVIVAL019_ENABLED==='1' && process.env.TOURNAMENT020_ENABLED==='1');
+const routeTournament=tournamentEnabled?require('./tournament/router').createRouter({
+ questions:QUESTIONS,authenticate:sessionForToken,readBody:body,json,
+ getStore:()=>{if(storageMode!=='postgres'||!pool)throw new Error('Tournament 0.2.0 requires PostgreSQL');return new (require('./tournament/store').TournamentPgStore)(pool);}
+}):null;
 const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://${req.headers.host||"localhost"}`),p=u.pathname;try{
  if(process.env.SURVIVAL019_ENABLED==='1'){
   const origin=req.headers.origin;
@@ -442,6 +447,7 @@ const server=http.createServer(async(req,res)=>{const u=new URL(req.url,`http://
   if(origin && survivalOrigins.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Semantropic-Client');res.setHeader('Access-Control-Allow-Methods','POST,GET,OPTIONS');}
   if(req.method==='OPTIONS'&&origin){if(!survivalOrigins.has(origin))return json(res,403,{error:'Origin not allowed'});res.writeHead(204);return res.end();}
   if(await routeSurvival(req,res,p))return;
+  if(routeTournament && await routeTournament(req,res,p))return;
  }
  if(req.method==="GET"&&p==="/api/status")return json(res,200,{ok:true,version:"0.7.0",unityPhase1:true,unityQuizResult:true,rooms:rooms.size,players:[...rooms.values()].reduce((a,r)=>a+r.players.size,0),questions:QUESTIONS.length,storage:storageMode,profiles:Object.keys(rankings).length,adminConfigured:!!ADMIN_KEY,accounts:Object.keys(accounts).length});
  if(req.method==="GET"&&p==="/api/ranking")return json(res,200,{ranking:topRanking(),storage:storageMode});
