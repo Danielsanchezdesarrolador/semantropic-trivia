@@ -13,8 +13,9 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
  if(typeof secret!=='string'||secret.length<32)throw Error('Missing server-only TOURNAMENT020_SECRET');
  const valid=questions.filter(q=>typeof q.id==='string'&&typeof q.question==='string'&&Array.isArray(q.answers)&&q.answers.length>=2&&Number.isInteger(q.correct)&&q.correct>=0&&q.correct<q.answers.length&&[1,2,3].includes(q.difficulty));
  if(valid.length<56)throw Error('Insufficient validated tournament questions');
- const store=getStore();
  const projection=(s)=>publicState(s,clock());
+ const MAX_RUN_AGE_MS=75*60*1000;
+ const makeDeck=()=>{const list=[...valid];for(let i=list.length-1;i>0;i--){const j=crypto.randomInt(i+1);[list[i],list[j]]=[list[j],list[i]];}return list.slice(0,56);};
  function track(doc,run){
   if(!run||run.phase!==FINISHED||run.recorded)return;
   run.recorded=true;
@@ -22,7 +23,13 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
   record.plays++;record.bestRound=Math.max(record.bestRound,run.matchIndex+1);
   if(run.finishReason==='CHAMPION')record.championships++;
  }
- function touch(run){return tick(run,clock())}
+ function touch(run){
+  const now=clock();
+  if(run.phase!==FINISHED && now>=run.startedAt+MAX_RUN_AGE_MS){
+   const out=structuredClone(run);out.phase=FINISHED;out.finishReason='EXPIRED';out.finishedAt=now;return out;
+  }
+  return tick(run,now);
+ }
  return async(req,res,p)=>{
   if(!p.startsWith(PREFIX+'/'))return false;
   try{
@@ -32,18 +39,23 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
    const session=authenticate(String(b.token||''));
    if(!session)fail(401,'UNAUTHORIZED');
    const owner=session.playerId;
+   if(!owner)fail(401,'UNAUTHORIZED');
+   const store=getStore(); // Lazily acquire storage only after backend initialization.
    let result;
    if(p===PREFIX+'/start'){
     requireId(b.requestId);
     if(Object.keys(b).some(k=>!['token','requestId'].includes(k)))fail(400,'UNEXPECTED_FIELD');
     result=await store.transaction(owner,doc=>{
-     if(doc.starts[b.requestId])return {ok:true,state:projection(doc.runs[doc.starts[b.requestId]]),duplicate:true};
-     if(Object.values(doc.runs).some(run=>run.phase!==FINISHED))fail(409,'TOURNAMENT_IN_PROGRESS');
+     if(doc.starts[b.requestId]){
+      const originalId=doc.starts[b.requestId];const prior=touch(doc.runs[originalId]);doc.runs[originalId]=prior;track(doc,prior);
+      return {ok:true,state:projection(prior),duplicate:true};
+     }
+     for(const [id,existing] of Object.entries(doc.runs)){
+      const active=touch(existing);doc.runs[id]=active;track(doc,active);
+      if(active.phase!==FINISHED)return {ok:true,state:projection(active),resumed:true};
+     }
      if(Object.keys(doc.runs).length>=60)fail(429,'RETENTION_LIMIT');
-     const size=7*8;
-     const chosen=crypto.randomInt(0,valid.length);
-     const deck=[];
-     for(let i=0;i<valid.length&&deck.length<size;i++)deck.push(valid[(chosen+i)%valid.length]);
+     const deck=makeDeck();
      const id=crypto.randomUUID();
      const run=startTournament({runId:id,playerId:owner,questions:deck,secret,nowMs:clock()});
      doc.runs[id]=run;doc.starts[b.requestId]=id;
@@ -52,13 +64,21 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
    }else if(p===PREFIX+'/records/me'){
     result=await store.transaction(owner,doc=>({ok:true,record:doc.record||{bestRound:0,championships:0,plays:0}}));
    }else{
-    const m=p.match(/^\/api\/unity\/tournament\/v1\/([0-9a-f-]{36})\/(state|answer|advance|result)$/);
+    const m=p.match(/^\/api\/unity\/tournament\/v1\/([0-9a-f-]{36})\/(state|answer|advance|result|abandon)$/);
     if(!m)fail(404,'NOT_FOUND');
     result=await store.transaction(owner,doc=>{
      let run=doc.runs[m[1]];
      if(!run)fail(404,'TOURNAMENT_NOT_FOUND');
      run=touch(run);
      doc.runs[m[1]]=run;
+     if(m[2]==='abandon'){
+      requireId(b.actionId);
+      if(Object.keys(b).some(k=>!['token','actionId'].includes(k)))fail(400,'UNEXPECTED_FIELD');
+      if(run.phase===FINISHED)return {ok:true,state:projection(run),duplicate:true};
+      run=structuredClone(run);run.phase=FINISHED;run.finishReason='ABANDONED';run.finishedAt=clock();
+      doc.runs[m[1]]=run;track(doc,run);
+      return {ok:true,state:projection(run),duplicate:false};
+     }
      if(m[2]==='answer'){
       requireId(b.actionId);
       if(Object.keys(b).some(k=>!['token','actionId','questionId','selectedIndex'].includes(k)))fail(400,'UNEXPECTED_FIELD');
@@ -74,7 +94,7 @@ function createRouter({getStore,authenticate,readBody,json,questions,clock=Date.
       return {ok:true,state:projection(run),duplicate:out.duplicate};
      }
      track(doc,run);
-     return {ok:true,state:projection(run)};
+     return {ok:true,state:projection(run),verified:run.phase===FINISHED};
     });
    }
    json(res,200,result);
