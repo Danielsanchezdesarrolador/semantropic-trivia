@@ -39,7 +39,7 @@ async function test(){
  assert.equal(other.status,404);checks++;
  const invalid=await post(PREFIX+'/'+id+'/answer',{token:'one',actionId:'invalid-answer-001',questionId:a.data.state.question.id,selectedIndex:999});
  assert.equal(invalid.status,400);checks++;
- const query={token:'one',actionId:'answer-001',questionId:a.data.state.question.id,selectedIndex:0};
+ const query={token:'one',actionId:'answer-000001',questionId:a.data.state.question.id,selectedIndex:0};
  const answer=await post(PREFIX+'/'+id+'/answer',query);
  assert.equal(answer.status,200);checks++;
  const repeated=await post(PREFIX+'/'+id+'/answer',query);
@@ -47,9 +47,9 @@ async function test(){
  now+=16000;
  const resolved=await post(PREFIX+'/'+id+'/state',{token:'one'});
  assert.equal(resolved.data.state.phase,RESOLVED);checks++;
- const advanced=await post(PREFIX+'/'+id+'/advance',{token:'one',actionId:'advance-001'});
+ const advanced=await post(PREFIX+'/'+id+'/advance',{token:'one',actionId:'advance-000001'});
  assert.equal(advanced.status,200);assert.equal(advanced.data.state.questionNumber,2);checks++;
- const abandon=await post(PREFIX+'/'+id+'/abandon',{token:'one',actionId:'abandon-001'});
+ const abandon=await post(PREFIX+'/'+id+'/abandon',{token:'one',actionId:'abandon-000001'});
  assert.equal(abandon.data.state.phase,FINISHED);assert.equal(abandon.data.state.finishReason,'ABANDONED');checks++;
  const records=await post(PREFIX+'/records/me',{token:'one'});
  assert.equal(records.data.record.plays,1);checks++;
